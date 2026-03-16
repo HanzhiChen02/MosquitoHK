@@ -1215,15 +1215,15 @@ div.marker {
 }
 .digitomy.marker {
   fill: #5b3b01;
-  stroke: #5b3b01;
+  stroke: tan;
 }
 .digitomy.marker, .digitomy .swatch {
   background-color: #5b3b01;
-  border-color: #5b3b01;
+  border-color: tan;
 }
 .digitomy.cluster {
   background-color: rgba(91, 59, 1, 0.75);
-  border-color: #5b3b01;
+  border-color: tan;
 }
 
 .hide-habitat-mapper .habitat-mapper {
