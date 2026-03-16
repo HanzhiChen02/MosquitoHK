@@ -127,7 +127,7 @@ $dark-background-color: colors.$very-very-dark-grey;
 	white-space: nowrap;
 
 	span {
-		color: red;
+		color: #ff8080;
 	}
 }
 
@@ -150,12 +150,6 @@ $dark-background-color: colors.$very-very-dark-grey;
 					}
 				}
 			}
-		}
-	}
-
-	.fancybox-caption {
-		span {
-			color: #ff8080;
 		}
 	}
 }

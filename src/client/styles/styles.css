@@ -1339,7 +1339,7 @@ div.marker {
   white-space: nowrap;
 }
 .fancybox-caption span {
-  color: red;
+  color: #ff8080;
 }
 
 .dark .leaflet-popup-content-wrapper, .dark .leaflet-popup-tip {
@@ -1350,9 +1350,6 @@ div.marker {
   color: white;
 }
 .dark .leaflet-popup-content-wrapper .photos .photo label span, .dark .leaflet-popup-tip .photos .photo label span {
-  color: #ff8080;
-}
-.dark .fancybox-caption span {
   color: #ff8080;
 }
 
