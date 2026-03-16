@@ -57,7 +57,7 @@ export default _.extend({}, PopupData, {
 				<% let caption = attributes.captions? attributes.captions[i] : null; %>
 				<% if (thumb_url) { %>
 				<div class="photo">
-					<a href="<%= photo_url %>" data-fancybox="gallery" class="lightbox"<% if (caption) { %> data-caption="<%= caption %>"<% } %>>
+					<a href="<%= photo_url %>" data-fancybox="gallery" class="lightbox"<% if (caption) { %> data-caption="<%= caption.replace('<br />', '') %>"<% } %>>
 						<div class="preview">
 							<img src="<%= thumb_url %>" />
 							<% if (caption && caption.startsWith('Stickypad')) { %>
