@@ -1316,7 +1316,6 @@ div.marker {
 .leaflet-container .leaflet-popup-content .photos .photo label span {
   display: block;
   color: red;
-  font-style: italic;
 }
 .leaflet-container .leaflet-popup-content-wrapper {
   border-radius: 0;
@@ -1341,7 +1340,6 @@ div.marker {
 }
 .fancybox-caption span {
   color: red;
-  font-style: italic;
 }
 
 .dark .leaflet-popup-content-wrapper, .dark .leaflet-popup-tip {
