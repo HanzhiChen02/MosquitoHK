@@ -155,9 +155,9 @@ export default {
 				captions: [
 					'Stickypad: 002',
 					'Mosquito: 004',
-					'Genus: <br />' + genus,
-					'Sex: <br />' + sex,
-					'Gonotrophy: <br />' + gonotrophy
+					'Genus: <span>' + genus + '</span>',
+					'Sex: <span>' + sex + '</span>',
+					'Gonotrophy: <span>' + gonotrophy + '</span>'
 				]
 			}
 		}

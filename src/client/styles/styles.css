@@ -1313,6 +1313,11 @@ div.marker {
   text-align: center;
   padding: 0 5px;
 }
+.leaflet-container .leaflet-popup-content .photos .photo label span {
+  display: block;
+  color: red;
+  font-style: italic;
+}
 .leaflet-container .leaflet-popup-content-wrapper {
   border-radius: 0;
 }
@@ -1332,14 +1337,25 @@ div.marker {
 .fancybox-caption {
   font-family: sans-serif;
   font-weight: bold;
+  white-space: nowrap;
+}
+.fancybox-caption span {
+  color: red;
+  font-style: italic;
 }
 
 .dark .leaflet-popup-content-wrapper, .dark .leaflet-popup-tip {
   color: white;
   background: rgb(51.5, 51.5, 51.5);
 }
-.dark .leaflet-popup-content-wrapper .photo label, .dark .leaflet-popup-tip .photo label {
+.dark .leaflet-popup-content-wrapper .photos .photo label, .dark .leaflet-popup-tip .photos .photo label {
   color: white;
+}
+.dark .leaflet-popup-content-wrapper .photos .photo label span, .dark .leaflet-popup-tip .photos .photo label span {
+  color: #ff8080;
+}
+.dark .fancybox-caption span {
+  color: #ff8080;
 }
 
 /******************************************************************************\

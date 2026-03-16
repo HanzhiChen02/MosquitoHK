@@ -89,10 +89,14 @@ $dark-background-color: colors.$very-very-dark-grey;
 				}
 
 				label {
-					// position: absolute;
 					text-align: center;
 					padding: 0 5px;
-					// font-size: 12px;
+
+					span {
+						display: block;
+						color: red;
+						font-style: italic;
+					}
 				}
 			}
 		}
@@ -121,6 +125,12 @@ $dark-background-color: colors.$very-very-dark-grey;
 .fancybox-caption {
 	font-family: sans-serif;
 	font-weight: bold;
+	white-space: nowrap;
+
+	span {
+		color: red;
+		font-style: italic;
+	}
 }
 
 //
@@ -132,11 +142,22 @@ $dark-background-color: colors.$very-very-dark-grey;
 		color: $dark-color;
 		background: $dark-background-color;
 
-		.photo {
-			label {
-				// background: black;
-				color: white;
+		.photos {
+			.photo {
+				label {
+					color: white;
+
+					span {
+						color: #ff8080;
+					}
+				}
 			}
+		}
+	}
+
+	.fancybox-caption {
+		span {
+			color: #ff8080;
 		}
 	}
 }
