@@ -16,10 +16,7 @@ import os
 from flask import Flask, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-from controllers.habitat_mapper_controller import HabitatMapperController
 from controllers.inaturalist_controller import iNaturalistController
-from controllers.land_cover_controller import LandCoverController
-from controllers.mosquito_alert_controller import MosquitoAlertController
 from controllers.digitomy_controller import DigitomyController
 from controllers.country_controller import CountryController
 from controllers.observation_controller import ObservationController
@@ -110,16 +107,12 @@ def get_observations(source: str):
 	# get data
 	#
 	match (source):
-		case 'habitat-mapper':
-			return HabitatMapperController.get_all(db, options)
 		case 'inaturalist':
 			return iNaturalistController.get_all(db, options)
-		case 'land-cover':
-			return LandCoverController.get_all(db, options)
-		case 'mosquito-alert':
-			return MosquitoAlertController.get_all(db, options)
 		case 'digitomy':
 			return DigitomyController.get_all(db, options)
+		case _:
+			return {'error': 'Observation source not found.'}, 404
 
 @app.get('/observations/<source>/<id>')
 def get_observation(source: str, id: str):
@@ -132,16 +125,12 @@ def get_observation(source: str, id: str):
 	"""
 
 	match (source):
-		case 'habitat-mapper':
-			return HabitatMapperController.get_index(db, id)
 		case 'inaturalist':
 			return iNaturalistController.get_index(db, id)
-		case 'land-cover':
-			return LandCoverController.get_index(db, id)
-		case 'mosquito-alert':
-			return MosquitoAlertController.get_index(db, id)
 		case 'digitomy':
 			return DigitomyController.get_index(db, id)
+		case _:
+			return {'error': 'Observation source not found.'}, 404
 
 @app.get('/observations/<source>/num')
 def get_num_observations(source: str):
@@ -163,16 +152,12 @@ def get_num_observations(source: str):
 	# get counts
 	#
 	match (source):
-		case 'habitat-mapper':
-			return HabitatMapperController.get_num(db, options)
 		case 'inaturalist':
 			return iNaturalistController.get_num(db, options)
-		case 'land-cover':
-			return LandCoverController.get_num(db, options)
-		case 'mosquito-alert':
-			return MosquitoAlertController.get_num(db, options)
 		case 'digitomy':
 			return DigitomyController.get_num(db, options)
+		case _:
+			return {'error': 'Observation source not found.'}, 404
 
 @app.get('/observations/<source>/timeline')
 def get_observations_timeline(source: str):

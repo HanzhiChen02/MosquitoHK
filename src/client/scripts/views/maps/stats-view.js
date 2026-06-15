@@ -25,28 +25,10 @@ export default BaseView.extend({
 	//
 
 	template: _.template(`
-		<% if (defaults.sources.includes('habitat_mapper')) { %>
-		<div class="habitat-mapper">
-			<div class="swatch"></div>
-			Habitat Mapper <span class="count"></span>
-		</div>
-		<% } %>
 		<% if (defaults.sources.includes('inaturalist')) { %>
 		<div class="inaturalist">
 			<div class="swatch"></div>
 			iNaturalist <span class="count"></span>
-		</div>
-		<% } %>
-		<% if (defaults.sources.includes('land_cover')) { %>
-		<div class="land-cover">
-			<div class="swatch"></div>
-			Land Cover <span class="count"></span>
-		</div>
-		<% } %>
-		<% if (defaults.sources.includes('mosquito_alert')) { %>
-		<div class="mosquito-alert">
-			<div class="swatch"></div>
-			Mosquito Alert <span class="count"></span>
 		</div>
 		<% } %>
 		<% if (defaults.sources.includes('digitomy')) { %>

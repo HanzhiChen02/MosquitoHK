@@ -21,25 +21,6 @@ export default {
 	// getting methods
 	//
 
-	getHabitatMapperPopupData: function(data) {
-		return {
-			title: 'Habitat Mapper',
-			source: 'habitat_mapper',
-			attributes: {
-				date: new Date(data.mhm_measuredDate).toLocaleDateString(),
-				time: new Date(data.mhm_measuredDate).toTimeString(),
-				site: data.mhm_siteName,
-				genus: this.formatName(data.mhm_Genus),
-				species: this.formatName(data.mhm_Species),
-				location: this.toLocation(data),
-				habitat_type: data.mhm_WaterSourceType,
-				habitat: data.mhm_WaterSource,
-				thumb_urls: data.mhm_LarvaFullBodyPhotoUrls.concat(data.mhm_WaterSourcePhotoUrls),
-				photo_urls: data.mhm_LarvaFullBodyPhotoUrls.concat(data.mhm_WaterSourcePhotoUrls)
-			}
-		};
-	},
-
 	getiNaturalistPopupData: function(data) {
 		return {
 			title: 'iNaturalist',
@@ -58,60 +39,6 @@ export default {
 				})
 			}
 		};
-	},
-
-	getLandCoverPopupData: function(data) {
-		return {
-			title: 'Land Cover',
-			source: 'land_cover',
-			attributes: {
-				date: new Date(data.phenomenonTime).toLocaleDateString(),
-				time: new Date(data.phenomenonTime).toTimeString(),
-				location: this.toLocation(data),
-				thumb_urls: data.imageResult && this.hasNonNullObject(data.imageResult)? [
-					data.imageResult.lc_NorthPhotoUrl,
-					data.imageResult.lc_SouthPhotoUrl,
-					data.imageResult.lc_EastPhotoUrl,
-					data.imageResult.lc_WestPhotoUrl,
-					data.imageResult.lc_UpwardPhotoUrl,
-					data.imageResult.lc_DownwardPhotoUrl
-				] : [],
-				photo_urls: data.imageResult && this.hasNonNullObject(data.imageResult)? [
-					data.imageResult.lc_NorthPhotoUrl,
-					data.imageResult.lc_SouthPhotoUrl,
-					data.imageResult.lc_EastPhotoUrl,
-					data.imageResult.lc_WestPhotoUrl,
-					data.imageResult.lc_UpwardPhotoUrl,
-					data.imageResult.lc_DownwardPhotoUrl
-				] : [],
-				captions: [
-					"North",
-					"South",
-					"East",
-					"West",
-					"Up",
-					"Down"
-				]
-			}
-		};
-	},
-
-	getMosquitoAlertPopupData: function(data) {
-		return {
-			title: 'Mosquito Alert',
-			source: 'mosquito_alert',
-			attributes: {
-				date: new Date(data.observationResCatObsPheTime).toLocaleDateString(),
-				time: new Date(data.observationResCatObsPheTime).toTimeString(),
-				site: data.locationName,
-				location: this.toLocation(data),
-				species: this.formatName(data.Indentified_by_Human),
-				'adult, bite, or site': data.dataStreamDescription,
-				research_grade: data.omPrcoessResQuaQuaGrade,
-				thumb_urls: data.observationImaImaResult? [data.observationImaImaResult] : null,
-				photo_urls: data.observationImaImaResult? [data.observationImaImaResult] : null
-			}
-		}
 	},
 
 	getDigitomyPopupData: function(data) {
@@ -165,14 +92,8 @@ export default {
 
 	getPopupData: function(source, data) {
 		switch (source) {
-			case 'habitat_mapper':
-				return this.getHabitatMapperPopupData(data);
 			case 'inaturalist':
 				return this.getiNaturalistPopupData(data);
-			case 'land_cover':
-				return this.getLandCoverPopupData(data);
-			case 'mosquito_alert':
-				return this.getMosquitoAlertPopupData(data);
 			case 'digitomy':
 				return this.getDigitomyPopupData(data);
 			default:

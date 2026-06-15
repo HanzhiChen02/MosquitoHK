@@ -35,10 +35,7 @@
 	},
 
 	"sources": [
-		"habitat_mapper",
-		"land_cover",
 		"inaturalist",
-		"mosquito_alert",
 		"digitomy"
 	],
 

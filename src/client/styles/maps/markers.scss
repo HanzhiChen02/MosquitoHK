@@ -17,21 +17,9 @@
 
 @use "../colors/coloring";
 
-$habitat-mapper-fill-color: #1f3058;
-$habitat-mapper-stroke-color: #a1b0d4;
-$habitat-mapper-cluster-color: coloring.faded($habitat-mapper-fill-color, 75%);
-
-$land-cover-fill-color: #00b6ff;
-$land-cover-stroke-color: #c7efff;
-$land-cover-cluster-color: coloring.faded($land-cover-fill-color, 75%);
-
 $inaturalist-fill-color: #819f27;
 $inaturalist-stroke-color: #c3d982;
 $inaturalist-cluster-color: coloring.faded($inaturalist-fill-color, 75%);
-
-$mosquito-alert-fill-color: #89373a;
-$mosquito-alert-stroke-color: #e8bec0;
-$mosquito-alert-cluster-color: coloring.faded($mosquito-alert-fill-color, 75%);
 
 $digitomy-fill-color: #5b3b01;
 $digitomy-stroke-color: tan;
@@ -121,42 +109,6 @@ div.marker {
 // data source markers
 //
 
-.habitat-mapper {
-	i {
-		color: $habitat-mapper-fill-color;
-	}
-	&.marker {
-		fill: $habitat-mapper-fill-color;
-		stroke: $habitat-mapper-stroke-color;
-	}
-	&.marker, .swatch {
-		background-color: $habitat-mapper-fill-color;
-		border-color: $habitat-mapper-stroke-color;
-	}
-	&.cluster {
-		background-color: $habitat-mapper-cluster-color;
-		border-color: $habitat-mapper-stroke-color;
-	}
-}
-
-.land-cover {
-	i {
-		color: $land-cover-fill-color;
-	}
-	&.marker {
-		fill: $land-cover-fill-color;
-		stroke: $land-cover-stroke-color;
-	}
-	&.marker, .swatch {
-		background-color: $land-cover-fill-color;
-		border-color: $land-cover-stroke-color;
-	}
-	&.cluster {
-		background-color: $land-cover-cluster-color;
-		border-color: $land-cover-stroke-color;
-	}
-}
-
 .inaturalist {
 	i {
 		color: $inaturalist-fill-color;
@@ -172,24 +124,6 @@ div.marker {
 	&.cluster {
 		background-color: $inaturalist-cluster-color;
 		border-color: $inaturalist-stroke-color;
-	}
-}
-
-.mosquito-alert {
-	i {
-		color: $mosquito-alert-fill-color;
-	}
-	&.marker {
-		fill: $mosquito-alert-fill-color;
-		stroke: $mosquito-alert-stroke-color;
-	}
-	&.marker, .swatch {
-		background-color: $mosquito-alert-fill-color;
-		border-color: $mosquito-alert-stroke-color;
-	}
-	&.cluster {
-		background-color: $mosquito-alert-cluster-color;
-		border-color: $mosquito-alert-stroke-color;
 	}
 }
 
@@ -215,26 +149,8 @@ div.marker {
 // hide / show markers
 //
 
-.hide-habitat-mapper {
-	.habitat-mapper {
-		display: none !important;
-	}
-}
-
-.hide-land-cover {
-	.land-cover {
-		display: none !important;
-	}
-}
-
 .hide-inaturalist {
 	.inaturalist {
-		display: none !important;
-	}
-}
-
-.hide-mosquito-alert {
-	.mosquito-alert {
 		display: none !important;
 	}
 }

@@ -1146,38 +1146,6 @@ div.marker {
   margin: auto;
 }
 
-.habitat-mapper i {
-  color: #1f3058;
-}
-.habitat-mapper.marker {
-  fill: #1f3058;
-  stroke: #a1b0d4;
-}
-.habitat-mapper.marker, .habitat-mapper .swatch {
-  background-color: #1f3058;
-  border-color: #a1b0d4;
-}
-.habitat-mapper.cluster {
-  background-color: rgba(31, 48, 88, 0.75);
-  border-color: #a1b0d4;
-}
-
-.land-cover i {
-  color: #00b6ff;
-}
-.land-cover.marker {
-  fill: #00b6ff;
-  stroke: #c7efff;
-}
-.land-cover.marker, .land-cover .swatch {
-  background-color: #00b6ff;
-  border-color: #c7efff;
-}
-.land-cover.cluster {
-  background-color: rgba(0, 182, 255, 0.75);
-  border-color: #c7efff;
-}
-
 .inaturalist i {
   color: #819f27;
 }
@@ -1192,22 +1160,6 @@ div.marker {
 .inaturalist.cluster {
   background-color: rgba(129, 159, 39, 0.75);
   border-color: #c3d982;
-}
-
-.mosquito-alert i {
-  color: #89373a;
-}
-.mosquito-alert.marker {
-  fill: #89373a;
-  stroke: #e8bec0;
-}
-.mosquito-alert.marker, .mosquito-alert .swatch {
-  background-color: #89373a;
-  border-color: #e8bec0;
-}
-.mosquito-alert.cluster {
-  background-color: rgba(137, 55, 58, 0.75);
-  border-color: #e8bec0;
 }
 
 .digitomy i {
@@ -1226,19 +1178,7 @@ div.marker {
   border-color: tan;
 }
 
-.hide-habitat-mapper .habitat-mapper {
-  display: none !important;
-}
-
-.hide-land-cover .land-cover {
-  display: none !important;
-}
-
 .hide-inaturalist .inaturalist {
-  display: none !important;
-}
-
-.hide-mosquito-alert .mosquito-alert {
   display: none !important;
 }
 

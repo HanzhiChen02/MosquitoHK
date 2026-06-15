@@ -31,27 +31,9 @@ export default ToolbarView.extend({
 		<div class="title">Layers</div>
 
 		<div class="buttons">
-			<% if (defaults.sources.includes('habitat_mapper')) { %>
-			<button class="habitat-mapper data-source" data-source="habitat-mapper" data-toggle="tooltip" title="GLOBE Habitat Mapper" data-placement="right">
-				<i class="fa fa-earth"></i>
-			</button>
-			<% } %>
-
-			<% if (defaults.sources.includes('land_cover')) { %>
-			<button class="land-cover data-source" data-source="land-cover" data-toggle="tooltip" title="GLOBE Land Cover" data-placement="right">
-				<i class="fa fa-earth"></i>
-			</button>
-			<% } %>
-
 			<% if (defaults.sources.includes('inaturalist')) { %>
 			<button class="inaturalist data-source" data-source="inaturalist" data-toggle="tooltip" title="iNaturalist" data-placement="right">
 				<img class="icon" src="images/logos/inaturalist.png" />
-			</button>
-			<% } %>
-
-			<% if (defaults.sources.includes('mosquito_alert')) { %>
-			<button class="mosquito-alert data-source" data-source="mosquito-alert" data-toggle="tooltip" title="Mosquito Alert" data-placement="right">
-				<i class="fa fa-exclamation-triangle"></i>
 			</button>
 			<% } %>
 

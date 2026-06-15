@@ -6,7 +6,7 @@
 
 # Hong Kong Mosquito Watch Dashboard
 
-The Global Mosquito Dashboard is tool for bringing together and displaying mosquito observation daata from a variety of citizen science data sources in on place in order to provide a more global and wholistic view of mosquito observations.
+Hong Kong Mosquito Watch displays mosquito observations within the official Hong Kong administrative boundary.
 
 ![Screen Shot](images/screen-shots/global-view.png)
 *Global View*
@@ -24,12 +24,9 @@ The Global Mosquito Dashboard is tool for bringing together and displaying mosqu
 The GMOD dashboard includes the following features.
 
 ### Data Sources
-The Global Mosquito Dashboard integrates data from a number of external data sources:
+The dashboard currently integrates:
 
-- [GLOBE Habitat Mapper](https://observer.globe.gov/do-globe-observer/mosquito-habitats)
-- [GLOBE Land Cover](https://observer.globe.gov/do-globe-observer/land-cover)
 - [iNaturalist](https://www.inaturalist.org)
-- [Mosquito Alert](https://www.mosquitoalert.com)
 - [USF Digitomy Traps](https://www.usf.edu)
 
 ### Viewing
