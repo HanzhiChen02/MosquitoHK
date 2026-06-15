@@ -30,6 +30,7 @@ class DigitomyController(ObservationController):
 		#
 		table = DigitomyObservation().table
 		query = 'SELECT ' + ','.join(Observation.fields) + ' FROM ' + table
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# add filters
 		#
@@ -43,7 +44,7 @@ class DigitomyController(ObservationController):
 		# get data
 		#
 		observations = []
-		data = ObservationController.get_all(db, query)
+		data = ObservationController.get_hong_kong_observations(db, query)
 		if data != 'Could not connect to database':
 			for item in data:
 				observations.append(DigitomyObservation.to_values(item))
@@ -55,12 +56,18 @@ class DigitomyController(ObservationController):
 		# create query
 		#
 		table = DigitomyObservation().table
-		query = 'SELECT ' + ','.join(DigitomyObservation.fields) + ' FROM ' + table + " WHERE id = '" + str(id) + "'";
+		query = 'SELECT ' + ','.join(DigitomyObservation.fields) + ' FROM ' + table + " WHERE id = '" + str(id) + "'"
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# get data
 		#
 		data = ObservationController.get_one(db, query)
-		return DigitomyObservation.to_all_values(data)
+		if data is None:
+			return {'error': 'Hong Kong observation not found'}, 404
+		observation = DigitomyObservation.to_all_values(data)
+		if not ObservationController.is_hong_kong_observation(observation):
+			return {'error': 'Hong Kong observation not found'}, 404
+		return observation
 
 	@staticmethod
 	def get_num(db: object, options: object):
@@ -68,7 +75,8 @@ class DigitomyController(ObservationController):
 		# create query
 		#
 		table = DigitomyObservation().table
-		query = 'SELECT COUNT(*) FROM ' + table;
+		query = 'SELECT x,y FROM ' + table
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# add filters
 		#
@@ -81,4 +89,4 @@ class DigitomyController(ObservationController):
 
 		# get value
 		#
-		return ObservationController.get_value(db, query)
+		return ObservationController.get_hong_kong_count(db, query)

@@ -8,19 +8,29 @@ services:
       - "80:80"
     volumes:
       - ./src/client:/usr/local/apache2/htdocs
-      - ./data:/var/www/data
+      - ./data:/usr/local/apache2/htdocs/data:ro
     networks:
       - network
 
   server:
     build: ./src/server
+    environment:
+      HOST: 0.0.0.0
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USERNAME: webuser
+      DB_PASSWORD: password
+      DB_DATABASE: mosquito_dashboard
+      HONG_KONG_BOUNDARY_PATH: /data/boundaries/hksar_18_district_boundary.json
     ports:
-      - "5000:5000"
+      - "5001:5000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - ./src/server:/app
+      - ./data:/data:ro
     networks:
       - network
 
@@ -33,12 +43,12 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 3
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - ./mysql:/var/lib/mysql

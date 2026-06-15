@@ -14,8 +14,10 @@
 
 import flask
 from array import array
+from datetime import date, datetime
 from flask import request, jsonify
 from controllers.controller import Controller
+from config.region import HONG_KONG_BOUNDS, is_in_hong_kong
 
 class ObservationController(Controller):
 
@@ -24,13 +26,31 @@ class ObservationController(Controller):
 	#
 
 	@staticmethod
+	def add_condition(query: str, condition: str):
+		query = query.rstrip(';')
+		if 'WHERE' in query:
+			return query + " AND " + condition
+		return query + " WHERE " + condition
+
+	@staticmethod
 	def add_filter(query: str, column: str, operator: str, value):
 		if column:
-			if 'WHERE' in query:
-				query += " AND " + column + " " + operator + " '" + value + "'"
-			else:
-				query += " WHERE " + column + " " + operator + " '" + value + "'"
+			query = ObservationController.add_condition(
+				query,
+				column + " " + operator + " '" + value + "'"
+			)
 		return query
+
+	@staticmethod
+	def add_hong_kong_filter(query: str, longitude_column: str = 'x', latitude_column: str = 'y'):
+		bounds = HONG_KONG_BOUNDS
+		condition = (
+			longitude_column + " BETWEEN " + str(bounds['min_longitude']) +
+			" AND " + str(bounds['max_longitude']) +
+			" AND " + latitude_column + " BETWEEN " + str(bounds['min_latitude']) +
+			" AND " + str(bounds['max_latitude'])
+		)
+		return ObservationController.add_condition(query, condition)
 
 	def add_countries_filter(query: str, column: str, countries: array):
 		if countries is None:
@@ -50,12 +70,7 @@ class ObservationController(Controller):
 
 		# add condition to query
 		#
-		if 'WHERE' in query:
-			query += " AND " + condition
-		else:
-			query += " WHERE " + condition
-
-		return query
+		return ObservationController.add_condition(query, condition)
 
 	@staticmethod
 	def add_date_filter(query: str, column: str, after: str, before: str):
@@ -64,6 +79,34 @@ class ObservationController(Controller):
 		if before:
 			query = ObservationController.add_filter(query, column, '<', before)
 		return query
+
+	@staticmethod
+	def parse_date(value: str):
+		if not value:
+			return None
+		return date.fromisoformat(value)
+
+	@staticmethod
+	def validate_date_options(options: object):
+		try:
+			after = ObservationController.parse_date(options.get('after'))
+			before = ObservationController.parse_date(options.get('before'))
+		except (TypeError, ValueError):
+			return 'Dates must use YYYY-MM-DD format.'
+
+		if after and before and after >= before:
+			return 'The after date must be earlier than the before date.'
+		return None
+
+	@staticmethod
+	def month_key(value):
+		if isinstance(value, datetime):
+			return value.strftime('%Y-%m')
+		if isinstance(value, date):
+			return value.strftime('%Y-%m')
+		if value:
+			return str(value)[:7]
+		return None
 
 	def add_genera_filter(query: str, column: str, genera: array):
 		if genera is None:
@@ -83,12 +126,7 @@ class ObservationController(Controller):
 
 		# add condition to query
 		#
-		if 'WHERE' in query:
-			query += " AND " + condition
-		else:
-			query += " WHERE " + condition
-
-		return query
+		return ObservationController.add_condition(query, condition)
 
 	def add_species_filter(query: str, column: str, species: array):
 		if species is None:
@@ -108,12 +146,7 @@ class ObservationController(Controller):
 
 		# add condition to query
 		#
-		if 'WHERE' in query:
-			query += " AND " + condition
-		else:
-			query += " WHERE " + condition
-
-		return query
+		return ObservationController.add_condition(query, condition)
 
 	#
 	# genus getting methods
@@ -130,7 +163,8 @@ class ObservationController(Controller):
 
 		# create query
 		#
-		query = 'SELECT DISTINCT Indentified_by_Human FROM ' + table;
+		query = 'SELECT DISTINCT Indentified_by_Human FROM ' + table
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# execute query
 		#
@@ -173,6 +207,20 @@ class ObservationController(Controller):
 	#
 
 	@staticmethod
+	def filter_hong_kong_rows(data: list, longitude_index: int = 1, latitude_index: int = 2):
+		return [
+			item for item in data
+			if is_in_hong_kong(item[longitude_index], item[latitude_index])
+		]
+
+	@staticmethod
+	def is_hong_kong_observation(observation: object):
+		return (
+			observation is not None and
+			is_in_hong_kong(observation.get('x'), observation.get('y'))
+		)
+
+	@staticmethod
 	def get_all(db: object, query: str):
 
 		# connect to database
@@ -191,6 +239,49 @@ class ObservationController(Controller):
 		# return results
 		#
 		return data
+
+	@staticmethod
+	def get_hong_kong_observations(db: object, query: str):
+		data = ObservationController.get_all(db, query)
+		if isinstance(data, tuple):
+			return data
+		return ObservationController.filter_hong_kong_rows(data)
+
+	@staticmethod
+	def get_hong_kong_count(db: object, query: str):
+		data = ObservationController.get_all(db, query)
+		if isinstance(data, tuple):
+			return data
+		return str(len(ObservationController.filter_hong_kong_rows(data, 0, 1)))
+
+	@staticmethod
+	def get_hong_kong_timeline(db: object, query: str):
+		data = ObservationController.get_all(db, query)
+		if isinstance(data, tuple):
+			return data
+
+		counts = {}
+		total = 0
+		undated = 0
+		for item in data:
+			if not is_in_hong_kong(item[0], item[1]):
+				continue
+			total += 1
+			month = ObservationController.month_key(item[2])
+			if not month:
+				undated += 1
+				continue
+			counts[month] = counts.get(month, 0) + 1
+
+		return {
+			'interval': 'month',
+			'total': total,
+			'undated': undated,
+			'buckets': [
+				{'period': month, 'count': counts[month]}
+				for month in sorted(counts)
+			]
+		}
 
 	@staticmethod
 	def get_one(db: object, query: str):

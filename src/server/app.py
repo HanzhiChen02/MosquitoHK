@@ -22,6 +22,8 @@ from controllers.land_cover_controller import LandCoverController
 from controllers.mosquito_alert_controller import MosquitoAlertController
 from controllers.digitomy_controller import DigitomyController
 from controllers.country_controller import CountryController
+from controllers.observation_controller import ObservationController
+from config.region import HONG_KONG_BOUNDS
 
 ################################################################################
 #                                initialization                                #
@@ -44,6 +46,21 @@ db = {
 app = Flask(__name__)
 CORS(app)
 
+def get_filter_options():
+	return {
+		'countries': request.args.get('countries').split(',') if request.args.get('countries') is not None else None,
+		'before': request.args.get('before'),
+		'after': request.args.get('after'),
+		'genera': request.args.get('genera').split(',') if request.args.get('genera') is not None else None,
+		'species': request.args.get('species').split(',') if request.args.get('species') is not None else None
+	}
+
+def validate_filter_options(options):
+	error = ObservationController.validate_date_options(options)
+	if error:
+		return {'error': error}, 400
+	return None
+
 ################################################################################
 #                                    routes                                    #
 ################################################################################
@@ -62,7 +79,16 @@ def get_home():
 		html
 	"""
 
-	return "<h1>Welcome to the Mosquito Observations API.</h1>"
+	return "<h1>Welcome to the Hong Kong Mosquito Watch API.</h1>"
+
+@app.get('/region')
+def get_region():
+	return {
+		'name': 'Hong Kong',
+		'bounds': HONG_KONG_BOUNDS,
+		'boundary': '/data/boundaries/hksar_18_district_boundary.json',
+		'boundary_source': 'Home Affairs Department, HKSAR Government'
+	}
 
 @app.get('/observations/<source>')
 def get_observations(source: str):
@@ -76,13 +102,10 @@ def get_observations(source: str):
 
 	# get query string parameters
 	#
-	options = {
-		'countries': request.args.get('countries').split(',') if request.args.get('countries') is not None else None,
-		'before': request.args.get('before'),
-		'after': request.args.get('after'),
-		'genera': request.args.get('genera').split(',') if request.args.get('genera') is not None else None,
-		'species': request.args.get('species').split(',') if request.args.get('species') is not None else None
-	}
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
 
 	# get data
 	#
@@ -132,12 +155,10 @@ def get_num_observations(source: str):
 
 	# get query string parameters
 	#
-	before = request.args.get('before')
-	after = request.args.get('after')
-	options = {
-		'before': before,
-		'after': after
-	}
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
 
 	# get counts
 	#
@@ -152,6 +173,16 @@ def get_num_observations(source: str):
 			return MosquitoAlertController.get_num(db, options)
 		case 'digitomy':
 			return DigitomyController.get_num(db, options)
+
+@app.get('/observations/<source>/timeline')
+def get_observations_timeline(source: str):
+	options = get_filter_options()
+
+	match (source):
+		case 'inaturalist':
+			return iNaturalistController.get_timeline(db, options)
+		case _:
+			return {'error': 'Timeline is not available for this source.'}, 404
 
 @app.get('/countries')
 def get_countries():

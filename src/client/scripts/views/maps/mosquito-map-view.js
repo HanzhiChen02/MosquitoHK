@@ -20,6 +20,7 @@ import DataBarView from '../../views/toolbars/data-bar-view.js';
 import ViewBarView from '../../views/toolbars/view-bar-view.js';
 import ObservationPopups from '../../views/maps/observation-popups.js';
 import MosquitoMarkers from '../../views/maps/mosquito-markers.js';
+import TimelineView from '../../views/maps/timeline-view.js';
 import QueryString from '../../utilities/web/query-string.js';
 
 export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarkers, {
@@ -38,6 +39,7 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			<div id="zoom-bar"></div>
 			<div id="data-bar"></div>
 			<div id="view-bar"></div>
+			<div id="timeline-container"></div>
 		</div>
 	`),
 
@@ -56,6 +58,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		},
 		view: {
 			el: '#view-bar',
+			replaceElement: true
+		},
+		timeline: {
+			el: '#timeline-container',
 			replaceElement: true
 		}
 	},
@@ -139,6 +145,9 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			case 'view':
 				this.showViewBar();
 				break;
+			case 'timeline':
+				this.showTimeline();
+				break;
 		}
 	},
 
@@ -150,6 +159,12 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	showViewBar: function() {
 		this.showChildView('view', new ViewBarView({
+			parent: this
+		}));
+	},
+
+	showTimeline: function() {
+		this.showChildView('timeline', new TimelineView({
 			parent: this
 		}));
 	}

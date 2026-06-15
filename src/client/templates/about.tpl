@@ -1,8 +1,12 @@
-<h1><i class="fa fa-info-circle"></i>About</h1>
+<h1><i class="fa fa-info-circle"></i>About Hong Kong Mosquito Watch</h1>
 
 <ol class="breadcrumb">
 	<li><a href=""><i class="fa fa-home"></i>Home</a></li>
-	<li><i class="fa fa-info-circle"></i>About</li>
+	<li><i class="fa fa-info-circle"></i>About / 關於</li>
 </ol>
 
-<p>This dashboard was developed by Johnny Uelmen (USF) and Connor Mapes (USF/TWC), and funded by the National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2014547" target="_blank">Grant No. IIS-2014547</a> to PI Ryan Carney (USF) and Co-PIs Sriram Chellappan (USF), Russanne Low (IGES), and Anne Bowser (TWC).</p>
+<p>Hong Kong Mosquito Watch is an early-stage regional dashboard for exploring mosquito observations and their relationship with public-health and environmental conditions.</p>
+
+<p>The current MVP reuses the open-source Global Mosquito Observations Dashboard and limits all observation APIs using the official 18-district administrative boundaries published by the Home Affairs Department of the HKSAR Government.</p>
+
+<p>香港蚊媒觀察是一個早期區域性儀表板，用於探索蚊媒觀察資料，以及其與公共衞生和環境條件的關係。</p>

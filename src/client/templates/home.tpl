@@ -1,14 +1,16 @@
 <div class="logo">
-	<img src="images/logos/logo.svg" class="light-only" />
-	<img src="images/logos/logo-dark.svg" class="dark-only" />
+	<i class="fa fa-mosquito fa-5x"></i>
 </div>
 
-<h1>Global Mosquito Observations Dashboard</h1>
+<h1>Hong Kong Mosquito Watch</h1>
+<h2>香港蚊媒觀察</h2>
 
-<p>Anyone around the world can use their smartphone to help scientists track the most dangerous animal alive — the mosquito! Our team especially needs photos of invasive mosquitoes that breed in artificial containers: malaria vector <i>Anopheles stephensi</i>, as well as <i>Aedes aegypti</i> and <i>Aedes albopictus</i>, the culprits of dengue, Zika, and yellow fever outbreaks. </p>
+<p>This dashboard presents mosquito observations within the Hong Kong region. It is the first step toward combining citizen-science observations with local vector surveillance, dengue fever, weather, and environmental data.</p>
+
+<p>此儀表板展示香港範圍內的蚊媒觀察資料，並將逐步整合本地病媒監測、登革熱、天氣及環境數據。</p>
 
 <div class="mobile-only buttons">
 	<a href="#main">
-		<button class="start btn"><i class="fa fa-play"></i>Start</button>
+		<button class="start btn"><i class="fa fa-play"></i>Explore Hong Kong</button>
 	</a>
 </div>

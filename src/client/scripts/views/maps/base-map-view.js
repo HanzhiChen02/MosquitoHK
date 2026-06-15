@@ -29,12 +29,12 @@ export default BaseView.extend(_.extend({}, FullScreenable, {
 
 	baseMaps: {
 		map: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			// attribution: '&copy; Global Mosquito Dashboard contributors'
+			attribution: '&copy; OpenStreetMap contributors'
 		}),
-		aerial: L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+		aerial: L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
 			subdomains:['mt0','mt1','mt2','mt3']
 		}),
-		hybrid: L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+		hybrid: L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
 			subdomains:['mt0','mt1','mt2','mt3']
 		})
 	},
@@ -149,6 +149,7 @@ export default BaseView.extend(_.extend({}, FullScreenable, {
 
 	onAttach: function() {
 		this.showBaseMap();
+		this.showRegionBoundary();
 		this.showToolbars();
 
 		this.map.on('zoom', () => {
@@ -166,6 +167,26 @@ export default BaseView.extend(_.extend({}, FullScreenable, {
 		// record current map location
 		//
 		this.addMapDragCallback();
+	},
+
+	showRegionBoundary: function() {
+		if (!defaults.map.boundary) {
+			return;
+		}
+
+		fetch(defaults.map.boundary)
+		.then(response => response.json())
+		.then(boundary => {
+			L.geoJSON(boundary, {
+				style: {
+					color: '#e40046',
+					weight: 2,
+					opacity: 0.8,
+					fillOpacity: 0.02
+				},
+				interactive: false
+			}).addTo(this.map);
+		});
 	},
 
 	addMapDragCallback: function() {

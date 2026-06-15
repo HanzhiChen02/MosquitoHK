@@ -31,6 +31,7 @@ class MosquitoAlertController(ObservationController):
 		#
 		table = MosquitoAlertObservation().table
 		query = 'SELECT ' + ','.join(Observation.fields) + ' FROM ' + table
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# add filters
 		#
@@ -46,7 +47,7 @@ class MosquitoAlertController(ObservationController):
 		# get data
 		#
 		observations = []
-		data = ObservationController.get_all(db, query)
+		data = ObservationController.get_hong_kong_observations(db, query)
 		for item in data:
 			observations.append(Observation.to_values(item))
 		return observations
@@ -57,12 +58,18 @@ class MosquitoAlertController(ObservationController):
 		# create query
 		#
 		table = MosquitoAlertObservation().table
-		query = 'SELECT ' + ','.join(MosquitoAlertObservation.fields) + ' FROM ' + table + " WHERE id = " + str(id);
+		query = 'SELECT ' + ','.join(MosquitoAlertObservation.fields) + ' FROM ' + table + " WHERE id = " + str(id)
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# get data
 		#
 		data = ObservationController.get_one(db, query)
-		return MosquitoAlertObservation.to_values(data)
+		if data is None:
+			return {'error': 'Hong Kong observation not found'}, 404
+		observation = MosquitoAlertObservation.to_values(data)
+		if not ObservationController.is_hong_kong_observation(observation):
+			return {'error': 'Hong Kong observation not found'}, 404
+		return observation
 
 	@staticmethod
 	def get_num(db: object, options: object):
@@ -70,7 +77,8 @@ class MosquitoAlertController(ObservationController):
 		# create query
 		#
 		table = MosquitoAlertObservation().table
-		query = 'SELECT COUNT(*) FROM ' + table;
+		query = 'SELECT x,y FROM ' + table
+		query = ObservationController.add_hong_kong_filter(query)
 
 		# add filters
 		#
@@ -83,4 +91,4 @@ class MosquitoAlertController(ObservationController):
 
 		# get value
 		#
-		return ObservationController.get_value(db, query)
+		return ObservationController.get_hong_kong_count(db, query)

@@ -28,7 +28,7 @@ export default ToolbarView.extend({
 	className: 'vertical toolbar',
 
 	template: _.template(`
-		<div class="title">Data</div>
+		<div class="title">Layers</div>
 
 		<div class="buttons">
 			<% if (defaults.sources.includes('habitat_mapper')) { %>

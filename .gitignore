@@ -3,4 +3,6 @@
 .jupyter/
 __pycache__
 mysql
-data
+data/*
+!data/boundaries/
+!data/boundaries/**

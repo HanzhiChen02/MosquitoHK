@@ -15,9 +15,7 @@
 |     Copyright (C) 2025, Data Science Institute, University of Wisconsin      |
 \******************************************************************************/
 
-import Countries from '../../collections/countries.js';
 import ToolbarView from './toolbar-view.js';
-import CountriesSelectorDialogView from '../../views/maps/dialogs/countries-selector-dialog-view.js';
 import DateRangeSelectorDialogView from '../../views/maps/dialogs/date-range-selector-dialog-view.js';
 import GeneraSelectorDialogView from '../../views/maps/dialogs/genera-selector-dialog-view.js';
 import SpeciesSelectorDialogView from '../../views/maps/dialogs/species-selector-dialog-view.js';
@@ -34,13 +32,9 @@ export default ToolbarView.extend({
 	className: 'vertical toolbar',
 
 	template: _.template(`
-		<div class="title">View</div>
+		<div class="title">Filters</div>
 
 		<div class="buttons">
-
-			<button id="country" data-toggle="tooltip" title="Country" data-placement="right">
-				<i class="fa fa-globe"></i>
-			</button>
 
 			<button id="date" data-toggle="tooltip" title="Date" data-placement="right">
 				<i class="fa fa-calendar"></i>
@@ -65,7 +59,6 @@ export default ToolbarView.extend({
 	`),
 
 	events: {
-		'click #country': 'onClickCountry',
 		'click #date': 'onClickDate',
 		'click #genera': 'onClickGenera',
 		'click #species': 'onClickSpecies',
@@ -76,10 +69,6 @@ export default ToolbarView.extend({
 	//
 	// ajax methods
 	//
-
-	fetchCountries: function(options) {
-		new Countries().fetch(options);
-	},
 
 	fetchGenera: function(options) {
 		$.ajax(config.server + '/genera', options);
@@ -92,21 +81,6 @@ export default ToolbarView.extend({
 	//
 	// ajax rendering methods
 	//
-
-	fetchAndShowCountriesDialog: function() {
-		if (!this.countries) {
-			application.showSpinner();
-			this.fetchCountries({
-				success: (countries) => {
-					this.countries = countries;
-					application.hideSpinner();
-					this.showCountriesDialog(this.countries);
-				}
-			});
-		} else {
-			this.showCountriesDialog(this.countries);
-		}
-	},
 
 	fetchAndShowGeneraDialog: function() {
 		if (!this.genera) {
@@ -174,9 +148,6 @@ export default ToolbarView.extend({
 
 		// set initial state
 		//
-		if (QueryString.has('countries')) {
-			this.selectButton('country');
-		}
 		if (QueryString.has('before') || QueryString.has('after')) {
 			this.selectButton('date');
 		}
@@ -186,13 +157,6 @@ export default ToolbarView.extend({
 		if (QueryString.has('species')) {
 			this.selectButton('species');
 		}
-	},
-
-	showCountriesDialog: function(countries) {
-		application.show(new CountriesSelectorDialogView({
-			collection: countries,
-			opener: this
-		}));
 	},
 
 	showDateDialog: function() {
@@ -234,10 +198,6 @@ export default ToolbarView.extend({
 	//
 	// mouse event handling methods
 	//
-
-	onClickCountry: function() {
-		this.fetchAndShowCountriesDialog();
-	},
 
 	onClickDate: function() {
 		this.showDateDialog();

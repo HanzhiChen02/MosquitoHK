@@ -1930,4 +1930,55 @@ body[device=phone] .breadcrumb {
   border-color: transparent;
 }
 
+#timeline {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 120px));
+  padding: 10px 14px;
+  color: #222;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+}
+#timeline .timeline-header, #timeline .timeline-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+#timeline .period {
+  margin-left: 10px;
+  color: #666;
+}
+#timeline .mosquito-count strong {
+  color: #e40046;
+  font-size: 20px;
+}
+#timeline .timeline-slider {
+  width: 100%;
+  accent-color: #e40046;
+}
+#timeline .timeline-range {
+  color: #666;
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  #timeline {
+    bottom: 8px;
+    width: calc(100% - 24px);
+  }
+  #timeline .timeline-header {
+    align-items: start;
+    flex-direction: column;
+    gap: 2px;
+  }
+  #timeline .hint {
+    display: none;
+  }
+}
+
 /*# sourceMappingURL=styles.css.map */
