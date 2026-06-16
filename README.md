@@ -6,7 +6,7 @@
 
 # Hong Kong Mosquito Watch Dashboard
 
-Hong Kong Mosquito Watch displays mosquito observations within the official Hong Kong administrative boundary.
+Hong Kong Mosquito Watch (HKMW) displays mosquito observations within the official Hong Kong administrative boundary.
 
 ![Screen Shot](images/screen-shots/global-view-hk.png)
 *Global View*
@@ -18,7 +18,7 @@ Hong Kong Mosquito Watch displays mosquito observations within the official Hong
 *Share By Link View*
 
 # Capabilities
-The GMOD dashboard includes the following features.
+The HKMW dashboard includes the following features.
 
 ### Data Sources
 The dashboard currently integrates:
