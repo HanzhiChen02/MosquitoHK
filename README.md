@@ -8,16 +8,16 @@
 
 Hong Kong Mosquito Watch displays mosquito observations within the official Hong Kong administrative boundary.
 
-![Screen Shot](images/screen-shots/global-view.png)
+![Screen Shot](images/screen-shots/global-view-hk.png)
 *Global View*
 
-![Screen Shot](images/screen-shots/observation-view.png)
+![Screen Shot](images/screen-shots/observation-view-hk.png)
 *Observation View*
 
-![Screen Shot](images/screen-shots/slide-show-view.png)
+# ![Screen Shot](images/screen-shots/slide-show-view-hk.png)
 *Slide Show View*
 
-![Screen Shot](images/screen-shots/share-by-link-view.png)
+# ![Screen Shot](images/screen-shots/share-by-link-view-hk.png)
 *Share By Link View*
 
 # Capabilities
