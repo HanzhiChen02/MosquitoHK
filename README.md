@@ -14,10 +14,7 @@ Hong Kong Mosquito Watch displays mosquito observations within the official Hong
 ![Screen Shot](images/screen-shots/observation-view-hk.png)
 *Observation View*
 
-# ![Screen Shot](images/screen-shots/slide-show-view-hk.png)
-*Slide Show View*
-
-# ![Screen Shot](images/screen-shots/share-by-link-view-hk.png)
+![Screen Shot](images/screen-shots/share-by-link-view-hk.png)
 *Share By Link View*
 
 # Capabilities
@@ -27,7 +24,6 @@ The GMOD dashboard includes the following features.
 The dashboard currently integrates:
 
 - [iNaturalist](https://www.inaturalist.org)
-- [USF Digitomy Traps](https://www.usf.edu)
 
 ### Viewing
 - View locations of mosquito observations on a map.
@@ -40,7 +36,6 @@ The dashboard currently integrates:
 ### Filtering:
 - Filter observations by:
     - Data Source
-    - Country
     - Date / Time
     - Genera
     - Species
@@ -76,22 +71,8 @@ After running this command, you should be able to view the application in your w
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Credits
-
-This project was made possible by a grant from the National Science Foundation - [Award #2014547](https://www.nsf.gov/awardsearch/show-award/?AWD_ID=2014547)
-
 ## Contact
 
-Johnny Ulemen - Assistant Professor, University of Wisconsin-Madison
-(mailto:uelmen@wisc.edu)
+Hanzhi Chen - PhD student, Department of Biomedical Science, City University of Hong Kong
+(mailto:hanzhchen7-c@my.cityu.edu.hk)
 
-Ryan Carney - Associate Professor, Department of Integrativie Biology, University of South Florida
-(mailto:ryancarney@usf.edu)
-
-Abe Megahed - Research Software Engineer, Data Science Institute, University of Wisconsin-Madison
-(mailto:amegahed@wisc.edu)
-
-## Acknowledgements
-
-I would also like to thank:
-Dr. Rusty Low - Deputy Director, GLOBE Observation Program, which provided the data without which this dashboard could not exist.
