@@ -24,6 +24,7 @@ The HKMW dashboard includes the following features.
 The dashboard currently integrates:
 
 - [iNaturalist](https://www.inaturalist.org)
+- [FEHD](https://www.fehd.gov.hk/tc_chi/pestcontrol/dengue_fever/Dengue_Fever_Gravidtrap_Index_Update.html)
 
 ### Viewing
 - View locations of mosquito observations on a map.
