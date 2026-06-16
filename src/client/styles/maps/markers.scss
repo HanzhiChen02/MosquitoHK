@@ -25,6 +25,15 @@ $digitomy-fill-color: #5b3b01;
 $digitomy-stroke-color: tan;
 $digitomy-cluster-color: coloring.faded($digitomy-fill-color, 75%);
 
+$fehd-gravidtrap-level-1-color: #2fa84f;
+$fehd-gravidtrap-level-2-color: #f2c94c;
+$fehd-gravidtrap-level-3-color: #eb5757;
+$fehd-gravidtrap-level-4-color: #7b2cbf;
+$fehd-gravidtrap-level-unknown-color: #9ca3af;
+$fehd-gravidtrap-fill-color: $fehd-gravidtrap-level-2-color;
+$fehd-gravidtrap-stroke-color: #ffffff;
+$fehd-gravidtrap-cluster-color: coloring.faded($fehd-gravidtrap-fill-color, 75%);
+
 //
 // observation markers
 //
@@ -145,12 +154,98 @@ div.marker {
 	}
 }
 
+.fehd-gravidtrap {
+	i {
+		color: $fehd-gravidtrap-fill-color;
+	}
+	&.marker {
+		fill: $fehd-gravidtrap-fill-color;
+		stroke: $fehd-gravidtrap-stroke-color;
+	}
+	&.marker, .swatch {
+		background-color: $fehd-gravidtrap-fill-color;
+		border-color: $fehd-gravidtrap-stroke-color;
+	}
+	&.cluster {
+		background-color: $fehd-gravidtrap-cluster-color;
+		border-color: $fehd-gravidtrap-stroke-color;
+	}
+
+	&.area {
+		cursor: pointer;
+	}
+
+	&.level-1 {
+		fill: $fehd-gravidtrap-level-1-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-1-color;
+	}
+
+	&.level-2 {
+		fill: $fehd-gravidtrap-level-2-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-2-color;
+	}
+
+	&.level-3 {
+		fill: $fehd-gravidtrap-level-3-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-3-color;
+	}
+
+	&.level-4 {
+		fill: $fehd-gravidtrap-level-4-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-4-color;
+	}
+
+	&.level-unknown {
+		fill: $fehd-gravidtrap-level-unknown-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-unknown-color;
+	}
+}
+
+.fehd-area-popup {
+	min-width: 210px;
+
+	h3 {
+		margin: 0 0 6px 0;
+		font-size: 15px;
+	}
+
+	.note {
+		margin-top: 6px;
+		font-size: 11px;
+		color: #666;
+		line-height: 1.3;
+	}
+}
+
 //
 // hide / show markers
 //
 
 .hide-inaturalist {
 	.inaturalist {
+		display: none !important;
+	}
+}
+
+.hide-digitomy {
+	.digitomy {
+		display: none !important;
+	}
+}
+
+.hide-fehd_gravidtrap {
+	.fehd-gravidtrap.marker, .fehd-gravidtrap.cluster {
+		display: none !important;
+	}
+}
+
+.hide-fehd_gravidtrap_area {
+	.fehd-gravidtrap-area {
 		display: none !important;
 	}
 }

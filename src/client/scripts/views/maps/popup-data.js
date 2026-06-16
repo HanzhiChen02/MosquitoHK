@@ -90,12 +90,31 @@ export default {
 		}
 	},
 
+	getFehdGravidtrapPopupData: function(data) {
+		return {
+			title: 'FEHD Gravidtrap Index',
+			source: 'fehd_gravidtrap',
+			attributes: {
+				period: data.period,
+				district: data.district,
+				survey_area: data.survey_area,
+				area_gravidtrap_index: data.agi_percent !== null? data.agi_percent + '%' : null,
+				area_density_index: data.adi,
+				status: data.is_partial? 'First phase value / 第一階段數值' : 'Monthly value / 每月數值',
+				source: data.source_document,
+				official_map: data.map_url? '<a href="' + data.map_url + '" target="_blank" rel="noopener">Open Map.gov.hk survey area</a>' : null
+			}
+		};
+	},
+
 	getPopupData: function(source, data) {
 		switch (source) {
 			case 'inaturalist':
 				return this.getiNaturalistPopupData(data);
 			case 'digitomy':
 				return this.getDigitomyPopupData(data);
+			case 'fehd_gravidtrap':
+				return this.getFehdGravidtrapPopupData(data);
 			default:
 				alert("Unknown data source.")
 		}

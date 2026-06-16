@@ -57,6 +57,70 @@ body.dark:not(.colorful) {
 	border-radius: 50%;
 }
 
+#fehd-index-legend {
+	position: absolute;
+	left: 50%;
+	top: 16px;
+	transform: translateX(-50%);
+	z-index: 1000;
+	width: min(720px, calc(100% - 120px));
+	padding: 8px 10px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+	font-size: 11px;
+	line-height: 1.45em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	cursor: move;
+	user-select: none;
+	touch-action: none;
+
+	.title {
+		font-weight: bold;
+		margin-right: 4px;
+	}
+
+	.swatch {
+		margin-right: 6px;
+		vertical-align: -1px;
+		border: 1px solid white;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+	}
+
+	.level-1 {
+		background: #2fa84f;
+	}
+
+	.level-2 {
+		background: #f2c94c;
+	}
+
+	.level-3 {
+		background: #eb5757;
+	}
+
+	.level-4 {
+		background: #7b2cbf;
+	}
+
+	.level-unknown {
+		background: #9ca3af;
+	}
+}
+
+@media (max-width: 980px) {
+	#fehd-index-legend {
+		top: 16px;
+		width: min(360px, calc(100% - 24px));
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 2px;
+	}
+}
+
 //
 // leaflet styles
 //

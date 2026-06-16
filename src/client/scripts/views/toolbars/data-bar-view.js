@@ -42,6 +42,18 @@ export default ToolbarView.extend({
 				<i class="fa fa-crosshairs"></i>
 			</button>
 			<% } %>
+
+			<% if (defaults.sources.includes('fehd_gravidtrap')) { %>
+			<button class="fehd_gravidtrap data-source" data-source="fehd_gravidtrap" data-toggle="tooltip" title="FEHD Gravidtrap survey-area points" data-placement="right">
+				<i class="fa fa-chart-line"></i>
+			</button>
+			<% } %>
+
+			<% if (defaults.sources.includes('fehd_gravidtrap_area')) { %>
+			<button class="fehd_gravidtrap_area data-source" data-source="fehd_gravidtrap_area" data-toggle="tooltip" title="FEHD Gravidtrap district fill" data-placement="right">
+				<i class="fa fa-map"></i>
+			</button>
+			<% } %>
 		</div>
 	`),
 
@@ -109,11 +121,13 @@ export default ToolbarView.extend({
 	select: function(source) {
 		this.$el.find('button.' + source).addClass('selected');
 		this.parent.showDataSource(source);
+		this.parent.updateTimeline();
 	},
 
 	deselect: function(source) {
 		this.$el.find('button.' + source).removeClass('selected');
 		this.parent.hideDataSource(source);
+		this.parent.updateTimeline();
 	},
 
 	toggle: function(source) {

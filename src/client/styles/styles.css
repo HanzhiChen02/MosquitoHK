@@ -1033,6 +1033,63 @@ body.dark:not(.colorful) .leaflet-tile-pane {
   border-radius: 50%;
 }
 
+#fehd-index-legend {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: min(720px, calc(100% - 120px));
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  font-size: 11px;
+  line-height: 1.45em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+#fehd-index-legend .title {
+  font-weight: bold;
+  margin-right: 4px;
+}
+#fehd-index-legend .swatch {
+  margin-right: 6px;
+  vertical-align: -1px;
+  border: 1px solid white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+#fehd-index-legend .level-1 {
+  background: #2fa84f;
+}
+#fehd-index-legend .level-2 {
+  background: #f2c94c;
+}
+#fehd-index-legend .level-3 {
+  background: #eb5757;
+}
+#fehd-index-legend .level-4 {
+  background: #7b2cbf;
+}
+#fehd-index-legend .level-unknown {
+  background: #9ca3af;
+}
+
+@media (max-width: 980px) {
+  #fehd-index-legend {
+    top: 16px;
+    width: min(360px, calc(100% - 24px));
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
 .leaflet-container .leaflet-overlay-pane svg {
   width: auto;
   height: auto;
@@ -1178,7 +1235,77 @@ div.marker {
   border-color: tan;
 }
 
+.fehd-gravidtrap i {
+  color: #f2c94c;
+}
+.fehd-gravidtrap.marker {
+  fill: #f2c94c;
+  stroke: #ffffff;
+}
+.fehd-gravidtrap.marker, .fehd-gravidtrap .swatch {
+  background-color: #f2c94c;
+  border-color: #ffffff;
+}
+.fehd-gravidtrap.cluster {
+  background-color: rgba(242, 201, 76, 0.75);
+  border-color: #ffffff;
+}
+.fehd-gravidtrap.area {
+  cursor: pointer;
+}
+.fehd-gravidtrap.level-1 {
+  fill: #2fa84f;
+  stroke: white;
+  background-color: #2fa84f;
+}
+.fehd-gravidtrap.level-2 {
+  fill: #f2c94c;
+  stroke: white;
+  background-color: #f2c94c;
+}
+.fehd-gravidtrap.level-3 {
+  fill: #eb5757;
+  stroke: white;
+  background-color: #eb5757;
+}
+.fehd-gravidtrap.level-4 {
+  fill: #7b2cbf;
+  stroke: white;
+  background-color: #7b2cbf;
+}
+.fehd-gravidtrap.level-unknown {
+  fill: #9ca3af;
+  stroke: white;
+  background-color: #9ca3af;
+}
+
+.fehd-area-popup {
+  min-width: 210px;
+}
+.fehd-area-popup h3 {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+}
+.fehd-area-popup .note {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #666;
+  line-height: 1.3;
+}
+
 .hide-inaturalist .inaturalist {
+  display: none !important;
+}
+
+.hide-digitomy .digitomy {
+  display: none !important;
+}
+
+.hide-fehd_gravidtrap .fehd-gravidtrap.marker, .hide-fehd_gravidtrap .fehd-gravidtrap.cluster {
+  display: none !important;
+}
+
+.hide-fehd_gravidtrap_area .fehd-gravidtrap-area {
   display: none !important;
 }
 
@@ -1870,7 +1997,7 @@ body[device=phone] .breadcrumb {
   border-color: transparent;
 }
 
-#timeline {
+#timeline, #fehd-area-timeline {
   position: absolute;
   left: 50%;
   bottom: 16px;
@@ -1883,41 +2010,48 @@ body[device=phone] .breadcrumb {
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.18);
   pointer-events: auto;
 }
-#timeline .timeline-header, #timeline .timeline-range {
+#timeline .timeline-header, #timeline .timeline-range, #fehd-area-timeline .timeline-header, #fehd-area-timeline .timeline-range {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
-#timeline .period {
+#timeline .period, #fehd-area-timeline .period {
   margin-left: 10px;
   color: #666;
 }
-#timeline .mosquito-count strong {
+#timeline .mosquito-count strong, #fehd-area-timeline .mosquito-count strong {
   color: #e40046;
   font-size: 20px;
 }
-#timeline .timeline-slider {
+#timeline .timeline-slider, #fehd-area-timeline .timeline-slider {
   width: 100%;
   accent-color: #e40046;
 }
-#timeline .timeline-range {
+#timeline .timeline-range, #fehd-area-timeline .timeline-range {
   color: #666;
   font-size: 11px;
 }
 
+#fehd-area-timeline {
+  bottom: 124px;
+}
+
 @media (max-width: 640px) {
-  #timeline {
+  #timeline, #fehd-area-timeline {
     bottom: 8px;
     width: calc(100% - 24px);
   }
-  #timeline .timeline-header {
+  #timeline .timeline-header, #fehd-area-timeline .timeline-header {
     align-items: start;
     flex-direction: column;
     gap: 2px;
   }
-  #timeline .hint {
+  #timeline .hint, #fehd-area-timeline .hint {
     display: none;
+  }
+  #fehd-area-timeline {
+    bottom: 116px;
   }
 }
 

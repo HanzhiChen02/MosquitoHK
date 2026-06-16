@@ -102,6 +102,16 @@ export default {
 	addClusteredMarker: function(clusterGroup, source, observation, selected) {
 		if (observation.x && observation.y) {
 			let radius = Browser.is_mobile? defaults.map.markerSize.mobile / 2: defaults.map.markerSize.desktop / 2;
+			let markerClass = source.replace(/_/g, '-') + ' marker';
+			let indexLevel = null;
+			let indexColor = null;
+
+			if (source === 'fehd_gravidtrap') {
+				indexLevel = this.getFehdIndexLevel(observation.agi_percent);
+				indexColor = this.getFehdIndexColor(indexLevel);
+				markerClass += ' ' + indexLevel;
+				radius *= 1.5;
+			}
 
 			// highlight single mosquito observation with additional data
 			//
@@ -113,8 +123,18 @@ export default {
 				source: source,
 				id: observation.id,
 				radius: radius,
-				className: source.replace(/_/g, '-') + ' marker',
+				className: markerClass,
+				fillColor: indexColor || undefined,
+				color: indexColor? '#ffffff' : undefined,
 			});
+
+			if (indexLevel) {
+				marker.on('add', () => {
+					if (marker._path) {
+						$(marker._path).addClass(indexLevel);
+					}
+				});
+			}
 
 			// save reference to marker
 			//
@@ -135,6 +155,38 @@ export default {
 			// add marker to cluster
 			//
 			clusterGroup.addLayer(marker);
+		}
+	},
+
+	getFehdIndexLevel: function(value) {
+		let index = parseFloat(value);
+		if (isNaN(index)) {
+			return 'level-unknown';
+		}
+		if (index < 5) {
+			return 'level-1';
+		}
+		if (index < 20) {
+			return 'level-2';
+		}
+		if (index < 40) {
+			return 'level-3';
+		}
+		return 'level-4';
+	},
+
+	getFehdIndexColor: function(level) {
+		switch (level) {
+			case 'level-1':
+				return '#2fa84f';
+			case 'level-2':
+				return '#f2c94c';
+			case 'level-3':
+				return '#eb5757';
+			case 'level-4':
+				return '#7b2cbf';
+			default:
+				return '#9ca3af';
 		}
 	},
 
@@ -187,22 +239,153 @@ export default {
 				this.map.removeLayer(clusterGroup);
 			}
 		}
+
+		if (this.areaLayers) {
+			for (const source in this.areaLayers) {
+				this.map.removeLayer(this.areaLayers[source]);
+			}
+			this.areaLayers = {};
+		}
+	},
+
+	nextRequestId: function(source) {
+		if (!this.requestIds) {
+			this.requestIds = {};
+		}
+		this.requestIds[source] = (this.requestIds[source] || 0) + 1;
+		return this.requestIds[source];
+	},
+
+	isCurrentRequest: function(source, requestId) {
+		return this.requestIds && this.requestIds[source] === requestId;
 	},
 
 	showDataSource: function(dataSource) {
 		this.$el.find('#map').removeClass('hide-' + dataSource);
+		if (dataSource === 'fehd_gravidtrap' || dataSource === 'fehd_gravidtrap_area') {
+			this.$el.find('#fehd-index-legend').show();
+		}
+		if (this.updateTimelineVisibility) {
+			this.updateTimelineVisibility();
+		}
 	},
 
 	hideDataSource: function(dataSource) {
 		this.$el.find('#map').addClass('hide-' + dataSource);
+		let fehdPointVisible = this.$el.find('#data-bar .fehd_gravidtrap').hasClass('selected');
+		let fehdAreaVisible = this.$el.find('#data-bar .fehd_gravidtrap_area').hasClass('selected');
+		if ((dataSource === 'fehd_gravidtrap' || dataSource === 'fehd_gravidtrap_area') && !fehdPointVisible && !fehdAreaVisible) {
+			this.$el.find('#fehd-index-legend').hide();
+		}
+		if (this.updateTimelineVisibility) {
+			this.updateTimelineVisibility();
+		}
 	},
 
 	//
 	// rendering functions
 	//
 
+
+	fetchFehdAreaObservations: function(options) {
+		let url = config.server + '/observations/fehd-gravidtrap/areas';
+		if (options.data) {
+			let queryString = QueryString.encode(options.data);
+			if (queryString) {
+				url += '?' + queryString;
+			}
+		}
+
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			if (options && options.success) {
+				options.success(data);
+			}
+		});
+	},
+
+	getFehdAreaStyle: function(feature) {
+		let agi = feature.properties.average_agi_percent;
+		let level = this.getFehdIndexLevel(agi);
+		let color = this.getFehdIndexColor(level);
+		let hasData = agi !== null && agi !== undefined;
+
+		return {
+			className: 'fehd-gravidtrap fehd-gravidtrap-area area ' + level,
+			color: color,
+			weight: hasData? 1.5 : 1,
+			opacity: hasData? 0.9 : 0.5,
+			fillColor: color,
+			fillOpacity: hasData? 0.45 : 0.12
+		};
+	},
+
+	getFehdAreaPopupHtml: function(properties) {
+		let average = properties.average_agi_percent !== null && properties.average_agi_percent !== undefined? properties.average_agi_percent + '%' : 'N/A';
+		let maximum = properties.max_agi_percent !== null && properties.max_agi_percent !== undefined? properties.max_agi_percent + '%' : 'N/A';
+		return `
+			<div class="fehd-area-popup">
+				<h3>FEHD Gravidtrap Index</h3>
+				<div><strong>Period:</strong> ${properties.period || 'N/A'}</div>
+				<div><strong>District:</strong> ${properties.district || 'N/A'}</div>
+				<div><strong>Average AGI:</strong> ${average}</div>
+				<div><strong>Max AGI:</strong> ${maximum}</div>
+				<div><strong>Survey areas with AGI:</strong> ${properties.count || 0}</div>
+				<div><strong>Boundary:</strong> ${properties.boundary_level} aggregation</div>
+				<div class="note">District boundary is used until official FEHD survey-area polygons are available.</div>
+			</div>
+		`;
+	},
+
+	addFehdAreaLayer: function(map, geojson) {
+		if (!this.areaLayers) {
+			this.areaLayers = {};
+		}
+		if (this.areaLayers.fehd_gravidtrap_area) {
+			this.map.removeLayer(this.areaLayers.fehd_gravidtrap_area);
+		}
+
+		let layer = L.geoJSON(geojson, {
+			style: (feature) => this.getFehdAreaStyle(feature),
+			onEachFeature: (feature, areaLayer) => {
+				areaLayer.bindPopup(this.getFehdAreaPopupHtml(feature.properties));
+				areaLayer.on({
+					mouseover: () => areaLayer.setStyle({ weight: 3, fillOpacity: 0.6 }),
+					mouseout: () => areaLayer.setStyle(this.getFehdAreaStyle(feature))
+				});
+			}
+		});
+
+		this.areaLayers.fehd_gravidtrap_area = layer;
+		layer.addTo(map);
+		layer.bringToBack();
+	},
+
+	addFehdAreaObservations: function(map) {
+		let requestId = this.nextRequestId('fehd_gravidtrap_area');
+		this.fetchFehdAreaObservations({
+			data: {
+				before: QueryString.value('fehd_area_before'),
+				after: QueryString.value('fehd_area_after')
+			},
+			success: (geojson) => {
+				if (!this.isCurrentRequest('fehd_gravidtrap_area', requestId)) {
+					return;
+				}
+				this.addFehdAreaLayer(map, geojson);
+			}
+		});
+	},
+
 	addObservationMarkers: function(map, source) {
+		if (source === 'fehd_gravidtrap_area') {
+			this.addFehdAreaObservations(map);
+			return;
+		}
+
 		let selected = QueryString.value('selected');
+		let requestId = this.nextRequestId(source);
 
 		this.fetchObservations(source, {
 
@@ -219,6 +402,9 @@ export default {
 			// callbacks
 			//
 			success: (observations) => {
+				if (!this.isCurrentRequest(source, requestId)) {
+					return;
+				}
 				// this.addMapMarkers(map, source, observations, selected);
 				this.addClusteredMarkers(map, source, observations, selected);
 			}

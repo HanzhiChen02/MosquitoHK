@@ -1,4 +1,4 @@
-#timeline {
+#timeline, #fehd-area-timeline {
 	position: absolute;
 	left: 50%;
 	bottom: 16px;
@@ -39,8 +39,12 @@
 	}
 }
 
+#fehd-area-timeline {
+	bottom: 124px;
+}
+
 @media (max-width: 640px) {
-	#timeline {
+	#timeline, #fehd-area-timeline {
 		bottom: 8px;
 		width: calc(100% - 24px);
 
@@ -53,5 +57,9 @@
 		.hint {
 			display: none;
 		}
+	}
+
+	#fehd-area-timeline {
+		bottom: 116px;
 	}
 }

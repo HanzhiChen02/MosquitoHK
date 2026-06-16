@@ -9,12 +9,14 @@ import QueryString from '../../utilities/web/query-string.js';
 
 export default BaseView.extend({
 
-	id: 'timeline',
+	id: function() {
+		return this.options && this.options.id? this.options.id : 'timeline';
+	},
 
 	template: _.template(`
 		<div class="timeline-header">
 			<div>
-				<strong>Observation timeline / 觀測時間軸</strong>
+				<strong class="timeline-title">Observation timeline / 觀測時間軸</strong>
 				<span class="period">All dates / 全部日期</span>
 			</div>
 			<div class="mosquito-count"><strong>0</strong> <span class="count-label">mosquitoes / 蚊子觀測</span></div>
@@ -55,27 +57,83 @@ export default BaseView.extend({
 	},
 
 	fetchTimeline: function() {
-		let data = {
+		let source = this.getTimelineSource();
+		let data = source === 'inaturalist'? {
 			genera: QueryString.value('genera'),
 			species: QueryString.value('species')
-		};
+		} : {};
 		let queryString = QueryString.encode(data);
-		let url = config.server + '/observations/inaturalist/timeline';
+		let url = config.server + '/observations/' + source.replace(/_/g, '-') + '/timeline';
 		if (queryString) {
 			url += '?' + queryString;
 		}
 
-		Promise.all([
-			fetch(url).then(response => response.json()),
-			this.fetchItems('genera'),
-			this.fetchItems('species')
-		])
-		.then(results => {
-			this.timeline = results[0];
-			this.generaList = results[1];
-			this.speciesList = results[2];
-			this.renderTimeline();
-		});
+		if (source === 'inaturalist') {
+			Promise.all([
+				fetch(url).then(response => response.json()),
+				this.fetchItems('genera'),
+				this.fetchItems('species')
+			])
+			.then(results => {
+				this.timelineSource = source;
+				this.timeline = results[0];
+				this.generaList = results[1];
+				this.speciesList = results[2];
+				this.renderTimeline();
+			});
+		} else {
+			fetch(url)
+			.then(response => response.json())
+			.then(timeline => {
+				this.timelineSource = source;
+				this.timeline = timeline;
+				this.renderTimeline();
+			});
+		}
+	},
+
+	getTimelineSource: function() {
+		if (this.options && this.options.source) {
+			return this.options.source;
+		}
+
+		let dataBar = this.parent && this.parent.hasChildView && this.parent.hasChildView('data')?
+			this.parent.getChildView('data') : null;
+		if (dataBar && dataBar.isDataSourceSelected('fehd_gravidtrap')) {
+			return 'fehd_gravidtrap';
+		}
+		if ($('#data-bar .fehd_gravidtrap').hasClass('selected')) {
+			return 'fehd_gravidtrap';
+		}
+		return defaults.timeline.source || 'inaturalist';
+	},
+
+	isFehdTimeline: function() {
+		return this.timelineSource === 'fehd_gravidtrap' || this.timelineSource === 'fehd_gravidtrap_area';
+	},
+
+	getAfterParamName: function() {
+		return this.options && this.options.dateParamPrefix?
+			this.options.dateParamPrefix + '_after' :
+			'after';
+	},
+
+	getBeforeParamName: function() {
+		return this.options && this.options.dateParamPrefix?
+			this.options.dateParamPrefix + '_before' :
+			'before';
+	},
+
+	getTimelineTitle: function() {
+		if (this.options && this.options.title) {
+			return this.options.title;
+		}
+		if (this.timelineSource === 'fehd_gravidtrap') {
+			return 'FEHD survey-area point timeline / 監察點時間軸';
+		}
+		return this.isFehdTimeline()?
+			'FEHD Gravidtrap Index / 食環署誘蚊器指數' :
+			'Observation timeline / 觀測時間軸';
 	},
 
 	getSelectedNames: function(key, items) {
@@ -108,14 +166,39 @@ export default BaseView.extend({
 		this.$el.find('.count-label').text(this.getCountLabel());
 	},
 
+	showFehdMetric: function(bucket) {
+		let value = bucket && bucket.average_agi_percent !== null?
+			bucket.average_agi_percent.toLocaleString() :
+			'0';
+		this.$el.find('.mosquito-count strong').text(value);
+		this.$el.find('.count-label').text('% average AGI / 平均誘蚊器指數');
+	},
+
+	getOverallFehdBucket: function() {
+		let buckets = this.timeline.buckets || [];
+		let total = 0;
+		let weighted = 0;
+		for (let i = 0; i < buckets.length; i++) {
+			let bucket = buckets[i];
+			if (bucket.average_agi_percent !== null) {
+				total += bucket.count;
+				weighted += bucket.average_agi_percent * bucket.count;
+			}
+		}
+		return {
+			average_agi_percent: total > 0? Math.round(weighted / total * 10) / 10 : null
+		};
+	},
+
 	renderTimeline: function() {
 		let buckets = this.timeline.buckets || [];
 		let slider = this.$el.find('.timeline-slider');
 		slider.attr('max', buckets.length);
+		this.$el.find('.timeline-title').text(this.getTimelineTitle());
 		this.$el.find('.start').text(buckets.length? buckets[0].period : '');
 		this.$el.find('.end').text(buckets.length? buckets[buckets.length - 1].period : '');
 
-		let after = QueryString.value('after');
+		let after = QueryString.value(this.getAfterParamName());
 		let selected = buckets.findIndex(bucket => bucket.period === (after? after.slice(0, 7) : ''));
 		slider.val(selected >= 0? selected + 1 : 0);
 		this.showPeriod(parseInt(slider.val()));
@@ -127,13 +210,21 @@ export default BaseView.extend({
 		}
 		if (index === 0) {
 			this.$el.find('.period').text('All dates / 全部日期');
-			this.showCount(this.timeline.total);
+			if (this.isFehdTimeline()) {
+				this.showFehdMetric(this.getOverallFehdBucket());
+			} else {
+				this.showCount(this.timeline.total);
+			}
 			return;
 		}
 
 		let bucket = this.timeline.buckets[index - 1];
 		this.$el.find('.period').text(bucket.period);
-		this.showCount(bucket.count);
+		if (this.isFehdTimeline()) {
+			this.showFehdMetric(bucket);
+		} else {
+			this.showCount(bucket.count);
+		}
 	},
 
 	nextMonth: function(period) {
@@ -143,13 +234,15 @@ export default BaseView.extend({
 	},
 
 	applyPeriod: function(index) {
+		let afterParam = this.getAfterParamName();
+		let beforeParam = this.getBeforeParamName();
 		if (index === 0) {
-			QueryString.remove('after');
-			QueryString.remove('before');
+			QueryString.remove(afterParam);
+			QueryString.remove(beforeParam);
 		} else {
 			let period = this.timeline.buckets[index - 1].period;
-			QueryString.add('after', period + '-01');
-			QueryString.add('before', this.nextMonth(period));
+			QueryString.add(afterParam, period + '-01');
+			QueryString.add(beforeParam, this.nextMonth(period));
 		}
 		this.parent.update();
 	},

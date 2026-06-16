@@ -18,6 +18,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from controllers.inaturalist_controller import iNaturalistController
 from controllers.digitomy_controller import DigitomyController
+from controllers.fehd_gravidtrap_controller import FehdGravidtrapController
 from controllers.country_controller import CountryController
 from controllers.observation_controller import ObservationController
 from config.region import HONG_KONG_BOUNDS
@@ -111,8 +112,20 @@ def get_observations(source: str):
 			return iNaturalistController.get_all(db, options)
 		case 'digitomy':
 			return DigitomyController.get_all(db, options)
+		case 'fehd-gravidtrap':
+			return FehdGravidtrapController.get_all(db, options)
 		case _:
 			return {'error': 'Observation source not found.'}, 404
+
+
+@app.get('/observations/fehd-gravidtrap/areas')
+def get_fehd_gravidtrap_areas():
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
+
+	return FehdGravidtrapController.get_area_geojson(db, options)
 
 @app.get('/observations/<source>/<id>')
 def get_observation(source: str, id: str):
@@ -129,6 +142,8 @@ def get_observation(source: str, id: str):
 			return iNaturalistController.get_index(db, id)
 		case 'digitomy':
 			return DigitomyController.get_index(db, id)
+		case 'fehd-gravidtrap':
+			return FehdGravidtrapController.get_index(db, id)
 		case _:
 			return {'error': 'Observation source not found.'}, 404
 
@@ -156,6 +171,8 @@ def get_num_observations(source: str):
 			return iNaturalistController.get_num(db, options)
 		case 'digitomy':
 			return DigitomyController.get_num(db, options)
+		case 'fehd-gravidtrap':
+			return FehdGravidtrapController.get_num(db, options)
 		case _:
 			return {'error': 'Observation source not found.'}, 404
 
@@ -166,6 +183,10 @@ def get_observations_timeline(source: str):
 	match (source):
 		case 'inaturalist':
 			return iNaturalistController.get_timeline(db, options)
+		case 'fehd-gravidtrap':
+			return FehdGravidtrapController.get_timeline(db, options)
+		case 'fehd-gravidtrap-area':
+			return FehdGravidtrapController.get_timeline(db, options)
 		case _:
 			return {'error': 'Timeline is not available for this source.'}, 404
 

@@ -30,8 +30,8 @@ import '../vendor/popper/popper.min.js';
 // load configuration files
 //
 Promise.all([
-	fetch('config/config.json').then(response => response.json()),
-	fetch('config/defaults.json').then(response => response.json()),
+	fetch('config/config.json?v=' + Date.now()).then(response => response.json()),
+	fetch('config/defaults.json?v=' + Date.now()).then(response => response.json()),
 ]).then(([config, defaults]) => {
 
 	// set web page title
