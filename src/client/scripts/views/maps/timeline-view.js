@@ -17,7 +17,7 @@ export default BaseView.extend({
 				<strong>Observation timeline / 觀測時間軸</strong>
 				<span class="period">All dates / 全部日期</span>
 			</div>
-			<div class="mosquito-count"><strong>0</strong> mosquitoes / 蚊子觀測</div>
+			<div class="mosquito-count"><strong>0</strong> <span class="count-label">mosquitoes / 蚊子觀測</span></div>
 		</div>
 		<input class="timeline-slider" type="range" min="0" max="0" value="0" step="1" aria-label="Observation month">
 		<div class="timeline-range">
@@ -36,6 +36,24 @@ export default BaseView.extend({
 		this.fetchTimeline();
 	},
 
+	update: function() {
+		this.fetchTimeline();
+	},
+
+	fetchItems: function(kind) {
+		let key = kind + 'List';
+		if (this[key]) {
+			return Promise.resolve(this[key]);
+		}
+
+		return fetch(config.server + '/' + kind)
+		.then(response => response.json())
+		.then(items => {
+			this[key] = items;
+			return items;
+		});
+	},
+
 	fetchTimeline: function() {
 		let data = {
 			genera: QueryString.value('genera'),
@@ -47,12 +65,47 @@ export default BaseView.extend({
 			url += '?' + queryString;
 		}
 
-		fetch(url)
-		.then(response => response.json())
-		.then(timeline => {
-			this.timeline = timeline;
+		Promise.all([
+			fetch(url).then(response => response.json()),
+			this.fetchItems('genera'),
+			this.fetchItems('species')
+		])
+		.then(results => {
+			this.timeline = results[0];
+			this.generaList = results[1];
+			this.speciesList = results[2];
 			this.renderTimeline();
 		});
+	},
+
+	getSelectedNames: function(key, items) {
+		let value = QueryString.value(key);
+		if (!value) {
+			return [];
+		}
+
+		return value.split(',')
+		.map(index => items[parseInt(index) - 1])
+		.filter(name => name);
+	},
+
+	getCountLabel: function() {
+		let species = this.getSelectedNames('species', this.speciesList || []);
+		if (species.length > 0) {
+			return species.join(', ');
+		}
+
+		let genera = this.getSelectedNames('genera', this.generaList || []);
+		if (genera.length > 0) {
+			return genera.join(', ');
+		}
+
+		return 'mosquitoes / 蚊子觀測';
+	},
+
+	showCount: function(count) {
+		this.$el.find('.mosquito-count strong').text(count.toLocaleString());
+		this.$el.find('.count-label').text(this.getCountLabel());
 	},
 
 	renderTimeline: function() {
@@ -74,13 +127,13 @@ export default BaseView.extend({
 		}
 		if (index === 0) {
 			this.$el.find('.period').text('All dates / 全部日期');
-			this.$el.find('.mosquito-count strong').text(this.timeline.total.toLocaleString());
+			this.showCount(this.timeline.total);
 			return;
 		}
 
 		let bucket = this.timeline.buckets[index - 1];
 		this.$el.find('.period').text(bucket.period);
-		this.$el.find('.mosquito-count strong').text(bucket.count.toLocaleString());
+		this.showCount(bucket.count);
 	},
 
 	nextMonth: function(period) {

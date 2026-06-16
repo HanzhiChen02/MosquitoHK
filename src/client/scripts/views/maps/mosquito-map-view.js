@@ -125,6 +125,9 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	update: function() {
 		this.showMarkers();
+		if (this.hasChildView && this.hasChildView('timeline')) {
+			this.getChildView('timeline').update();
+		}
 	},
 
 	//
