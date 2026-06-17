@@ -28,7 +28,7 @@ export default ToolbarView.extend({
 	className: 'vertical toolbar',
 
 	template: _.template(`
-		<div class="title">Layers</div>
+		<div class="title">Mosquito</div>
 
 		<div class="buttons">
 			<% if (defaults.sources.includes('inaturalist')) { %>

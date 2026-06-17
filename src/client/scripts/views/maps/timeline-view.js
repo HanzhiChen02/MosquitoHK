@@ -62,8 +62,13 @@ export default BaseView.extend({
 			genera: QueryString.value('genera'),
 			species: QueryString.value('species')
 		} : {};
+		if (source === 'environment_hko') {
+			data.metric = QueryString.value('environment_metric') || 'mean_temperature';
+		}
 		let queryString = QueryString.encode(data);
-		let url = config.server + '/observations/' + source.replace(/_/g, '-') + '/timeline';
+		let url = source === 'environment_hko'?
+			config.server + '/environment/hko/timeline' :
+			config.server + '/observations/' + source.replace(/_/g, '-') + '/timeline';
 		if (queryString) {
 			url += '?' + queryString;
 		}
@@ -112,6 +117,10 @@ export default BaseView.extend({
 		return this.timelineSource === 'fehd_gravidtrap' || this.timelineSource === 'fehd_gravidtrap_area';
 	},
 
+	isEnvironmentTimeline: function() {
+		return this.timelineSource === 'environment_hko';
+	},
+
 	getAfterParamName: function() {
 		return this.options && this.options.dateParamPrefix?
 			this.options.dateParamPrefix + '_after' :
@@ -130,6 +139,9 @@ export default BaseView.extend({
 		}
 		if (this.timelineSource === 'fehd_gravidtrap') {
 			return 'FEHD survey-area point timeline / 監察點時間軸';
+		}
+		if (this.isEnvironmentTimeline()) {
+			return 'Environment daily timeline / 每日環境時間軸';
 		}
 		return this.isFehdTimeline()?
 			'FEHD Gravidtrap Index / 食環署誘蚊器指數' :
@@ -174,6 +186,34 @@ export default BaseView.extend({
 		this.$el.find('.count-label').text('% average AGI / 平均誘蚊器指數');
 	},
 
+	getEnvironmentUnit: function() {
+		return this.timeline && this.timeline.unit? this.timeline.unit : '';
+	},
+
+	showEnvironmentMetric: function(bucket) {
+		let value = bucket && bucket.average_value !== null?
+			bucket.average_value.toLocaleString() :
+			'0';
+		this.$el.find('.mosquito-count strong').text(value);
+		this.$el.find('.count-label').text(this.getEnvironmentUnit());
+	},
+
+	getOverallEnvironmentBucket: function() {
+		let buckets = this.timeline.buckets || [];
+		let total = 0;
+		let weighted = 0;
+		for (let i = 0; i < buckets.length; i++) {
+			let bucket = buckets[i];
+			if (bucket.average_value !== null) {
+				total += bucket.count;
+				weighted += bucket.average_value * bucket.count;
+			}
+		}
+		return {
+			average_value: total > 0? Math.round(weighted / total * 10) / 10 : null
+		};
+	},
+
 	getOverallFehdBucket: function() {
 		let buckets = this.timeline.buckets || [];
 		let total = 0;
@@ -199,9 +239,27 @@ export default BaseView.extend({
 		this.$el.find('.end').text(buckets.length? buckets[buckets.length - 1].period : '');
 
 		let after = QueryString.value(this.getAfterParamName());
-		let selected = buckets.findIndex(bucket => bucket.period === (after? after.slice(0, 7) : ''));
+		let selectedPeriod = after? this.getSelectedPeriod(after, buckets) : '';
+		let selected = buckets.findIndex(bucket => bucket.period === selectedPeriod);
 		slider.val(selected >= 0? selected + 1 : 0);
 		this.showPeriod(parseInt(slider.val()));
+	},
+
+	getSelectedPeriod: function(after, buckets) {
+		if (!after || !buckets.length) {
+			return '';
+		}
+
+		if (buckets.find(bucket => bucket.period === after)) {
+			return after;
+		}
+
+		let month = after.slice(0, 7);
+		if (buckets.find(bucket => bucket.period === month)) {
+			return month;
+		}
+
+		return after;
 	},
 
 	showPeriod: function(index) {
@@ -210,7 +268,9 @@ export default BaseView.extend({
 		}
 		if (index === 0) {
 			this.$el.find('.period').text('All dates / 全部日期');
-			if (this.isFehdTimeline()) {
+			if (this.isEnvironmentTimeline()) {
+				this.showEnvironmentMetric(this.getOverallEnvironmentBucket());
+			} else if (this.isFehdTimeline()) {
 				this.showFehdMetric(this.getOverallFehdBucket());
 			} else {
 				this.showCount(this.timeline.total);
@@ -220,16 +280,22 @@ export default BaseView.extend({
 
 		let bucket = this.timeline.buckets[index - 1];
 		this.$el.find('.period').text(bucket.period);
-		if (this.isFehdTimeline()) {
+		if (this.isEnvironmentTimeline()) {
+			this.showEnvironmentMetric(bucket);
+		} else if (this.isFehdTimeline()) {
 			this.showFehdMetric(bucket);
 		} else {
 			this.showCount(bucket.count);
 		}
 	},
 
-	nextMonth: function(period) {
-		let terms = period.split('-');
-		let date = new Date(parseInt(terms[0]), parseInt(terms[1]), 1);
+	nextPeriod: function(period) {
+		let terms = period.split('-').map(term => parseInt(term));
+		if (terms.length > 2) {
+			let date = new Date(terms[0], terms[1] - 1, terms[2] + 1);
+			return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+		}
+		let date = new Date(terms[0], terms[1], 1);
 		return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-01';
 	},
 
@@ -241,8 +307,8 @@ export default BaseView.extend({
 			QueryString.remove(beforeParam);
 		} else {
 			let period = this.timeline.buckets[index - 1].period;
-			QueryString.add(afterParam, period + '-01');
-			QueryString.add(beforeParam, this.nextMonth(period));
+			QueryString.add(afterParam, period.length === 7? period + '-01' : period);
+			QueryString.add(beforeParam, this.nextPeriod(period));
 		}
 		this.parent.update();
 	},

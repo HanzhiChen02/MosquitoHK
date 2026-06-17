@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 from controllers.inaturalist_controller import iNaturalistController
 from controllers.digitomy_controller import DigitomyController
 from controllers.fehd_gravidtrap_controller import FehdGravidtrapController
+from controllers.hko_environment_controller import HkoEnvironmentController
 from controllers.country_controller import CountryController
 from controllers.observation_controller import ObservationController
 from config.region import HONG_KONG_BOUNDS
@@ -49,6 +50,7 @@ def get_filter_options():
 		'countries': request.args.get('countries').split(',') if request.args.get('countries') is not None else None,
 		'before': request.args.get('before'),
 		'after': request.args.get('after'),
+		'metric': request.args.get('metric'),
 		'genera': request.args.get('genera').split(',') if request.args.get('genera') is not None else None,
 		'species': request.args.get('species').split(',') if request.args.get('species') is not None else None
 	}
@@ -146,6 +148,33 @@ def get_observation(source: str, id: str):
 			return FehdGravidtrapController.get_index(db, id)
 		case _:
 			return {'error': 'Observation source not found.'}, 404
+
+@app.get('/environment/hko')
+def get_hko_environment():
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
+
+	return HkoEnvironmentController.get_all(db, options)
+
+@app.get('/environment/hko/areas')
+def get_hko_environment_areas():
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
+
+	return HkoEnvironmentController.get_area_geojson(db, options)
+
+@app.get('/environment/hko/timeline')
+def get_hko_environment_timeline():
+	options = get_filter_options()
+	error = validate_filter_options(options)
+	if error:
+		return error
+
+	return HkoEnvironmentController.get_timeline(db, options)
 
 @app.get('/observations/<source>/num')
 def get_num_observations(source: str):

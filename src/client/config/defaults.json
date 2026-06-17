@@ -36,7 +36,6 @@
 
 	"sources": [
 		"inaturalist",
-		"digitomy",
 		"fehd_gravidtrap",
 		"fehd_gravidtrap_area"
 	],

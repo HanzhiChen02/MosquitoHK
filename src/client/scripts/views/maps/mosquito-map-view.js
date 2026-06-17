@@ -37,6 +37,16 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		<div id="user-interface" class="full-screen overlay">
 			<div id="map-bar"></div>
 			<div id="zoom-bar"></div>
+			<div id="panel-switcher">
+				<button class="panel-mode selected" data-panel="mosquito">
+					<i class="fa fa-bug"></i>
+					<span>Mosquito</span>
+				</button>
+				<button class="panel-mode" data-panel="environment">
+					<i class="fa fa-cloud-sun"></i>
+					<span>Environment</span>
+				</button>
+			</div>
 			<div id="data-bar"></div>
 			<div id="fehd-index-legend">
 				<div class="title">FEHD AGI Index</div>
@@ -47,10 +57,38 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 				<div><span class="swatch level-unknown"></span> No AGI yet</div>
 			</div>
 			<div id="view-bar"></div>
+			<div id="environment-panel">
+				<div class="title">Environment</div>
+				<button class="environment-metric selected" data-metric="mean_temperature" title="Mean temperature">
+					<i class="fa fa-temperature-half"></i>
+					<span>Temp</span>
+				</button>
+				<button class="environment-metric" data-metric="total_rainfall" title="Total rainfall">
+					<i class="fa fa-cloud-rain"></i>
+					<span>Rain</span>
+				</button>
+				<button class="environment-metric" data-metric="mean_relative_humidity" title="Mean relative humidity">
+					<i class="fa fa-droplet"></i>
+					<span>RH</span>
+				</button>
+			</div>
+			<div id="environment-index">
+				<div class="title">Mean Temperature</div>
+				<div><span class="swatch env-level-1"></span> Cool: &lt; 18°C</div>
+				<div><span class="swatch env-level-2"></span> Mild: 18 - &lt; 26°C</div>
+				<div><span class="swatch env-level-3"></span> Warm: 26 - &lt; 30°C</div>
+				<div><span class="swatch env-level-4"></span> Hot: ≥ 30°C</div>
+			</div>
 			<div id="timeline-container"></div>
 			<div id="fehd-area-timeline-container"></div>
+			<div id="environment-timeline-container"></div>
 		</div>
 	`),
+
+	events: {
+		'click #panel-switcher .panel-mode': 'onClickPanelMode',
+		'click #environment-panel .environment-metric': 'onClickEnvironmentMetric'
+	},
 
 	regions: {
 		map: {
@@ -75,6 +113,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		},
 		fehdAreaTimeline: {
 			el: '#fehd-area-timeline-container',
+			replaceElement: true
+		},
+		environmentTimeline: {
+			el: '#environment-timeline-container',
 			replaceElement: true
 		}
 	},
@@ -134,6 +176,8 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		// initialize draggable panels
 		//
 		this.enableDraggableLegend();
+		this.updateEnvironmentPanel();
+		this.updatePanelVisibility();
 
 		// add markers
 		//
@@ -212,6 +256,9 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		if (this.hasChildView && this.hasChildView('fehdAreaTimeline')) {
 			this.getChildView('fehdAreaTimeline').update();
 		}
+		if (this.hasChildView && this.hasChildView('environmentTimeline')) {
+			this.getChildView('environmentTimeline').update();
+		}
 		this.updateTimelineVisibility();
 	},
 
@@ -222,10 +269,96 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		return $('#data-bar .' + source).hasClass('selected');
 	},
 
-	updateTimelineVisibility: function() {
+	getActivePanel: function() {
+		let panel = QueryString.value('panel') || 'mosquito';
+		return panel === 'environment'? 'environment' : 'mosquito';
+	},
+
+	isEnvironmentPanelActive: function() {
+		return this.getActivePanel() === 'environment';
+	},
+
+	isMosquitoPanelActive: function() {
+		return this.getActivePanel() === 'mosquito';
+	},
+
+	setActivePanel: function(panel) {
+		QueryString.add('panel', panel);
+		this.updatePanelVisibility();
+		this.update();
+	},
+
+	updatePanelVisibility: function() {
+		let environmentActive = this.isEnvironmentPanelActive();
+		let mosquitoActive = !environmentActive;
+
+		this.$el.find('#panel-switcher .panel-mode').removeClass('selected');
+		this.$el.find('#panel-switcher .panel-mode[data-panel="' + this.getActivePanel() + '"]').addClass('selected');
+
+		this.$el.find('#data-bar').toggle(mosquitoActive);
+		this.$el.find('#environment-panel').toggle(environmentActive);
+		this.$el.find('#environment-index').toggle(environmentActive);
+		this.$el.find('#timeline').toggle(mosquitoActive);
 		this.$el.find('#fehd-area-timeline').toggle(
+			mosquitoActive && this.isDataSourceSelected('fehd_gravidtrap_area')
+		);
+		this.$el.find('#environment-timeline').toggle(environmentActive);
+
+		let fehdVisible = mosquitoActive && (
+			this.isDataSourceSelected('fehd_gravidtrap') ||
 			this.isDataSourceSelected('fehd_gravidtrap_area')
 		);
+		this.$el.find('#fehd-index-legend').toggle(fehdVisible);
+	},
+
+	updateTimelineVisibility: function() {
+		this.updatePanelVisibility();
+	},
+
+	getEnvironmentMetric: function() {
+		return QueryString.value('environment_metric') || 'mean_temperature';
+	},
+
+	setEnvironmentMetric: function(metric) {
+		QueryString.add('environment_metric', metric);
+		if (!this.isEnvironmentPanelActive()) {
+			QueryString.add('panel', 'environment');
+		}
+		this.updateEnvironmentPanel();
+		this.updateEnvironmentIndex();
+		this.updatePanelVisibility();
+		this.showMarkers();
+		this.updateTimeline();
+	},
+
+	updateEnvironmentPanel: function() {
+		let metric = this.getEnvironmentMetric();
+		this.$el.find('#environment-panel .environment-metric').removeClass('selected');
+		this.$el.find('#environment-panel .environment-metric[data-metric="' + metric + '"]').addClass('selected');
+		this.updateEnvironmentIndex();
+	},
+
+	updateEnvironmentIndex: function() {
+		let metric = this.getEnvironmentMetric();
+		let index = {
+			mean_temperature: {
+				title: 'Mean Temperature',
+				rows: ['Cool: < 18°C', 'Mild: 18 - < 26°C', 'Warm: 26 - < 30°C', 'Hot: ≥ 30°C']
+			},
+			total_rainfall: {
+				title: 'Total Rainfall',
+				rows: ['None: 0 mm', 'Light: > 0 - < 10 mm', 'Moderate: 10 - < 50 mm', 'Heavy: ≥ 50 mm']
+			},
+			mean_relative_humidity: {
+				title: 'Mean Relative Humidity',
+				rows: ['Dry: < 60%', 'Comfort: 60 - < 75%', 'Humid: 75 - < 90%', 'Very humid: ≥ 90%']
+			}
+		}[metric];
+		let html = '<div class="title">' + index.title + '</div>';
+		for (let i = 0; i < index.rows.length; i++) {
+			html += '<div><span class="swatch env-level-' + (i + 1) + '"></span> ' + index.rows[i] + '</div>';
+		}
+		this.$el.find('#environment-index').html(html);
 	},
 
 	//
@@ -275,6 +408,23 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			title: 'FEHD district fill timeline / 分區填色時間軸',
 			dateParamPrefix: 'fehd_area'
 		}));
+		this.showChildView('environmentTimeline', new TimelineView({
+			parent: this,
+			id: 'environment-timeline',
+			source: 'environment_hko',
+			title: 'Environment daily timeline / 每日環境時間軸',
+			dateParamPrefix: 'env'
+		}));
 		this.updateTimelineVisibility();
+	},
+
+	onClickEnvironmentMetric: function(event) {
+		let metric = $(event.currentTarget).attr('data-metric');
+		this.setEnvironmentMetric(metric);
+	},
+
+	onClickPanelMode: function(event) {
+		let panel = $(event.currentTarget).attr('data-panel');
+		this.setActivePanel(panel);
 	}
 }));

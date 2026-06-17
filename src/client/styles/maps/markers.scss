@@ -222,6 +222,53 @@ div.marker {
 	}
 }
 
+.environment-hko {
+	i {
+		color: #2f80ed;
+	}
+	&.marker {
+		fill: #2f80ed;
+		stroke: white;
+	}
+	&.env-level-1 {
+		fill: #2f80ed;
+		background-color: #2f80ed;
+	}
+	&.env-level-2 {
+		fill: #27ae60;
+		background-color: #27ae60;
+	}
+	&.env-level-3 {
+		fill: #f2c94c;
+		background-color: #f2c94c;
+	}
+	&.env-level-4 {
+		fill: #eb5757;
+		background-color: #eb5757;
+	}
+
+	&.area {
+		cursor: pointer;
+		stroke: white;
+	}
+}
+
+.environment-popup {
+	min-width: 220px;
+
+	h3 {
+		margin: 0 0 6px 0;
+		font-size: 15px;
+	}
+
+	.note {
+		margin-top: 6px;
+		font-size: 11px;
+		color: #666;
+		line-height: 1.3;
+	}
+}
+
 //
 // hide / show markers
 //

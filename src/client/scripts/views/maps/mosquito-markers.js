@@ -246,6 +246,11 @@ export default {
 			}
 			this.areaLayers = {};
 		}
+
+		if (this.environmentLayer) {
+			this.map.removeLayer(this.environmentLayer);
+			this.environmentLayer = null;
+		}
 	},
 
 	nextRequestId: function(source) {
@@ -289,6 +294,42 @@ export default {
 
 	fetchFehdAreaObservations: function(options) {
 		let url = config.server + '/observations/fehd-gravidtrap/areas';
+		if (options.data) {
+			let queryString = QueryString.encode(options.data);
+			if (queryString) {
+				url += '?' + queryString;
+			}
+		}
+
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			if (options && options.success) {
+				options.success(data);
+			}
+		});
+	},
+
+	fetchEnvironmentObservations: function(options) {
+		let url = config.server + '/environment/hko';
+		if (options.data) {
+			let queryString = QueryString.encode(options.data);
+			if (queryString) {
+				url += '?' + queryString;
+			}
+		}
+
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			if (options && options.success) {
+				options.success(data);
+			}
+		});
+	},
+
+	fetchEnvironmentAreas: function(options) {
+		let url = config.server + '/environment/hko/areas';
 		if (options.data) {
 			let queryString = QueryString.encode(options.data);
 			if (queryString) {
@@ -378,6 +419,185 @@ export default {
 		});
 	},
 
+	getEnvironmentMetric: function() {
+		return QueryString.value('environment_metric') || 'mean_temperature';
+	},
+
+	getEnvironmentLevel: function(metric, value) {
+		let number = parseFloat(value);
+		if (isNaN(number)) {
+			return 'env-level-unknown';
+		}
+
+		switch (metric) {
+			case 'total_rainfall':
+				if (number === 0) return 'env-level-1';
+				if (number < 10) return 'env-level-2';
+				if (number < 50) return 'env-level-3';
+				return 'env-level-4';
+			case 'mean_relative_humidity':
+				if (number < 60) return 'env-level-1';
+				if (number < 75) return 'env-level-2';
+				if (number < 90) return 'env-level-3';
+				return 'env-level-4';
+			default:
+				if (number < 18) return 'env-level-1';
+				if (number < 26) return 'env-level-2';
+				if (number < 30) return 'env-level-3';
+				return 'env-level-4';
+		}
+	},
+
+	getEnvironmentColor: function(level) {
+		switch (level) {
+			case 'env-level-1':
+				return '#2f80ed';
+			case 'env-level-2':
+				return '#27ae60';
+			case 'env-level-3':
+				return '#f2c94c';
+			case 'env-level-4':
+				return '#eb5757';
+			default:
+				return '#9ca3af';
+		}
+	},
+
+	getEnvironmentMetricLabel: function(metric) {
+		switch (metric) {
+			case 'total_rainfall':
+				return ['Total rainfall', 'mm'];
+			case 'mean_relative_humidity':
+				return ['Mean relative humidity', '%'];
+			default:
+				return ['Mean temperature', '°C'];
+		}
+	},
+
+	getEnvironmentPopupHtml: function(observation) {
+		let label = this.getEnvironmentMetricLabel(observation.metric);
+		let value = observation.value !== null && observation.value !== undefined?
+			observation.value + ' ' + label[1] :
+			'N/A';
+		return `
+			<div class="environment-popup">
+				<h3>HKO Environment</h3>
+				<div><strong>Date:</strong> ${observation.observed_on}</div>
+				<div><strong>Station:</strong> ${observation.station_name} (${observation.station_code})</div>
+				<div><strong>District:</strong> ${observation.district}</div>
+				<div><strong>${label[0]}:</strong> ${value}</div>
+				<div><strong>Max temp:</strong> ${observation.max_temperature !== null? observation.max_temperature + ' °C' : 'N/A'}</div>
+				<div><strong>Min temp:</strong> ${observation.min_temperature !== null? observation.min_temperature + ' °C' : 'N/A'}</div>
+				<div><strong>Rainfall:</strong> ${observation.total_rainfall !== null? observation.total_rainfall + ' mm' : 'N/A'}</div>
+				<div><strong>Humidity:</strong> ${observation.mean_relative_humidity !== null? observation.mean_relative_humidity + '%' : 'N/A'}</div>
+			</div>
+		`;
+	},
+
+	getEnvironmentAreaStyle: function(feature) {
+		let metric = feature.properties.metric || this.getEnvironmentMetric();
+		let level = this.getEnvironmentLevel(metric, feature.properties.value);
+		let color = this.getEnvironmentColor(level);
+		let hasData = feature.properties.value !== null && feature.properties.value !== undefined;
+
+		return {
+			className: 'environment-hko environment-hko-area area ' + level,
+			color: color,
+			weight: hasData? 1.5 : 1,
+			opacity: hasData? 0.9 : 0.5,
+			fillColor: color,
+			fillOpacity: hasData? 0.48 : 0.12
+		};
+	},
+
+	getEnvironmentAreaPopupHtml: function(properties) {
+		let label = [properties.label || this.getEnvironmentMetricLabel(properties.metric)[0], properties.unit || this.getEnvironmentMetricLabel(properties.metric)[1]];
+		let value = properties.value !== null && properties.value !== undefined? properties.value + ' ' + label[1] : 'N/A';
+		return `
+			<div class="environment-popup">
+				<h3>HKO Environment</h3>
+				<div><strong>Period:</strong> ${properties.period || 'N/A'}</div>
+				<div><strong>District:</strong> ${properties.district || 'N/A'}</div>
+				<div><strong>${label[0]}:</strong> ${value}</div>
+				<div><strong>Mean temp:</strong> ${properties.mean_temperature !== null && properties.mean_temperature !== undefined? properties.mean_temperature + ' °C' : 'N/A'}</div>
+				<div><strong>Max temp:</strong> ${properties.max_temperature !== null && properties.max_temperature !== undefined? properties.max_temperature + ' °C' : 'N/A'}</div>
+				<div><strong>Min temp:</strong> ${properties.min_temperature !== null && properties.min_temperature !== undefined? properties.min_temperature + ' °C' : 'N/A'}</div>
+				<div><strong>Rainfall:</strong> ${properties.total_rainfall !== null && properties.total_rainfall !== undefined? properties.total_rainfall + ' mm' : 'N/A'}</div>
+				<div><strong>Humidity:</strong> ${properties.mean_relative_humidity !== null && properties.mean_relative_humidity !== undefined? properties.mean_relative_humidity + '%' : 'N/A'}</div>
+				<div><strong>Matched stations:</strong> ${properties.station_count || 0}</div>
+				${properties.matched_station? '<div><strong>Fallback station:</strong> ' + properties.matched_station + ' (' + properties.matched_station_code + ')</div>' : ''}
+				<div class="note">${properties.spatial_method || ''}</div>
+			</div>
+		`;
+	},
+
+	addEnvironmentAreaLayer: function(map, geojson) {
+		if (this.environmentLayer) {
+			this.map.removeLayer(this.environmentLayer);
+		}
+
+		let layer = L.geoJSON(geojson, {
+			style: (feature) => this.getEnvironmentAreaStyle(feature),
+			onEachFeature: (feature, areaLayer) => {
+				areaLayer.bindPopup(this.getEnvironmentAreaPopupHtml(feature.properties));
+				areaLayer.on({
+					mouseover: () => areaLayer.setStyle({ weight: 3, fillOpacity: 0.65 }),
+					mouseout: () => areaLayer.setStyle(this.getEnvironmentAreaStyle(feature))
+				});
+			}
+		});
+
+		this.environmentLayer = layer;
+		layer.addTo(map);
+		layer.bringToBack();
+	},
+
+	addEnvironmentLayer: function(map, observations) {
+		if (this.environmentLayer) {
+			this.map.removeLayer(this.environmentLayer);
+		}
+		let layer = L.layerGroup();
+		for (let i = 0; i < observations.length; i++) {
+			let observation = observations[i];
+			if (!observation.x || !observation.y) {
+				continue;
+			}
+			let level = this.getEnvironmentLevel(observation.metric, observation.value);
+			let color = this.getEnvironmentColor(level);
+			let marker = L.circleMarker([observation.y, observation.x], {
+				source: 'environment_hko',
+				id: 'environment-' + observation.id,
+				radius: 9,
+				className: 'environment-hko marker ' + level,
+				fillColor: color,
+				color: '#ffffff',
+				fillOpacity: 0.95,
+				weight: 1.5
+			});
+			marker.bindPopup(this.getEnvironmentPopupHtml(observation));
+			layer.addLayer(marker);
+		}
+		this.environmentLayer = layer;
+		layer.addTo(map);
+	},
+
+	showEnvironmentLayer: function() {
+		let requestId = this.nextRequestId('environment_hko');
+		this.fetchEnvironmentAreas({
+			data: {
+				metric: this.getEnvironmentMetric(),
+				before: QueryString.value('env_before'),
+				after: QueryString.value('env_after')
+			},
+			success: (geojson) => {
+				if (!this.isCurrentRequest('environment_hko', requestId)) {
+					return;
+				}
+				this.addEnvironmentAreaLayer(this.map, geojson);
+			}
+		});
+	},
+
 	addObservationMarkers: function(map, source) {
 		if (source === 'fehd_gravidtrap_area') {
 			this.addFehdAreaObservations(map);
@@ -425,6 +645,10 @@ export default {
 
 	showMarkers: function() {
 		this.removeMarkers();
-		this.addMarkers();
+		if (this.isEnvironmentPanelActive && this.isEnvironmentPanelActive()) {
+			this.showEnvironmentLayer();
+		} else {
+			this.addMarkers();
+		}
 	}
 };
