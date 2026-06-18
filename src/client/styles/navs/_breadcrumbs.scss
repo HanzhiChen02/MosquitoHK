@@ -1,0 +1,54 @@
+/******************************************************************************\
+|                                                                              |
+|                              _breadcrumbs.scss                               |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+
+//
+// colors
+//
+
+$background-color: colors.$ultra-light-grey;
+$divider-color: colors.$very-light-grey;
+$dark-background-color: colors.$very-very-dark-grey;
+$dark-divider-color: white;
+
+//
+// styles
+//
+
+.breadcrumb {
+	padding: 8px 15px;
+	margin-bottom: 20px;
+	list-style: none;
+	background-color: $background-color;
+	border-radius: 4px;
+
+	> li + li:before {
+		padding: 0 10px;
+		content: "/\00a0";
+		color: $divider-color;
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	.breadcrumb {
+		background-color: $dark-background-color;
+
+		> li + li:before {
+			color: $dark-divider-color;
+		}
+	}
+}

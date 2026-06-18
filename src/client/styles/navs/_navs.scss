@@ -1,0 +1,92 @@
+/******************************************************************************\
+|                                                                              |
+|                                  _navs.scss                                  |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+@use "../colors/coloring";
+@use "../colors/branding";
+
+//
+// colors
+//
+
+$link-color: branding.$primary-color;
+$link-hover-color: coloring.darken($link-color, 10%);
+$dark-link-color: white;
+$dark-link-hover-color: coloring.darken($dark-link-color, 10%);
+
+//
+// styles
+//
+
+h1 {
+	i {
+		float: left;
+		margin-right: 10px;
+		color: branding.$primary-color;
+	}
+}
+
+//
+// navbar icons
+//
+
+.navbar, .breadcrumb {
+	i {
+		margin-right: 5px;
+	}
+}
+
+//
+// links
+//
+
+a {
+	color: $link-color;
+
+	&:hover {
+		color: $link-hover-color;
+	}
+}
+
+//
+// special links
+//
+
+.doi, .url {
+	a {
+		word-break: break-all;
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	a {
+		color: $dark-link-color;
+
+		&:hover {
+			color: $dark-link-hover-color;
+		}
+	}
+}
+
+//
+// mobile modals
+//
+
+body[device="phone"] {
+	.breadcrumb {
+		display: none;
+	}
+}

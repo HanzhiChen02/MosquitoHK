@@ -1,0 +1,120 @@
+/******************************************************************************\
+|                                                                              |
+|                                _sidebar.scss                                 |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+@use "../colors/branding";
+@use "../layout/typography";
+
+//
+// variables
+//
+
+$sidebar-panel-padding: 10px;
+$padding: 20px;
+
+//
+// colors
+//
+
+$sidebar-title-color: grey;
+$sidebar-panel-color: transparent;
+$sidebar-link-color: branding.$primary-color;
+$welcome-panel-text-color: #303030;
+$dark-background-color: colors.$very-very-dark-grey;
+
+//
+// sidebar styles
+//
+
+.sidebar {
+	display: flex;
+	overflow: auto;
+
+	h1 {
+		color: $sidebar-title-color;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		padding: $padding;
+		margin: auto;
+	}
+
+	.panel {
+		padding: $sidebar-panel-padding;
+		background: $sidebar-panel-color;
+		border-radius: 0;
+		margin: 0;
+
+		h2 {
+			margin-top: 0;
+
+			i {
+				margin-right: 5px;
+			}
+		}
+
+		+ .panel {
+			margin-top: 10px;
+		}
+	}
+
+	.list {
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	.buttons {
+		text-align: center;
+	}
+
+	//
+	// sidebar footers
+	//
+
+	#footer {
+		margin-top: 20px;
+
+		.container {
+			width: 100%;
+
+			.logo {
+				display: none;
+			}
+		}
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	.sidebar {
+		background-color: $dark-background-color;
+
+		h1 {
+			color: white;
+		}
+	}
+}
+
+//
+// mobile styles
+//
+
+body[device="phone"], body[device="tablet"] {
+	.split-view .gutter {
+		display: none;
+	}
+}

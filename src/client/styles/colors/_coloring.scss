@@ -1,0 +1,101 @@
+/******************************************************************************\
+|                                                                              |
+|                                _coloring.scss                                |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines various CSS styles used in this application.             |
+|                                                                              |
+|        Author(s): Abe Megahed                                                |
+|                                                                              |
+|        This file is subject to the terms and conditions defined in           |
+|        'LICENSE.txt', which is part of this source code distribution.        |
+|                                                                              |
+|******************************************************************************|
+|        Copyright (C) 2016 - 2025, Megahed Labs LLC, www.sharedigm.com        |
+\******************************************************************************/
+
+@use "sass:color";
+
+//
+// dynamic color mixins
+//
+
+@function lighten($color, $amount) {
+	@return color-mix(in srgb, white $amount, $color);
+}
+
+@function darken($color, $amount, $dark-color: black) {
+	@return color-mix(in srgb, $dark-color $amount, $color);
+}
+
+@function fade($color, $amount) {
+	@return color-mix(in srgb, $color $amount, transparent);
+}
+
+@function blend($color1, $color2, $amount: 50%) {
+	@return color-mix(in srgb, $color2 $amount, $color1);
+}
+
+//
+// pre-computed color mixins
+//
+
+@function lightened($base-color, $amount) {
+	@return color.adjust($base-color, $lightness: $amount);
+}
+
+@function darkened($base-color, $amount) {
+	@return color.adjust($base-color, $lightness: -$amount);
+}
+
+@function faded($base-color, $amount) {
+	@return color.mix($base-color, transparent, $amount);
+}
+
+@function blended($color1, $color2, $amount: 50%) {
+	@return color.mix($color2, $color1, $amount);
+}
+
+@function saturated($color, $amount: 50%) {
+	@return color.adjust($color, $saturation: $amount);
+}
+
+@function desaturated($color, $amount: 50%) {
+	@return color.adjust($color, $saturation: -$amount);
+}
+
+
+//
+// gradients
+//
+
+@mixin horizontal-gradient($start-color: #eee, $end-color: white) {
+	background-color: $start-color;
+	background: -webkit-gradient(linear, left top, right top, from($start-color), to($end-color));
+	background: -webkit-linear-gradient(left, $start-color, $end-color);
+	background: -moz-linear-gradient(left, $start-color, $end-color);
+	background: -ms-linear-gradient(left, $start-color, $end-color);
+	background: -o-linear-gradient(left, $start-color, $end-color);
+}
+
+@mixin vertical-gradient($start-color: #eee, $end-color: white) {
+	background-color: $start-color;
+	background: -webkit-gradient(linear, left top, left bottom, from($start-color), to($end-color));
+	background: -webkit-linear-gradient(top, $start-color, $end-color);
+	background: -moz-linear-gradient(top, $start-color, $end-color);
+	background: -ms-linear-gradient(top, $start-color, $end-color);
+	background: -o-linear-gradient(top, $start-color, $end-color);
+}
+
+//
+// glowing
+//
+
+@mixin glow($color: white) {
+	filter: drop-shadow(0 0 5px $color) drop-shadow(0 0 10px $color);
+}
+
+@mixin snuff {
+	filter: none;
+}

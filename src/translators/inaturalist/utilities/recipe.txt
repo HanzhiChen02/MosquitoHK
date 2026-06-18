@@ -1,0 +1,115 @@
+settype col: column1 type: Map
+unnest col: column1 keys: 'annotations', 'cached_votes_total', 'captive', 'comments', 'comments_count', 'community_taxon_id', 'created_at', 'created_at_details', 'created_time_zone', 'description', 'faves', 'faves_count', 'flags', 'geojson', 'geoprivacy', 'id', 'ident_taxon_ids', 'identifications', 'identifications_count', 'identifications_most_agree', 'identifications_most_disagree', 'identifications_some_agree', 'license_code', 'location', 'map_scale', 'mappable', 'non_owner_ids', 'num_identification_agreements', 'num_identification_disagreements', 'oauth_application_id', 'obscured', 'observation_photos', 'observed_on', 'observed_on_details', 'observed_on_string', 'observed_time_zone', 'ofvs', 'outlinks', 'owners_identification_from_vision', 'photos', 'place_guess', 'place_ids', 'positional_accuracy', 'preferences', 'project_ids', 'project_ids_with_curator_id', 'project_ids_without_curator_id', 'project_observations', 'public_positional_accuracy', 'quality_grade', 'quality_metrics', 'reviewed_by', 'site_id', 'sounds', 'spam', 'species_guess', 'tags', 'taxon', 'taxon_geoprivacy', 'time_observed_at', 'time_zone_offset', 'updated_at', 'uri', 'user', 'uuid', 'votes' pluck: false markLineage: false
+derive type: single value: 'Citizen·science·data·on·mosquitos·from·iNaturalist·with·additional·automated·ID' as: 'title'
+derive type: single value: 'Data·is·generated·from·the·iNaturalist·database·filtered·by·Mosquitoes·and·quality·grade·before·additional·automated·identifications·are·added' as: 'description_x'
+unnest col: user keys: 'activity_count', 'created_at', 'icon', 'icon_url', 'id', 'identifications_count', 'journal_posts_count', 'login', 'login_autocomplete', 'login_exact', 'name', 'name_autocomplete', 'observations_count', 'orcid', 'preferences', 'roles', 'site_id', 'spam', 'species_count', 'suspended', 'universal_search_rank' pluck: false markLineage: false
+settype col: id1 type: String
+derive type: single value: MERGE([id1,' :·Research·grade·mosquito·species·occurrence·data·from·user·cell·phone','']) as: 'dataStreamName'
+move col: dataStreamName position: before before: description_x
+derive type: single value: 'category observation' as: 'dataStreamObsType'
+derive type: single value: '{\"Type\": \"Annotations potentially including lifecycle phase\",\"Identified by Human\": \"Annotations potentially including lifecycle phase\",\"Identified by Machine\": \"Annotations potentially including lifecycle phase\"}' as: 'dataStreamUniCategory'
+rename type: manual mapping: [uuid,'observationProObsUID']
+move col: observationProObsUID position: before before: dataStreamUniCategory
+rename type: manual mapping: [time_observed_at,'observationResCatObsPheTime']
+move col: observationResCatObsPheTime position: before before: observationProObsUID
+derive type: single value: observationResCatObsPheTime as: 'observationResCatObsResTime'
+move col: observationResCatObsResTime position: before before: observationResCatObsPheTime
+rename type: manual mapping: [description,'observationDescription']
+rename type: manual mapping: [description_x,'description']
+settype col: id type: String
+derive type: single value: '{\"Type\":[],\"Human·ID\":\"' as: 'Part1'
+derive type: single value: '\",\"Automated·ID\":[]}' as: 'Part3'
+merge col: Part1,species_guess,Part3 as: 'observationResCatObsResult'
+move col: observationResCatObsResult position: before before: Part3
+drop col: Part3 action: Drop
+drop col: Part1 action: Drop
+rename type: manual mapping: [updated_at,'observationResCaObsResult']
+move col: observationResCaObsResult position: before before: observationResCatObsResult
+rename type: manual mapping: [observationResCaObsResult,'observationResCatObsSubTime']
+countpattern type: between col: observation_photos start: `"photo` includeStart: true end: `\}\}` includeEnd: true as: 'countpattern_observation_photos'
+rename type: manual mapping: [observation_photos,'observationImaImaResult']
+rename type: manual mapping: [countpattern_observation_photos,'observationImaImaStatus']
+move col: observationImaImaStatus position: before before: observationResCatObsSubTime
+move col: observationImaImaResult position: before before: observationImaImaStatus
+nest col: captive, comments, time_zone_offset, uri, icon_url, sounds into: map as: 'observationConParameters'
+move col: observationConParameters position: before before: observationImaImaResult
+unnest col: taxon keys: 'name' pluck: false markLineage: false
+rename type: manual mapping: [name1,'ObsTaxonName']
+unnest col: taxon keys: 'preferred_common_name' pluck: false markLineage: false
+rename type: manual mapping: [preferred_common_name,'ObsCPCommonName']
+move col: ObsCPCommonName position: before before: observationConParameters
+move col: ObsTaxonName position: before before: ObsCPCommonName
+rename type: manual mapping: [license_code,'omProcessLicLicName']
+move col: omProcessLicLicName position: before before: ObsTaxonName
+rename type: manual mapping: [login,'omProcessLicLicAttSource']
+move col: omProcessLicLicAttSource position: before before: omProcessLicLicName
+derive type: single value: 'iNaturalist' as: 'omProcessLicLicAttAggregator'
+derive type: single value: 'Sensor' as: 'omPrcoessProType'
+derive type: single value: 'https:\/\/www.inaturalist.org\/pages\/help' as: 'omProcessProReference'
+derive type: single value: 'true' as: 'omProcessResQuaValStatus'
+derive type: single value: 'Human expert validation' as: 'omProcessResQuaValMethod'
+derive type: single value: 'true' as: 'omProcessResQuaValResult'
+rename type: manual mapping: [quality_grade,'omProcessResQuaQuaGrade']
+move col: omProcessResQuaQuaGrade position: before before: omProcessResQuaValResult
+derive type: single value: omProcessResQuaQuaGrade as: 'qualityGrade'
+move col: qualityGrade position: after after: votes
+unnest col: taxon keys: 'taxon_schemes_count' pluck: false markLineage: false
+unnest col: taxon keys: 'flag_counts' pluck: false markLineage: false
+unnest col: taxon keys: 'taxon_changes_count' pluck: false markLineage: false
+rename type: manual mapping: [taxon_changes_count,'taxonChanges']
+rename type: manual mapping: [flag_counts,'flagCounts']
+rename type: manual mapping: [taxon_schemes_count,'taxonCounts']
+nest col: qualityGrade, taxonCounts, flagCounts, taxonChanges, positional_accuracy, public_positional_accuracy into: map as: 'omProcessResQuaQuaAssessment'
+move col: omProcessResQuaQuaAssessment position: before before: omProcessResQuaQuaGrade
+derive type: single value: 'Species occurrence' as: 'observedProName'
+derive type: single value: 'Whether a species is observed at a location' as: 'observedProDescription'
+derive type: single value: 'https:\/\/www.sciencedirect.com\/topics\/earth-and-planetary-sciences\/species-occurrence' as: 'observedProDefinition'
+derive type: single value: id1 as: 'sensorName'
+derive type: single value: MERGE(['Observation take by mobile phone of user: ',id1]) as: 'sensorDescription'
+move col: sensorDescription position: before before: observedProDefinition
+derive type: single value: 'NC' as: 'sensorEncType'
+derive type: single value: 'Anonymous location' as: 'locationName'
+derive type: single value: 'Anonymous·location·with·geoprivacy:' as: 'locationDescription'
+derive type: single value: 'GeoJSON Point' as: 'locationEncType'
+splitpatterns col: location type: on on: ','
+set col: location1 value: IFMISSING(location1, 0)
+set col: location2 value: IFMISSING(location2, 0)
+rename type: manual mapping: [location1,'latitude']
+rename type: manual mapping: [location2,'longitude']
+set col: longitude value: IFNULL(longitude, 0)
+set col: latitude value: IFNULL(latitude, 0)
+settype col: latitude,longitude type: Float
+move col: latitude position: before before: locationEncType
+move col: longitude position: before before: latitude
+derive type: single value: id1 as: 'thingName'
+derive type: single value: MERGE(['Volunteer with login: ',id1]) as: 'thingDescription'
+move col: thingName position: before before: longitude
+move col: thingDescription position: before before: thingName
+move col: sensorName position: after after: sensorDescription
+rename type: manual mapping: [observations_count,'userObservationCount']
+rename type: manual mapping: [species_count,'userSpeciesCount']
+rename type: manual mapping: [journal_posts_count,'userJournalCount']
+rename type: manual mapping: [identifications_count1,'userIdCount']
+rename type: manual mapping: [activity_count,'userActivityCount']
+nest col: userActivityCount,userIdCount,userJournalCount,userObservationCount,userSpeciesCount into: map as: 'thingProperties'
+move col: thingProperties position: before before: thingDescription
+derive type: single value: 'location.name' as: 'featureIntName'
+derive type: single value: 'location.description' as: 'featureIntDescription'
+derive type: single value: 'location.encodingType' as: 'featureIntEncType'
+nest col: longitude,latitude into: array as: 'coordinates'
+replacepatterns col: coordinates with: '' on: `"` global: true
+derive type: single value: MERGE(['{\"coordinates\":',coordinates,'}']) as: 'featureIntLocation'
+move col: featureIntLocation position: before before: featureIntEncType
+derive type: single value: 'Point' as: 'type'
+move col: coordinates position: before before: type
+derive type: single value: MERGE(['{\"type\":\"Point\",\"coordinates\":',coordinates,'}']) as: 'geometry'
+move col: geometry position: before before: coordinates
+derive type: single value: NOW('UTC') as: 'customEcCreatedOn'
+drop col: annotations, cached_votes_total, captive, comments, comments_count, community_taxon_id, created_at, observationDescription, faves, faves_count, flags, geojson, geoprivacy, id, ident_taxon_ids, identifications, identifications_count, identifications_most_agree, identifications_most_disagree, identifications_some_agree, map_scale, mappable, non_owner_ids, num_identification_agreements, num_identification_disagreements, oauth_application_id, obscured, observed_on, observed_on_string, ofvs, outlinks, owners_identification_from_vision, photos, place_guess, place_ids, positional_accuracy, preferences, project_ids, project_ids_with_curator_id, project_ids_without_curator_id, project_observations, public_positional_accuracy, quality_metrics, reviewed_by, site_id, sounds, spam, species_guess, tags, taxon, taxonChanges, flagCounts, taxonCounts, taxon_geoprivacy, time_zone_offset, uri, user, userActivityCount, created_at1, icon, icon_url, id1, userIdCount, userJournalCount, login_autocomplete, login_exact, name, name_autocomplete, userObservationCount, orcid, preferences1, roles, site_id1, spam1, userSpeciesCount, suspended, universal_search_rank, votes, qualityGrade action: Drop
+move col: title, description, dataStreamName, dataStreamObsType, dataStreamUniCategory, observationProObsUID, observationResCatObsPheTime, observationResCatObsResTime, observationResCatObsResult, observationResCatObsSubTime, observationImaImaStatus, observationImaImaResult, observationConParameters, ObsCPCommonName, ObsTaxonName, omProcessLicLicName, omProcessLicLicAttSource, omProcessLicLicAttAggregator, omPrcoessProType, omProcessProReference position: after after: customEcCreatedOn
+move col: omProcessResQuaValStatus, omProcessResQuaValMethod, omProcessResQuaValResult, omProcessResQuaQuaGrade, omProcessResQuaQuaAssessment, observedProName, observedProDescription, observedProDefinition, sensorName, sensorDescription, sensorEncType, locationName, locationDescription, locationEncType, latitude, longitude position: after after: omProcessProReference
+move col: thingName, thingDescription, thingProperties, featureIntName, featureIntDescription, featureIntEncType, featureIntLocation, type, coordinates, geometry, customEcCreatedOn position: after after: longitude
+derive type: single value: 'All·species·occurrence·observations·from·a·particular·user·taken·with·a·sensor·or·manually' as: 'dataStreamDescription'
+move col: dataStreamDescription position: after after: dataStreamName
+drop col: column1,created_at_details,created_time_zone,observed_on_details,observed_time_zone action: Drop
+Delete rows  with missing values in sensorName

@@ -1,0 +1,187 @@
+/******************************************************************************\
+|                                                                              |
+|                                _navbars.scss                                 |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+@use "../colors/branding";
+@use "../bootstrap/variables";
+
+//
+// colors
+//
+
+$background-color: white;
+$border-color: colors.$very-very-light-grey;
+$dark-background-color: colors.$very-very-dark-grey;
+$dark-border-color: colors.$very-dark-grey;
+
+//
+// styles
+//
+
+.navbar {
+	display: flex;
+	width: 100%;
+	height: 40px;
+	min-height: 40px;
+	white-space: nowrap;
+	background: $background-color;
+	border: none;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: $border-color;
+	margin: 0;
+
+	.navbar-brand {
+		height: 40px;
+		padding: 0;
+		flex-grow: 0;
+		flex-shrink: 0;
+		line-height: 40px;
+		margin-right: 10px;
+
+		.logo {
+			height: 30px;
+			float: left;
+			margin: 5px;
+		}
+	}
+
+	.navbar-nav {
+		display: flex;
+		margin: auto;
+
+		> li {
+			> a {
+				padding: 10px;
+				cursor: pointer;
+				color: var(--primary-color);
+
+				&:hover {
+					color: white;
+					background: var(--primary-color);
+				}
+			}
+
+			&.active {
+				> a {
+					color: white;
+					background-color: var(--primary-color);
+				}
+			}
+		}
+	}
+
+	.title-bar {
+		flex-grow: 1;
+		padding: 0 20px;
+		text-align: center;
+
+		> li {
+			width: 100%;
+			text-align: center;
+		}
+	}
+
+	.navbar-right {
+		display: flex;
+		height: 100%;
+		justify-content: flex-end;
+		padding: 2px;
+		margin: 0;
+		margin-right: 10px;
+		box-shadow: none;
+
+		button {
+			margin: 2px;
+
+			+ button {
+				margin-left: 5px;
+			}
+		}
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	.navbar {
+		background-color: $dark-background-color;
+		border-bottom-color: $dark-border-color !important;
+
+		#brand {
+			color: white;
+		}
+
+		.navbar-nav {
+			a {
+				color: darkgrey;
+
+				&:hover, &.active {
+					color: white;
+				}
+			}
+		}
+	}
+}
+
+//
+// large styles
+//
+
+@media (min-width: variables.$screen-lg-min) {
+	#home {
+		margin-right: 10px;
+	}
+
+	.navbar {
+		.container {
+			.navbar-right {
+				margin-left: 200px;
+			}
+		}
+	}
+}
+
+@media (max-width: variables.$screen-sm-min) {
+	.navbar {
+		.container {
+			.navbar-right {
+				margin-left: auto;
+			}
+		}
+	}
+}
+
+//
+// extra small styles
+//
+
+@media (max-width: variables.$screen-xs-min) {
+	.navbar {
+		.container {
+			padding-left: 10px;
+			padding-right: 10px;
+
+			.navbar-brand {
+				padding: 10px 0;
+			}
+
+			.navbar-nav {
+				> li:not(.communities) {
+					display: none;
+				}
+			}
+		}
+	}
+}

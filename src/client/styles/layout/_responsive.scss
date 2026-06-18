@@ -1,0 +1,27 @@
+/******************************************************************************\
+|                                                                              |
+|                               _responsive.scss                               |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+//
+// mobile styles
+//
+
+body[device="phone"], body[device="tablet"] {
+	.desktop-only {
+		display: none !important;
+	}
+}
+
+body[device="desktop"] {
+	.mobile-only {
+		display: none !important;
+	}
+}

@@ -1,0 +1,140 @@
+/******************************************************************************\
+|                                                                              |
+|                                _buttons.scss                                 |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+@use "../colors/branding";
+
+//
+// variables
+//
+
+$border-radius: 5px;
+
+//
+// colors
+//
+
+$color: initial;
+$background-color: colors.$very-very-light-grey;
+
+//
+// styles
+//
+
+.btn {
+	color: $color;
+	background-color: colors.$very-very-light-grey;
+	border-style: none;
+	border-radius: $border-radius;
+	border-width: 1px;
+	border-style: solid;
+	pointer-events: auto;
+	padding: 4px 10px;
+	outline: none;
+
+	i {
+		margin-right: 5px;
+	}
+
+	&:hover {
+		background: colors.$very-light-grey;
+	}
+
+	&.close, &.clear {
+		&:hover {
+			color: crimson;
+			opacity: 1;
+		}
+	}
+
+	&:focus {
+		outline: none !important;
+	}
+
+	&.btn-primary {
+		color: white;
+		background-color: branding.$primary-color;
+		border-color: branding.$primary-color;
+
+		&:hover, &:active {
+			background: branding.$dark-color;
+			border-color: branding.$dark-color;
+		}
+	}
+
+	&:active {
+		box-shadow: none !important;
+	}
+}
+
+.btn.btn-sm {
+	display: flex;
+	width: 30px;
+	height: 30px;
+	padding: 0;
+
+	i {
+		margin: auto;
+	}
+}
+
+button label {
+	margin-bottom: 0;
+	cursor: pointer;
+}
+
+//
+// special buttons
+//
+
+.start.btn {
+	background-color: green;
+	color: white;
+}
+
+.social.btn {
+	background-color: #3060e0;
+	color: white;
+}
+
+.btn[aria-expanded="true"] {
+	color: white;
+	background-color: branding.$select-color;
+}
+
+.expander {
+	display: inline-block;
+
+	button {
+		display: block;
+
+		&:focus {
+			outline: none !important;
+		}
+	}
+
+	.expand {
+		display: none;
+	}
+}
+
+//
+// button groups
+//
+
+.buttons {
+	margin: 10px;
+
+	button {
+		margin-bottom: 5px;
+	}
+}

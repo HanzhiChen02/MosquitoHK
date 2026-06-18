@@ -1,0 +1,73 @@
+/******************************************************************************\
+|                                                                              |
+|                                 _pages.scss                                  |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/branding";
+
+//
+// colors
+//
+
+$footer-border-color: branding.$primary-color;
+
+//
+// styles
+//
+
+#page {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	line-height: 2em;
+	min-height: 100%;
+
+	.buttons {
+		text-align: center;
+
+		button {
+			margin-top: 10px;
+		}
+	}
+
+	&.home {
+		color: lightgrey;
+		background: black;
+
+		h1, h2, h3 {
+			color: white;
+		}
+	}
+
+	#footer {
+		bottom: 0;
+		width: 100%;
+		padding: 50px;
+		color: lightgrey;
+		background: #494949;
+		border-top: 5px solid $footer-border-color;
+	
+		.container {
+			text-align: center;
+
+			.logo {
+				height: 100px;
+			}
+
+			a {
+				color: lightgrey;
+
+				&:hover {
+					color: white;
+				}
+			}
+		}
+	}
+}

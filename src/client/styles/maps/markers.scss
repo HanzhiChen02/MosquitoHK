@@ -1,0 +1,298 @@
+/******************************************************************************\
+|                                                                              |
+|                                 markers.css                                  |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines various CSS styles used in this application.             |
+|                                                                              |
+|        Author(s): Abe Megahed                                                |
+|                                                                              |
+|        This file is subject to the terms and conditions defined in           |
+|        'LICENSE.txt', which is part of this source code distribution.        |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2025, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/coloring";
+
+$inaturalist-fill-color: #819f27;
+$inaturalist-stroke-color: #c3d982;
+$inaturalist-cluster-color: coloring.faded($inaturalist-fill-color, 75%);
+
+$digitomy-fill-color: #5b3b01;
+$digitomy-stroke-color: tan;
+$digitomy-cluster-color: coloring.faded($digitomy-fill-color, 75%);
+
+$fehd-gravidtrap-level-1-color: #2fa84f;
+$fehd-gravidtrap-level-2-color: #f2c94c;
+$fehd-gravidtrap-level-3-color: #eb5757;
+$fehd-gravidtrap-level-4-color: #7b2cbf;
+$fehd-gravidtrap-level-unknown-color: #9ca3af;
+$fehd-gravidtrap-fill-color: $fehd-gravidtrap-level-2-color;
+$fehd-gravidtrap-stroke-color: #ffffff;
+$fehd-gravidtrap-cluster-color: coloring.faded($fehd-gravidtrap-fill-color, 75%);
+
+//
+// observation markers
+//
+
+.marker {
+	fill-opacity: 1;
+	stroke-width: 1.25;
+
+	&.selected {
+		z-index: 1500 !important;
+		// stroke: yellow !important;
+		outline: 4px solid #ff8080 !important;
+	}
+}
+
+div.marker {
+	border-radius: 50%;
+	border-style: solid;
+	border-width: 2px;
+
+	// make sure to display - needed in iframe
+	//
+	z-index: 1000 !important;
+}
+
+.marker {
+	color: white;
+	stroke: black;
+	border-color: black;
+}
+
+.cluster {
+	color: white;
+	border-color: white;
+
+	// make sure to display - needed in iframe
+	//
+	z-index: 1000 !important;
+}
+
+.aerial, .hybrid {
+	.marker {
+		color: white;
+		stroke: white;
+		border-color: white;
+	}
+
+	.cluster {
+		color: white;
+		border-color: white;
+	}
+}
+
+.hide-markers {
+	.marker, .cluster {
+		display: none;
+	}
+}
+
+//
+// observation cluster markers
+//
+
+.cluster {
+	display: flex;
+	text-align: center;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 50%;
+	/* filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5)); */
+
+	> div {
+		line-height: 1em;
+		margin: auto;
+	}
+}
+
+//
+// data source markers
+//
+
+.inaturalist {
+	i {
+		color: $inaturalist-fill-color;
+	}
+	&.marker {
+		fill: $inaturalist-fill-color;
+		stroke: $inaturalist-stroke-color;
+	}
+	&.marker, .swatch {
+		background-color: $inaturalist-fill-color;
+		border-color: $inaturalist-stroke-color;
+	}
+	&.cluster {
+		background-color: $inaturalist-cluster-color;
+		border-color: $inaturalist-stroke-color;
+	}
+}
+
+.digitomy {
+	i {
+		color: $digitomy-fill-color;
+	}
+	&.marker {
+		fill: $digitomy-fill-color;
+		stroke: $digitomy-stroke-color;
+	}
+	&.marker, .swatch {
+		background-color: $digitomy-fill-color;
+		border-color: $digitomy-stroke-color;
+	}
+	&.cluster {
+		background-color: $digitomy-cluster-color;
+		border-color: $digitomy-stroke-color;
+	}
+}
+
+.fehd-gravidtrap {
+	i {
+		color: $fehd-gravidtrap-fill-color;
+	}
+	&.marker {
+		fill: $fehd-gravidtrap-fill-color;
+		stroke: $fehd-gravidtrap-stroke-color;
+	}
+	&.marker, .swatch {
+		background-color: $fehd-gravidtrap-fill-color;
+		border-color: $fehd-gravidtrap-stroke-color;
+	}
+	&.cluster {
+		background-color: $fehd-gravidtrap-cluster-color;
+		border-color: $fehd-gravidtrap-stroke-color;
+	}
+
+	&.area {
+		cursor: pointer;
+	}
+
+	&.level-1 {
+		fill: $fehd-gravidtrap-level-1-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-1-color;
+	}
+
+	&.level-2 {
+		fill: $fehd-gravidtrap-level-2-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-2-color;
+	}
+
+	&.level-3 {
+		fill: $fehd-gravidtrap-level-3-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-3-color;
+	}
+
+	&.level-4 {
+		fill: $fehd-gravidtrap-level-4-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-4-color;
+	}
+
+	&.level-unknown {
+		fill: $fehd-gravidtrap-level-unknown-color;
+		stroke: white;
+		background-color: $fehd-gravidtrap-level-unknown-color;
+	}
+}
+
+.fehd-area-popup {
+	min-width: 210px;
+
+	h3 {
+		margin: 0 0 6px 0;
+		font-size: 15px;
+	}
+
+	.note {
+		margin-top: 6px;
+		font-size: 11px;
+		color: #666;
+		line-height: 1.3;
+	}
+}
+
+.environment-hko {
+	i {
+		color: #2f80ed;
+	}
+	&.marker {
+		fill: #2f80ed;
+		stroke: white;
+	}
+	&.env-level-1 {
+		fill: #2f80ed;
+		background-color: #2f80ed;
+	}
+	&.env-level-2 {
+		fill: #27ae60;
+		background-color: #27ae60;
+	}
+	&.env-level-3 {
+		fill: #f2c94c;
+		background-color: #f2c94c;
+	}
+	&.env-level-4 {
+		fill: #eb5757;
+		background-color: #eb5757;
+	}
+
+	&.area {
+		cursor: pointer;
+		stroke: white;
+	}
+}
+
+.environment-popup {
+	min-width: 220px;
+
+	h3 {
+		margin: 0 0 6px 0;
+		font-size: 15px;
+	}
+
+	.note {
+		margin-top: 6px;
+		font-size: 11px;
+		color: #666;
+		line-height: 1.3;
+	}
+}
+
+//
+// hide / show markers
+//
+
+.hide-inaturalist {
+	.inaturalist {
+		display: none !important;
+	}
+}
+
+.hide-digitomy {
+	.digitomy {
+		display: none !important;
+	}
+}
+
+.hide-fehd_gravidtrap {
+	.fehd-gravidtrap.marker, .fehd-gravidtrap.cluster {
+		display: none !important;
+	}
+}
+
+.hide-fehd_gravidtrap_area {
+	.fehd-gravidtrap-area {
+		display: none !important;
+	}
+}

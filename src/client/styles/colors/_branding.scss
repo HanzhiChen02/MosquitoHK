@@ -1,0 +1,35 @@
+/******************************************************************************\
+|                                                                              |
+|                                _branding.scss                                |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "colors";
+@use "coloring";
+
+//
+// colors
+//
+
+$primary-color: colors.$medium-grey;
+$select-color: cornflowerblue;
+$light-color: coloring.lightened($primary-color, 10%);
+$dark-color: coloring.darkened($primary-color, 10%);
+
+// highlighting colors
+//
+$select-color: $light-color;
+$highlight-color: $select-color;
+$select-fill: coloring.lightened($select-color, 33%);
+$highlight-fill: coloring.lightened($highlight-color, 33%);
+
+body {
+	--primary-color: #{$primary-color};
+	--select-color: #{$select-color};
+}

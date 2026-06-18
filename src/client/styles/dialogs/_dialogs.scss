@@ -1,0 +1,402 @@
+/******************************************************************************\
+|                                                                              |
+|                                 _dialogs.scss                                |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines various CSS styles used in this application.             |
+|                                                                              |
+|        Author(s): Abe Megahed                                                |
+|                                                                              |
+|        This file is subject to the terms and conditions defined in           |
+|        'LICENSE.txt', which is part of this source code distribution.        |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../bootstrap/variables";
+@use "../colors/colors";
+
+//
+// variables
+//
+
+$border-radius: 0;
+$box-shadow: 10px 10px 50px 10px fade(black, 50%);
+
+//
+// colors
+//
+
+$background-color: colors.$ultra-light-grey;
+$body-color: white;
+$border-color: colors.$very-light-grey;
+
+$dark-background-color: colors.$very-very-dark-grey;
+$dark-body-color: black;
+$dark-border-color: colors.$dark-grey;
+
+//
+// styles
+//
+
+.modal {
+
+	// make modal frame transparent to events
+	//
+	pointer-events: none;
+
+	// slightly offset modals upwards
+	//
+	padding-bottom: 50px;
+
+	.modal-dialog {
+		display: flex;
+		max-width: 100%;
+		margin: auto;
+
+		.modal-content {
+			border-radius: $border-radius;
+			box-shadow: $box-shadow;
+			pointer-events: auto;
+			left: 0;
+			top: 0;
+			display: flex;
+			flex-direction: column;
+			background-color: $background-color;
+			border-color: $border-color;
+
+			// size
+			//
+			width: 100%;
+			margin: auto;
+			min-width: 300px;
+
+			.modal-header {
+				flex-shrink: 0;
+				padding: 10px;
+				border-color: $border-color;
+
+				h1 {
+					font-size: 24px;
+					margin: 0;
+				}
+
+				button.close {
+					margin-top: 3px;
+					margin-right: 5px;
+				}
+			}
+
+			.modal-header.ui-draggable-handle {
+				//.handle {
+					cursor: move;
+				//}	
+			}
+
+			.modal-body {
+				flex-grow: 1;
+				overflow: auto;
+				background-color: $body-color;
+
+				.icon {
+					font-size: 200%;
+					margin-left: 10px; 
+					margin-right: 10px;
+					display: inline-block;
+
+					+ .status-message {
+						display: inline-block;
+					}
+				}
+
+				.selector .items {
+					// max-height: 300px;
+					overflow: auto;
+				}
+			}
+
+			.modal-footer {
+				flex-shrink: 0;
+				padding: 10px;
+				border-color: $border-color;
+			}
+		}
+	}
+
+	&.narrow {
+		.modal-content {
+			width: 300px;
+		}
+	}
+}
+
+.status-dialog {
+	.modal-body {
+		text-align: center;
+	}
+}
+
+//
+// dark dialogs
+//
+
+.dark {
+	.modal {
+		.modal-dialog {
+			.modal-content {
+				background-color: $dark-background-color;
+				border-color: $dark-border-color;
+
+				.modal-header {
+					border-color: $dark-border-color;
+
+					button.close {
+						color: white;
+					}
+				}
+
+				.modal-body {
+					background-color: $dark-body-color;
+				}
+
+				.modal-footer {
+					border-color: $dark-border-color;
+				}
+			}
+		}
+	}
+}
+
+//
+// dialog placement for short windows
+//
+
+@media (min-width: variables.$screen-sm-min) {
+	@media (max-height: 550px) {
+
+		.modal {
+			text-align: center;
+		}
+
+		.modal:before {
+			content: "";
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.modal-dialog {
+			display: inline-block;
+			text-align: left;
+			vertical-align: middle;
+		}
+	}
+}
+
+//
+// modal backdrops
+//
+
+.modal.backdrop {
+	pointer-events: all;
+	background-color: rgba(0, 0, 0, 50%);
+}
+
+.modal-open {
+
+	// don't scroll for offscreen dialogs
+	//
+	.modal {
+		overflow-x: hidden;
+		overflow-y: hidden;
+	}
+}
+
+//
+// modal extents - used for centering variable height modals
+//
+
+.modal-extents {
+	width: 100%;
+	margin: auto;
+}
+
+//
+// non-mobile modals
+//
+
+@media (min-width: variables.$screen-xs-min) {
+	.modal {
+		.modal-dialog {
+			.modal-header {
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+
+			.modal-body.flexible {
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+
+			.modal-footer {
+				border-bottom-left-radius: 3px;
+				border-bottom-right-radius: 3px;
+
+				.buttons {
+					float: right;
+					text-align: left;
+					flex-shrink: 0;
+					margin-left: 10px;
+
+					// counter bootstrap
+					//
+					.btn, .btn + .btn {
+						margin-bottom: 5px;
+					}
+				}
+			}
+		}
+
+		//
+		// non resizable modals
+		//
+
+		.modal-dialog:not(.ui-resizable) {
+			.modal-body {
+			
+				// scrollable regions
+				//
+				.vertically.scrollable {
+					max-height: 220px;
+				}
+			}
+
+			.modal-body {
+				overflow: auto;
+			}
+		}
+	}
+}
+
+//
+// desktop styles
+//
+
+body[device="desktop"] {
+	.modal.in {
+		.modal-dialog {
+
+			// use hardware acceleration to speed up rendering
+			//
+			transform: translateZ(0);
+		}
+	}
+}
+
+//
+// mobile modals
+//
+
+@media (max-width: variables.$screen-xs-min) {
+
+	.modal-extents {
+		height: auto !important;
+		margin: 0;
+	}
+
+	.modal {
+
+		// don't slightly offset modals upwards
+		//
+		padding-bottom: 0;
+
+		.modal-dialog {
+			.modal-header {
+				.modal-title {
+					margin-right: 0;
+				}
+
+				.buttons {
+					margin-left: 0;
+				}
+			}
+
+			.modal-body {
+
+				// scrollable regions
+				//
+				.vertically.scrollable {
+					max-height: none;
+				}
+			}
+
+			.modal-footer {
+				.notes {
+					float: none;
+					text-align: left;
+				}
+
+				.buttons {
+					margin-bottom: 10px;
+				}
+			}
+		}
+	}
+
+	.modal-open {
+
+		// scroll vertically
+		//
+		.modal {
+			overflow-x: hidden;
+			overflow-y: auto;
+
+			// always use bounce scrolling
+			//
+			-webkit-overflow-scrolling: touch;
+		}
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	.modal-dialog {
+		.modal-content {
+			background: black;
+		}
+	}
+}
+
+//
+// desktop styles
+//
+
+body[device="desktop"] {
+	.modal-dialog {
+		.modal-content {
+			max-height: 450px;
+		}
+	}
+}
+
+//
+// mobile modals
+//
+
+body[device="phone"], body[device="tablet"] {
+	.modal-dialog {
+		width: 100%;
+		height: 100%;
+
+		.modal-content {
+			width: 100%;
+			max-height: 100%;
+			border-width: 0;
+			border-radius: 0;
+		}
+	}
+}

@@ -1,0 +1,146 @@
+/******************************************************************************\
+|                                                                              |
+|                                 _layout.scss                                 |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../bootstrap/variables";
+
+//
+// main regions
+//
+
+.main.container {
+	flex-grow: 1;
+	padding-top: 20px;
+	padding-bottom: 50px;
+}
+
+#background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+svg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.full-screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+.page {
+	padding: 0 50px;
+
+	h1:first-child {
+		margin-top: 0;
+	}
+}
+
+canvas {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.dark canvas {
+	background: #333333;
+}
+
+.overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	pointer-events: none;
+	pointer-events: none;
+
+	* {
+		pointer-events: auto;
+	}
+}
+
+.spinner.overlay {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1001;
+	background: rgba(0, 0, 0, 0.5);
+
+	.icon {
+		display: flex;
+		width: 150px;
+		height: 150px;
+		margin: auto;
+		background: white;
+		border-radius: 10px;
+
+		i {
+			margin: auto;
+		}
+	}
+}
+
+.fineprint {
+	font-size: 12px;
+}
+
+//
+// visability
+//
+
+.hidden {
+	display: none;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+//
+// dark styles
+//
+
+.dark {
+	background: black;
+	color: lightgrey;
+
+	.light-only {
+		display: none;
+	}
+
+	.spinner.overlay {
+		.icon {
+			background: black;
+		}
+	}
+}
+
+body:not(.dark) {
+	.dark-only {
+		display: none;
+	}
+}

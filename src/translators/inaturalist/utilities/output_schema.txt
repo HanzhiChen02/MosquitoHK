@@ -1,0 +1,54 @@
+OBJECTID							REQUIRED
+title								 
+thingDescription					 
+dataStreamName						 
+dataStreamDescription				 			
+dataStreamObsType					 				
+dataStreamUniCategory				 
+observationProObsUID						
+observationResCatObsPheTime			REQUIRED
+observationResCatObsResTime			REQUIRED
+observationResCatObsResult			REQUIRED
+obsResCatObsResult_Type
+Indentified by Human
+Identified by Machine
+observationResCatObsSubTime			
+observationImaImaStatus				REQUIRED
+observationImaImaResult				REQUIRED
+observationConParameters
+ObsCPCommonName						REQUIRED
+ObsTaxonName						REQUIRED
+Aegypti Certainty
+Tiger Certainty
+omProcessLicLicName
+omProcessLicLicURI
+omProcessLicLicAttSource
+omProcessLicLicAttAggregator
+omPrcoessProType
+omProcessProReference
+omPrcoessResQuaValStatus
+omPrcoessResQuaValMethod
+omPrcoessResQuaValResult
+omPrcoessResQuaQuaGrade
+observedProName
+observedProDescription
+observedProDefinition
+sensorName
+sensorDescription
+sensorEncType
+locationName
+locationDescription
+locationEncType
+latitude							MANDATORY
+longitude							MANDATORY
+thingName
+thingDescription
+featureIntName
+featureIntDescription
+featureIntEncType
+featureIntLocation
+type
+coordinates							MANDATORY
+customEcCreatedOn
+x 									MANDATORY
+y 									MANDATORY

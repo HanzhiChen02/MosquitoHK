@@ -1,0 +1,1287 @@
+[
+    {
+        "transform": "settype",
+        "parameters": {
+            "col": "column1",
+            "type": "Map"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "column1",
+            "keys": [
+                "'annotations'",
+                "'cached_votes_total'",
+                "'captive'",
+                "'comments'",
+                "'comments_count'",
+                "'community_taxon_id'",
+                "'created_at'",
+                "'created_at_details'",
+                "'created_time_zone'",
+                "'description'",
+                "'faves'",
+                "'faves_count'",
+                "'flags'",
+                "'geojson'",
+                "'geoprivacy'",
+                "'id'",
+                "'ident_taxon_ids'",
+                "'identifications'",
+                "'identifications_count'",
+                "'identifications_most_agree'",
+                "'identifications_most_disagree'",
+                "'identifications_some_agree'",
+                "'license_code'",
+                "'location'",
+                "'map_scale'",
+                "'mappable'",
+                "'non_owner_ids'",
+                "'num_identification_agreements'",
+                "'num_identification_disagreements'",
+                "'oauth_application_id'",
+                "'obscured'",
+                "'observation_photos'",
+                "'observed_on'",
+                "'observed_on_details'",
+                "'observed_on_string'",
+                "'observed_time_zone'",
+                "'ofvs'",
+                "'outlinks'",
+                "'owners_identification_from_vision'",
+                "'photos'",
+                "'place_guess'",
+                "'place_ids'",
+                "'positional_accuracy'",
+                "'preferences'",
+                "'project_ids'",
+                "'project_ids_with_curator_id'",
+                "'project_ids_without_curator_id'",
+                "'project_observations'",
+                "'public_positional_accuracy'",
+                "'quality_grade'",
+                "'quality_metrics'",
+                "'reviewed_by'",
+                "'site_id'",
+                "'sounds'",
+                "'spam'",
+                "'species_guess'",
+                "'tags'",
+                "'taxon'",
+                "'taxon_geoprivacy'",
+                "'time_observed_at'",
+                "'time_zone_offset'",
+                "'updated_at'",
+                "'uri'",
+                "'user'",
+                "'uuid'",
+                "'votes'"
+            ],
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Citizen\u00b7science\u00b7data\u00b7on\u00b7mosquitos\u00b7from\u00b7iNaturalist\u00b7with\u00b7additional\u00b7automated\u00b7ID'",
+            "as": "'title'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Data\u00b7is\u00b7generated\u00b7from\u00b7the\u00b7iNaturalist\u00b7database\u00b7filtered\u00b7by\u00b7Mosquitoes\u00b7and\u00b7quality\u00b7grade\u00b7before\u00b7additional\u00b7automated\u00b7identifications\u00b7are\u00b7added'",
+            "as": "'description_x'"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "user",
+            "keys": [
+                "'activity_count'",
+                "'created_at'",
+                "'icon'",
+                "'icon_url'",
+                "'id'",
+                "'identifications_count'",
+                "'journal_posts_count'",
+                "'login'",
+                "'login_autocomplete'",
+                "'login_exact'",
+                "'name'",
+                "'name_autocomplete'",
+                "'observations_count'",
+                "'orcid'",
+                "'preferences'",
+                "'roles'",
+                "'site_id'",
+                "'spam'",
+                "'species_count'",
+                "'suspended'",
+                "'universal_search_rank'"
+            ],
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "settype",
+        "parameters": {
+            "col": "id1",
+            "type": "String"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "MERGE",
+                "params": [
+                    "id1",
+                    "' :\u00b7Research\u00b7grade\u00b7mosquito\u00b7species\u00b7occurrence\u00b7data\u00b7from\u00b7user\u00b7cell\u00b7phone'",
+                    "''"
+                ]
+            },
+            "as": "'dataStreamName'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "dataStreamName",
+            "position": "before",
+            "before": "description_x"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'category observation'",
+            "as": "'dataStreamObsType'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'{\"Type\": \"Annotations potentially including lifecycle phase\",\"Identified by Human\": \"Annotations potentially including lifecycle phase\",\"Identified by Machine\": \"Annotations potentially including lifecycle phase\"}'",
+            "as": "'dataStreamUniCategory'"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "uuid",
+                "'observationProObsUID'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationProObsUID",
+            "position": "before",
+            "before": "dataStreamUniCategory"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "time_observed_at",
+                "'observationResCatObsPheTime'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationResCatObsPheTime",
+            "position": "before",
+            "before": "observationProObsUID"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "observationResCatObsPheTime",
+            "as": "'observationResCatObsResTime'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationResCatObsResTime",
+            "position": "before",
+            "before": "observationResCatObsPheTime"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "description",
+                "'observationDescription'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "description_x",
+                "'description'"
+            ]
+        }
+    },
+    {
+        "transform": "settype",
+        "parameters": {
+            "col": "id",
+            "type": "String"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'{\"Type\":[],\"Human\u00b7ID\":\"'",
+            "as": "'Part1'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'\",\"Automated\u00b7ID\":[]}'",
+            "as": "'Part3'"
+        }
+    },
+    {
+        "transform": "merge",
+        "parameters": {
+            "col": [
+                "Part1",
+                "species_guess",
+                "Part3"
+            ],
+            "as": "'observationResCatObsResult'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationResCatObsResult",
+            "position": "before",
+            "before": "Part3"
+        }
+    },
+    {
+        "transform": "drop",
+        "parameters": {
+            "col": "Part3",
+            "action": "Drop"
+        }
+    },
+    {
+        "transform": "drop",
+        "parameters": {
+            "col": "Part1",
+            "action": "Drop"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "updated_at",
+                "'observationResCaObsResult'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationResCaObsResult",
+            "position": "before",
+            "before": "observationResCatObsResult"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "observationResCaObsResult",
+                "'observationResCatObsSubTime'"
+            ]
+        }
+    },
+    {
+        "transform": "countpattern",
+        "parameters": {
+            "type": "between",
+            "col": "observation_photos",
+            "start": "`\"photo`",
+            "includeStart": true,
+            "end": "`\\}\\}`",
+            "includeEnd": true,
+            "as": "'countpattern_observation_photos'"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "observation_photos",
+                "'observationImaImaResult'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "countpattern_observation_photos",
+                "'observationImaImaStatus'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationImaImaStatus",
+            "position": "before",
+            "before": "observationResCatObsSubTime"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationImaImaResult",
+            "position": "before",
+            "before": "observationImaImaStatus"
+        }
+    },
+    {
+        "transform": "nest",
+        "parameters": {
+            "col": [
+                "captive",
+                "comments",
+                "time_zone_offset",
+                "uri",
+                "icon_url",
+                "sounds"
+            ],
+            "into": "map",
+            "as": "'observationConParameters'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "observationConParameters",
+            "position": "before",
+            "before": "observationImaImaResult"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "taxon",
+            "keys": "'name'",
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "name1",
+                "'ObsTaxonName'"
+            ]
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "taxon",
+            "keys": "'preferred_common_name'",
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "preferred_common_name",
+                "'ObsCPCommonName'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "ObsCPCommonName",
+            "position": "before",
+            "before": "observationConParameters"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "ObsTaxonName",
+            "position": "before",
+            "before": "ObsCPCommonName"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "license_code",
+                "'omProcessLicLicName'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "omProcessLicLicName",
+            "position": "before",
+            "before": "ObsTaxonName"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "login",
+                "'omProcessLicLicAttSource'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "omProcessLicLicAttSource",
+            "position": "before",
+            "before": "omProcessLicLicName"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'iNaturalist'",
+            "as": "'omProcessLicLicAttAggregator'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Sensor'",
+            "as": "'omPrcoessProType'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'https://www.inaturalist.org/pages/help'",
+            "as": "'omProcessProReference'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'true'",
+            "as": "'omProcessResQuaValStatus'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Human expert validation'",
+            "as": "'omProcessResQuaValMethod'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'true'",
+            "as": "'omProcessResQuaValResult'"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "quality_grade",
+                "'omProcessResQuaQuaGrade'"
+            ]
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "omProcessResQuaQuaGrade",
+            "position": "before",
+            "before": "omProcessResQuaValResult"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "omProcessResQuaQuaGrade",
+            "as": "'qualityGrade'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "qualityGrade",
+            "position": "after",
+            "after": "votes"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "taxon",
+            "keys": "'taxon_schemes_count'",
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "taxon",
+            "keys": "'flag_counts'",
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "unnest",
+        "parameters": {
+            "col": "taxon",
+            "keys": "'taxon_changes_count'",
+            "pluck": "markLineage"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "taxon_changes_count",
+                "'taxonChanges'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "flag_counts",
+                "'flagCounts'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "taxon_schemes_count",
+                "'taxonCounts'"
+            ]
+        }
+    },
+    {
+        "transform": "nest",
+        "parameters": {
+            "col": [
+                "qualityGrade",
+                "taxonCounts",
+                "flagCounts",
+                "taxonChanges",
+                "positional_accuracy",
+                "public_positional_accuracy"
+            ],
+            "into": "map",
+            "as": "'omProcessResQuaQuaAssessment'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "omProcessResQuaQuaAssessment",
+            "position": "before",
+            "before": "omProcessResQuaQuaGrade"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Species occurrence'",
+            "as": "'observedProName'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Whether a species is observed at a location'",
+            "as": "'observedProDescription'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'https://www.sciencedirect.com/topics/earth-and-planetary-sciences/species-occurrence'",
+            "as": "'observedProDefinition'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "id1",
+            "as": "'sensorName'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "MERGE",
+                "params": [
+                    "'Observation take by mobile phone of user: '",
+                    "id1"
+                ]
+            },
+            "as": "'sensorDescription'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "sensorDescription",
+            "position": "before",
+            "before": "observedProDefinition"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'NC'",
+            "as": "'sensorEncType'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Anonymous location'",
+            "as": "'locationName'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Anonymous\u00b7location\u00b7with\u00b7geoprivacy:'",
+            "as": "'locationDescription'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'GeoJSON Point'",
+            "as": "'locationEncType'"
+        }
+    },
+    {
+        "transform": "splitpatterns",
+        "parameters": {
+            "col": "location",
+            "type": "on",
+            "on": "','"
+        }
+    },
+    {
+        "transform": "set",
+        "parameters": {
+            "col": "location1",
+            "value": {
+                "type": "function",
+                "name": "IFMISSING",
+                "params": [
+                    "location1",
+                    "0"
+                ]
+            }
+        }
+    },
+    {
+        "transform": "set",
+        "parameters": {
+            "col": "location2",
+            "value": {
+                "type": "function",
+                "name": "IFMISSING",
+                "params": [
+                    "location2",
+                    "0"
+                ]
+            }
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "location1",
+                "'latitude'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "location2",
+                "'longitude'"
+            ]
+        }
+    },
+    {
+        "transform": "set",
+        "parameters": {
+            "col": "longitude",
+            "value": {
+                "type": "function",
+                "name": "IFNULL",
+                "params": [
+                    "longitude",
+                    "0"
+                ]
+            }
+        }
+    },
+    {
+        "transform": "set",
+        "parameters": {
+            "col": "latitude",
+            "value": {
+                "type": "function",
+                "name": "IFNULL",
+                "params": [
+                    "latitude",
+                    "0"
+                ]
+            }
+        }
+    },
+    {
+        "transform": "settype",
+        "parameters": {
+            "col": [
+                "latitude",
+                "longitude"
+            ],
+            "type": "Float"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "latitude",
+            "position": "before",
+            "before": "locationEncType"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "longitude",
+            "position": "before",
+            "before": "latitude"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "id1",
+            "as": "'thingName'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "MERGE",
+                "params": [
+                    "'Volunteer with login: '",
+                    "id1"
+                ]
+            },
+            "as": "'thingDescription'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "thingName",
+            "position": "before",
+            "before": "longitude"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "thingDescription",
+            "position": "before",
+            "before": "thingName"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "sensorName",
+            "position": "after",
+            "after": "sensorDescription"
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "observations_count",
+                "'userObservationCount'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "species_count",
+                "'userSpeciesCount'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "journal_posts_count",
+                "'userJournalCount'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "identifications_count1",
+                "'userIdCount'"
+            ]
+        }
+    },
+    {
+        "transform": "rename",
+        "parameters": {
+            "type": "manual",
+            "mapping": [
+                "activity_count",
+                "'userActivityCount'"
+            ]
+        }
+    },
+    {
+        "transform": "nest",
+        "parameters": {
+            "col": [
+                "userActivityCount",
+                "userIdCount",
+                "userJournalCount",
+                "userObservationCount",
+                "userSpeciesCount"
+            ],
+            "into": "map",
+            "as": "'thingProperties'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "thingProperties",
+            "position": "before",
+            "before": "thingDescription"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'location.name'",
+            "as": "'featureIntName'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'location.description'",
+            "as": "'featureIntDescription'"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'location.encodingType'",
+            "as": "'featureIntEncType'"
+        }
+    },
+    {
+        "transform": "nest",
+        "parameters": {
+            "col": [
+                "longitude",
+                "latitude"
+            ],
+            "into": "array",
+            "as": "'coordinates'"
+        }
+    },
+    {
+        "transform": "replacepatterns",
+        "parameters": {
+            "col": "coordinates",
+            "with": "''",
+            "on": "`\"`",
+            "global": true
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "MERGE",
+                "params": [
+                    "'{\"coordinates\":'",
+                    "coordinates",
+                    "'}'"
+                ]
+            },
+            "as": "'featureIntLocation'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "featureIntLocation",
+            "position": "before",
+            "before": "featureIntEncType"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'Point'",
+            "as": "'type'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "coordinates",
+            "position": "before",
+            "before": "type"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "MERGE",
+                "params": [
+                    "'{\"type\":\"Point\",\"coordinates\":'",
+                    "coordinates",
+                    "'}'"
+                ]
+            },
+            "as": "'geometry'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "geometry",
+            "position": "before",
+            "before": "coordinates"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": {
+                "type": "function",
+                "name": "NOW",
+                "params": [
+                    "'UTC'"
+                ]
+            },
+            "as": "'customEcCreatedOn'"
+        }
+    },
+    {
+        "transform": "drop",
+        "parameters": {
+            "col": [
+                "annotations",
+                "cached_votes_total",
+                "captive",
+                "comments",
+                "comments_count",
+                "community_taxon_id",
+                "created_at",
+                "observationDescription",
+                "faves",
+                "faves_count",
+                "flags",
+                "geojson",
+                "geoprivacy",
+                "id",
+                "ident_taxon_ids",
+                "identifications",
+                "identifications_count",
+                "identifications_most_agree",
+                "identifications_most_disagree",
+                "identifications_some_agree",
+                "map_scale",
+                "mappable",
+                "non_owner_ids",
+                "num_identification_agreements",
+                "num_identification_disagreements",
+                "oauth_application_id",
+                "obscured",
+                "observed_on",
+                "observed_on_string",
+                "ofvs",
+                "outlinks",
+                "owners_identification_from_vision",
+                "photos",
+                "place_guess",
+                "place_ids",
+                "positional_accuracy",
+                "preferences",
+                "project_ids",
+                "project_ids_with_curator_id",
+                "project_ids_without_curator_id",
+                "project_observations",
+                "public_positional_accuracy",
+                "quality_metrics",
+                "reviewed_by",
+                "site_id",
+                "sounds",
+                "spam",
+                "species_guess",
+                "tags",
+                "taxon",
+                "taxonChanges",
+                "flagCounts",
+                "taxonCounts",
+                "taxon_geoprivacy",
+                "time_zone_offset",
+                "uri",
+                "user",
+                "userActivityCount",
+                "created_at1",
+                "icon",
+                "icon_url",
+                "id1",
+                "userIdCount",
+                "userJournalCount",
+                "login_autocomplete",
+                "login_exact",
+                "name",
+                "name_autocomplete",
+                "userObservationCount",
+                "orcid",
+                "preferences1",
+                "roles",
+                "site_id1",
+                "spam1",
+                "userSpeciesCount",
+                "suspended",
+                "universal_search_rank",
+                "votes",
+                "qualityGrade"
+            ],
+            "action": "Drop"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": [
+                "title",
+                "description",
+                "dataStreamName",
+                "dataStreamObsType",
+                "dataStreamUniCategory",
+                "observationProObsUID",
+                "observationResCatObsPheTime",
+                "observationResCatObsResTime",
+                "observationResCatObsResult",
+                "observationResCatObsSubTime",
+                "observationImaImaStatus",
+                "observationImaImaResult",
+                "observationConParameters",
+                "ObsCPCommonName",
+                "ObsTaxonName",
+                "omProcessLicLicName",
+                "omProcessLicLicAttSource",
+                "omProcessLicLicAttAggregator",
+                "omPrcoessProType",
+                "omProcessProReference"
+            ],
+            "position": "after",
+            "after": "customEcCreatedOn"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": [
+                "omProcessResQuaValStatus",
+                "omProcessResQuaValMethod",
+                "omProcessResQuaValResult",
+                "omProcessResQuaQuaGrade",
+                "omProcessResQuaQuaAssessment",
+                "observedProName",
+                "observedProDescription",
+                "observedProDefinition",
+                "sensorName",
+                "sensorDescription",
+                "sensorEncType",
+                "locationName",
+                "locationDescription",
+                "locationEncType",
+                "latitude",
+                "longitude"
+            ],
+            "position": "after",
+            "after": "omProcessProReference"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": [
+                "thingName",
+                "thingDescription",
+                "thingProperties",
+                "featureIntName",
+                "featureIntDescription",
+                "featureIntEncType",
+                "featureIntLocation",
+                "type",
+                "coordinates",
+                "geometry",
+                "customEcCreatedOn"
+            ],
+            "position": "after",
+            "after": "longitude"
+        }
+    },
+    {
+        "transform": "derive",
+        "parameters": {
+            "type": "single",
+            "value": "'All\u00b7species\u00b7occurrence\u00b7observations\u00b7from\u00b7a\u00b7particular\u00b7user\u00b7taken\u00b7with\u00b7a\u00b7sensor\u00b7or\u00b7manually'",
+            "as": "'dataStreamDescription'"
+        }
+    },
+    {
+        "transform": "move",
+        "parameters": {
+            "col": "dataStreamDescription",
+            "position": "after",
+            "after": "dataStreamName"
+        }
+    },
+    {
+        "transform": "drop",
+        "parameters": {
+            "col": [
+                "column1",
+                "created_at_details",
+                "created_time_zone",
+                "observed_on_details",
+                "observed_time_zone"
+            ],
+            "action": "Drop"
+        }
+    },
+    {
+        "transform": "Delete",
+        "parameters": {
+            "target": "rows",
+            "with": "missing values",
+            "in": "sensorName"
+        }
+    }
+]

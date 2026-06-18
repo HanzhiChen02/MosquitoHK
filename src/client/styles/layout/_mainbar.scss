@@ -1,0 +1,58 @@
+/******************************************************************************\
+|                                                                              |
+|                                _mainbar.scss                                 |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+
+.mainbar {
+	.content {
+		max-height: 100%;
+
+		.users-list {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			overflow: auto;
+			margin: 10px;
+			margin-right: 0;
+
+			table {
+				width: 100%;
+				overflow: auto;
+				border-collapse: separate;
+				padding-right: 10px;
+
+				thead {
+					position: sticky;
+					top: 0;
+				}
+
+				tr {
+					td {
+						border: 1px solid colors.$very-very-very-light-grey;
+					}
+				}
+			}
+		}
+	}
+}
+
+.affiliates-only {
+	table.people {
+		tbody {
+			tr:not(.affiliate) {
+				display: none;
+			}
+		}
+	}
+}

@@ -1,0 +1,43 @@
+/******************************************************************************\
+|                                                                              |
+|                                _zoom-bar.scss                                |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../toolbars/toolbars";
+@use "../navs/buttons";
+
+//
+// styles
+//
+
+#zoom-bar {
+	position: absolute;
+	bottom: 30px;
+	right: 10px;
+
+	.buttons {
+		.current {
+			margin-bottom: 5px;
+		}
+
+		.current {
+			text-align: center;
+			width: toolbars.$button-size;
+			height: toolbars.$button-size;
+			font-size: toolbars.$button-font-size;
+			line-height: toolbars.$button-size;
+			font-weight: bold;
+			border-radius: buttons.$border-radius;
+			border-width: 1px;
+			border-style: solid;
+			border-color: transparent;
+		}
+	}
+}

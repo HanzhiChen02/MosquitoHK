@@ -1,0 +1,217 @@
+/******************************************************************************\
+|                                                                              |
+|                                _toolbars.scss                                |
+|                                                                              |
+|******************************************************************************|
+|                                                                              |
+|        This defines the dom and svg visual styles for this application.      |
+|                                                                              |
+|******************************************************************************|
+|     Copyright (C) 2024, Data Science Institute, University of Wisconsin      |
+\******************************************************************************/
+
+@use "../colors/colors";
+@use "../colors/branding";
+
+//
+// variables
+//
+
+$border-radius: 0;
+$button-size: 30px;
+$button-font-size: 20px;
+
+//
+// colors
+//
+
+$background-color: white;
+$border-color: colors.$very-very-light-grey;
+$title-color: black;
+$button-color: colors.$light-grey;
+$button-hover-color: black;
+$button-selected-color: black;
+$button-selected-background-color: colors.$very-very-light-grey;
+
+$dark-background-color: colors.$very-very-dark-grey;
+$dark-border-color: colors.$dark-grey;
+$dark-title-color: white;
+$dark-button-hover-color: white;
+$dark-button-selected-color: white;
+$dark-button-selected-background-color: colors.$medium-grey;
+
+//
+// styles
+//
+
+.toolbar {
+	display: flex;
+	padding: 5px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: $border-color;
+	border-radius: $border-radius;
+	background-color: $background-color;
+	box-shadow: 2px 2px 10px rgb(0 0 0 / 10%);
+
+	.title {
+		color: $title-color;
+		font-size: 14px;
+		font-weight: bold;
+	}
+
+	//
+	// toolbar buttons
+	//
+
+	.buttons {
+		display: flex;
+		margin: 0;
+
+		button {
+			width: $button-size;
+			height: $button-size;
+			font-size: $button-font-size;
+			color: $button-color;
+			background: transparent;
+			border-radius: 5px;
+			padding: 1px;
+
+			img {
+				max-width: calc(100% - 4px);
+				max-height: calc(100% - 4px);
+				margin: 2px;
+				vertical-align: top;
+			}
+
+			&.selected, &.active {
+				color: $button-selected-color;
+				background-color: $button-selected-background-color;
+			}
+		}
+	}
+
+	//
+	// toolbar input elements
+	//
+
+	input, select, button {
+		border: none;
+	}
+
+	select {
+		background: #e7e7e7;
+	}
+
+	.slider-range {
+		border-color: lightgrey;
+	}
+
+	//
+	// horizontal toolbars
+	//
+
+	&:not(.vertical) {
+		.buttons {
+			button:not(:first-child) {
+				margin-left: 5px;
+			}
+		}
+	}
+
+	//
+	// vertical toolbars
+	//
+
+	&.vertical {
+		flex-direction: column;
+		text-align: center;
+		width: 40px;
+
+		.title {
+			margin: 0 -5px;
+		}
+
+		.buttons {
+			flex-direction: column;
+			align-items: end;
+
+			button {
+				margin: 2px auto;
+			}
+		}
+
+		.divider {
+			display: block;
+			border-bottom: 2px dashed lightgrey;
+			width: 100%;
+			margin-top: 5px;
+			margin-bottom: 10px;
+		}
+	}
+}
+
+//
+// toolbar colors
+//
+
+.toolbar {
+
+	//
+	// toolbar buttons
+	//
+
+	.buttons {
+
+		button {
+
+			&.close, &.clear {
+				&:hover {
+					color: crimson;
+				}
+			}
+
+			&:hover {
+				color: $button-hover-color;
+			}
+
+			&.selected, &.active {
+				&:hover {
+					color: $button-selected-color;
+				}
+			}
+		}
+	}
+}
+
+//
+// dark styles
+//
+
+.dark {
+	.toolbar {
+		background: $dark-background-color;
+		border-color: $dark-border-color;
+
+		.title {
+			color: $dark-title-color;
+		}
+
+		.buttons {
+			button {
+				&:hover {
+					color: $dark-button-hover-color;
+				}
+
+				&.selected {
+					color: $dark-button-selected-color;
+					background: $dark-button-selected-background-color;
+
+					&:hover {
+						color: $dark-button-selected-color;
+					}
+				}
+			}
+		}
+	}
+}
