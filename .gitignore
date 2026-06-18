@@ -1,8 +1,0 @@
-.DS_Store
-.ipynb_checkpoints/
-.jupyter/
-__pycache__
-mysql
-data/*
-!data/boundaries/
-!data/boundaries/**
