@@ -80,6 +80,7 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 				<div><span class="swatch env-level-4"></span> Hot: ≥ 30°C</div>
 			</div>
 			<div id="timeline-container"></div>
+			<div id="fehd-point-timeline-container"></div>
 			<div id="fehd-area-timeline-container"></div>
 			<div id="environment-timeline-container"></div>
 		</div>
@@ -109,6 +110,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		},
 		timeline: {
 			el: '#timeline-container',
+			replaceElement: true
+		},
+		fehdPointTimeline: {
+			el: '#fehd-point-timeline-container',
 			replaceElement: true
 		},
 		fehdAreaTimeline: {
@@ -253,6 +258,9 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		if (this.hasChildView && this.hasChildView('timeline')) {
 			this.getChildView('timeline').update();
 		}
+		if (this.hasChildView && this.hasChildView('fehdPointTimeline')) {
+			this.getChildView('fehdPointTimeline').update();
+		}
 		if (this.hasChildView && this.hasChildView('fehdAreaTimeline')) {
 			this.getChildView('fehdAreaTimeline').update();
 		}
@@ -291,6 +299,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 	updatePanelVisibility: function() {
 		let environmentActive = this.isEnvironmentPanelActive();
 		let mosquitoActive = !environmentActive;
+		let inatSelected = this.isDataSourceSelected('inaturalist');
+		let fehdSelected = this.isDataSourceSelected('fehd_gravidtrap');
+		let agiSelected = this.isDataSourceSelected('fehd_gravidtrap_area');
+		let allMosquitoSelected = inatSelected && fehdSelected && agiSelected;
 
 		this.$el.find('#panel-switcher .panel-mode').removeClass('selected');
 		this.$el.find('#panel-switcher .panel-mode[data-panel="' + this.getActivePanel() + '"]').addClass('selected');
@@ -298,11 +310,11 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		this.$el.find('#data-bar').toggle(mosquitoActive);
 		this.$el.find('#environment-panel').toggle(environmentActive);
 		this.$el.find('#environment-index').toggle(environmentActive);
-		this.$el.find('#timeline').toggle(mosquitoActive);
-		this.$el.find('#fehd-area-timeline').toggle(
-			mosquitoActive && this.isDataSourceSelected('fehd_gravidtrap_area')
-		);
+		this.$el.find('#timeline').toggle(mosquitoActive && inatSelected);
+		this.$el.find('#fehd-point-timeline').toggle(mosquitoActive && fehdSelected && !allMosquitoSelected);
+		this.$el.find('#fehd-area-timeline').toggle(mosquitoActive && agiSelected);
 		this.$el.find('#environment-timeline').toggle(environmentActive);
+		this.updateVisibleTimelinePositions();
 
 		let fehdVisible = mosquitoActive && (
 			this.isDataSourceSelected('fehd_gravidtrap') ||
@@ -313,6 +325,56 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	updateTimelineVisibility: function() {
 		this.updatePanelVisibility();
+	},
+
+	updateVisibleTimelinePositions: function() {
+		let ids = [
+			'#timeline',
+			'#fehd-point-timeline',
+			'#fehd-area-timeline',
+			'#environment-timeline'
+		];
+		let visible = [];
+		for (let i = 0; i < ids.length; i++) {
+			let $timeline = this.$el.find(ids[i]);
+			if ($timeline.length && $timeline.is(':visible')) {
+				visible.push($timeline);
+			}
+		}
+
+		for (let i = 0; i < visible.length; i++) {
+			let bottom = (window.innerWidth <= 640? 8 : 16) + i * (window.innerWidth <= 640? 108 : 108);
+			visible[i].css('bottom', bottom + 'px');
+		}
+	},
+
+	syncTimelinePeriod: function(sourceTimeline, index) {
+		let prefix = sourceTimeline.options && sourceTimeline.options.dateParamPrefix;
+		if (!prefix) {
+			return;
+		}
+
+		let regions = [
+			'timeline',
+			'fehdPointTimeline',
+			'fehdAreaTimeline',
+			'environmentTimeline'
+		];
+
+		for (let i = 0; i < regions.length; i++) {
+			if (!this.hasChildView || !this.hasChildView(regions[i])) {
+				continue;
+			}
+			let timeline = this.getChildView(regions[i]);
+			if (timeline === sourceTimeline) {
+				continue;
+			}
+			if (!timeline.options || timeline.options.dateParamPrefix !== prefix) {
+				continue;
+			}
+			timeline.$el.find('.timeline-slider').val(index);
+			timeline.showPeriod(index);
+		}
 	},
 
 	getEnvironmentMetric: function() {
@@ -399,14 +461,24 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	showTimeline: function() {
 		this.showChildView('timeline', new TimelineView({
-			parent: this
+			parent: this,
+			id: 'timeline',
+			source: 'inaturalist',
+			title: 'iNaturalist timeline / iNaturalist 時間軸'
+		}));
+		this.showChildView('fehdPointTimeline', new TimelineView({
+			parent: this,
+			id: 'fehd-point-timeline',
+			source: 'fehd_gravidtrap',
+			title: 'FEHD point timeline / 食環署監察點時間軸',
+			dateParamPrefix: 'fehd'
 		}));
 		this.showChildView('fehdAreaTimeline', new TimelineView({
 			parent: this,
 			id: 'fehd-area-timeline',
 			source: 'fehd_gravidtrap_area',
 			title: 'FEHD district fill timeline / 分區填色時間軸',
-			dateParamPrefix: 'fehd_area'
+			dateParamPrefix: 'fehd'
 		}));
 		this.showChildView('environmentTimeline', new TimelineView({
 			parent: this,

@@ -407,8 +407,8 @@ export default {
 		let requestId = this.nextRequestId('fehd_gravidtrap_area');
 		this.fetchFehdAreaObservations({
 			data: {
-				before: QueryString.value('fehd_area_before'),
-				after: QueryString.value('fehd_area_after')
+				before: QueryString.value('fehd_before') || QueryString.value('fehd_area_before'),
+				after: QueryString.value('fehd_after') || QueryString.value('fehd_area_after')
 			},
 			success: (geojson) => {
 				if (!this.isCurrentRequest('fehd_gravidtrap_area', requestId)) {
@@ -606,6 +606,12 @@ export default {
 
 		let selected = QueryString.value('selected');
 		let requestId = this.nextRequestId(source);
+		let before = source === 'fehd_gravidtrap'?
+			QueryString.value('fehd_before') :
+			QueryString.value('before');
+		let after = source === 'fehd_gravidtrap'?
+			QueryString.value('fehd_after') :
+			QueryString.value('after');
 
 		this.fetchObservations(source, {
 
@@ -613,8 +619,8 @@ export default {
 			//
 			data: {
 				countries: QueryString.value('countries'),
-				before: QueryString.value('before'),
-				after: QueryString.value('after'),
+				before: before,
+				after: after,
 				genera: QueryString.value('genera'),
 				species: QueryString.value('species')
 			},

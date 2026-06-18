@@ -2067,6 +2067,80 @@ body[device=phone] .breadcrumb {
   position: absolute;
   top: 145px;
   left: 16px;
+  width: auto;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+}
+#data-bar .title {
+  margin: 0 0 6px 0;
+  color: #333;
+  font-size: 0;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+}
+#data-bar .title::after {
+  content: "Mosquito";
+  font-size: 11px;
+}
+#data-bar .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+#data-bar .buttons button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 210px;
+  height: auto;
+  min-height: 36px;
+  margin: 4px 0 0 0;
+  padding: 5px 7px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f7f7f7;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+}
+#data-bar .buttons button i {
+  width: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+#data-bar .buttons button img.icon {
+  width: 24px;
+  height: 24px;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+}
+#data-bar .buttons button::after {
+  font-size: 12px;
+  line-height: 1;
+}
+#data-bar .buttons button.inaturalist::after {
+  content: "iNat";
+}
+#data-bar .buttons button.digitomy::after {
+  content: "Digi";
+}
+#data-bar .buttons button.fehd_gravidtrap::after {
+  content: "AGI by area";
+}
+#data-bar .buttons button.fehd_gravidtrap_area::after {
+  content: "AGI by district";
+}
+#data-bar .buttons button.selected {
+  border-color: #2f80ed;
+  background: #eaf3ff;
+  color: #1f5fbf;
 }
 
 /******************************************************************************\
@@ -2151,7 +2225,7 @@ body[device=phone] .breadcrumb {
   border-color: transparent;
 }
 
-#timeline, #fehd-area-timeline, #environment-timeline {
+#timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline {
   position: absolute;
   left: 50%;
   bottom: 16px;
@@ -2164,31 +2238,35 @@ body[device=phone] .breadcrumb {
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.18);
   pointer-events: auto;
 }
-#timeline .timeline-header, #timeline .timeline-range, #fehd-area-timeline .timeline-header, #fehd-area-timeline .timeline-range, #environment-timeline .timeline-header, #environment-timeline .timeline-range {
+#timeline .timeline-header, #timeline .timeline-range, #fehd-point-timeline .timeline-header, #fehd-point-timeline .timeline-range, #fehd-area-timeline .timeline-header, #fehd-area-timeline .timeline-range, #environment-timeline .timeline-header, #environment-timeline .timeline-range {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
-#timeline .period, #fehd-area-timeline .period, #environment-timeline .period {
+#timeline .period, #fehd-point-timeline .period, #fehd-area-timeline .period, #environment-timeline .period {
   margin-left: 10px;
   color: #666;
 }
-#timeline .mosquito-count strong, #fehd-area-timeline .mosquito-count strong, #environment-timeline .mosquito-count strong {
+#timeline .mosquito-count strong, #fehd-point-timeline .mosquito-count strong, #fehd-area-timeline .mosquito-count strong, #environment-timeline .mosquito-count strong {
   color: #e40046;
   font-size: 20px;
 }
-#timeline .timeline-slider, #fehd-area-timeline .timeline-slider, #environment-timeline .timeline-slider {
+#timeline .timeline-slider, #fehd-point-timeline .timeline-slider, #fehd-area-timeline .timeline-slider, #environment-timeline .timeline-slider {
   width: 100%;
   accent-color: #e40046;
 }
-#timeline .timeline-range, #fehd-area-timeline .timeline-range, #environment-timeline .timeline-range {
+#timeline .timeline-range, #fehd-point-timeline .timeline-range, #fehd-area-timeline .timeline-range, #environment-timeline .timeline-range {
   color: #666;
   font-size: 11px;
 }
 
-#fehd-area-timeline {
+#fehd-point-timeline {
   bottom: 124px;
+}
+
+#fehd-area-timeline {
+  bottom: 232px;
 }
 
 #environment-timeline {
@@ -2196,20 +2274,23 @@ body[device=phone] .breadcrumb {
 }
 
 @media (max-width: 640px) {
-  #timeline, #fehd-area-timeline, #environment-timeline {
+  #timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline {
     bottom: 8px;
     width: calc(100% - 24px);
   }
-  #timeline .timeline-header, #fehd-area-timeline .timeline-header, #environment-timeline .timeline-header {
+  #timeline .timeline-header, #fehd-point-timeline .timeline-header, #fehd-area-timeline .timeline-header, #environment-timeline .timeline-header {
     align-items: start;
     flex-direction: column;
     gap: 2px;
   }
-  #timeline .hint, #fehd-area-timeline .hint, #environment-timeline .hint {
+  #timeline .hint, #fehd-point-timeline .hint, #fehd-area-timeline .hint, #environment-timeline .hint {
     display: none;
   }
-  #fehd-area-timeline {
+  #fehd-point-timeline {
     bottom: 116px;
+  }
+  #fehd-area-timeline {
+    bottom: 224px;
   }
   #environment-timeline {
     bottom: 8px;

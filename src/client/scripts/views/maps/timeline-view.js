@@ -314,7 +314,11 @@ export default BaseView.extend({
 	},
 
 	onChangePeriod: function(event) {
-		this.showPeriod(parseInt($(event.target).val()));
+		let index = parseInt($(event.target).val());
+		this.showPeriod(index);
+		if (this.parent && this.parent.syncTimelinePeriod) {
+			this.parent.syncTimelinePeriod(this, index);
+		}
 	},
 
 	onCommitPeriod: function(event) {

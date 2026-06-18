@@ -25,7 +25,7 @@ export default ToolbarView.extend({
 	//
 
 	id: 'data-bar',
-	className: 'vertical toolbar',
+	className: 'toolbar mosquito-toolbar',
 
 	template: _.template(`
 		<div class="title">Mosquito</div>
