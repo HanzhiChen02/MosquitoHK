@@ -25,36 +25,38 @@ export default ToolbarView.extend({
 	//
 
 	id: 'data-bar',
-	className: 'toolbar mosquito-toolbar',
+	className: 'mosquito-panel',
 
 	template: _.template(`
 		<div class="title">Mosquito</div>
 
-		<div class="buttons">
-			<% if (defaults.sources.includes('inaturalist')) { %>
-			<button class="inaturalist data-source" data-source="inaturalist" data-toggle="tooltip" title="iNaturalist" data-placement="right">
-				<img class="icon" src="images/logos/inaturalist.png" />
-			</button>
-			<% } %>
+		<% if (defaults.sources.includes('inaturalist')) { %>
+		<button class="inaturalist data-source" data-source="inaturalist" title="iNaturalist">
+			<img class="icon" src="images/logos/inaturalist.png" />
+			<span>iNat</span>
+		</button>
+		<% } %>
 
-			<% if (defaults.sources.includes('digitomy')) { %>
-			<button class="digitomy data-source" data-source="digitomy" data-toggle="tooltip" title="Digitomy" data-placement="right">
-				<i class="fa fa-crosshairs"></i>
-			</button>
-			<% } %>
+		<% if (defaults.sources.includes('digitomy')) { %>
+		<button class="digitomy data-source" data-source="digitomy" title="Digitomy">
+			<i class="fa fa-crosshairs"></i>
+			<span>Digi</span>
+		</button>
+		<% } %>
 
-			<% if (defaults.sources.includes('fehd_gravidtrap')) { %>
-			<button class="fehd_gravidtrap data-source" data-source="fehd_gravidtrap" data-toggle="tooltip" title="FEHD Gravidtrap survey-area points" data-placement="right">
-				<i class="fa fa-chart-line"></i>
-			</button>
-			<% } %>
+		<% if (defaults.sources.includes('fehd_gravidtrap')) { %>
+		<button class="fehd_gravidtrap data-source" data-source="fehd_gravidtrap" title="FEHD Gravidtrap survey-area points">
+			<i class="fa fa-chart-line"></i>
+			<span>Area</span>
+		</button>
+		<% } %>
 
-			<% if (defaults.sources.includes('fehd_gravidtrap_area')) { %>
-			<button class="fehd_gravidtrap_area data-source" data-source="fehd_gravidtrap_area" data-toggle="tooltip" title="FEHD Gravidtrap district fill" data-placement="right">
-				<i class="fa fa-map"></i>
-			</button>
-			<% } %>
-		</div>
+		<% if (defaults.sources.includes('fehd_gravidtrap_area')) { %>
+		<button class="fehd_gravidtrap_area data-source" data-source="fehd_gravidtrap_area" title="FEHD Gravidtrap district fill">
+			<i class="fa fa-map"></i>
+			<span>Dist.</span>
+		</button>
+		<% } %>
 	`),
 
 	events: {
