@@ -18,43 +18,27 @@
 	position: absolute;
 	top: 145px;
 	left: 16px;
+	z-index: 1000;
 
-	width: auto;
 	padding: 8px;
-	border-radius: 12px;
+	border-radius: 8px;
 	background: rgba(255, 255, 255, 0.94);
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 	pointer-events: auto;
 
 	.title {
-		margin: 0 0 6px 0;
-		color: #333;
-		font-size: 0;
+		margin-bottom: 6px;
+		font-size: 11px;
 		font-weight: bold;
-		line-height: 1.2;
-		text-align: left;
-
-		&::after {
-			content: "Mosquito";
-			font-size: 11px;
-		}
+		text-align: center;
 	}
 
-	.buttons {
-		display: flex;
-		flex-direction: column;
-		gap: 0;
-	}
-
-	.buttons button {
+	button {
 		display: flex;
 		align-items: center;
 		gap: 6px;
-		box-sizing: border-box;
-		width: 210px;
-		height: auto;
-		min-height: 36px;
-		margin: 4px 0 0 0;
+		width: 100%;
+		margin-top: 4px;
 		padding: 5px 7px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
@@ -64,39 +48,13 @@
 		cursor: pointer;
 
 		i {
-			width: 20px;
-			font-size: 16px;
-			text-align: center;
+			width: 14px;
 		}
 
 		img.icon {
-			width: 24px;
-			height: 24px;
-			max-width: none;
-			max-height: none;
-			margin: 0;
+			width: 14px;
+			height: 14px;
 			object-fit: contain;
-		}
-
-		&::after {
-			font-size: 12px;
-			line-height: 1;
-		}
-
-		&.inaturalist::after {
-			content: "iNat";
-		}
-
-		&.digitomy::after {
-			content: "Digi";
-		}
-
-		&.fehd_gravidtrap::after {
-			content: "AGI by area";
-		}
-
-		&.fehd_gravidtrap_area::after {
-			content: "AGI by district";
 		}
 
 		&.selected {

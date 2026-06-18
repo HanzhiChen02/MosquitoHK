@@ -2067,39 +2067,25 @@ body[device=phone] .breadcrumb {
   position: absolute;
   top: 145px;
   left: 16px;
-  width: auto;
+  z-index: 1000;
   padding: 8px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   pointer-events: auto;
 }
 #data-bar .title {
-  margin: 0 0 6px 0;
-  color: #333;
-  font-size: 0;
-  font-weight: bold;
-  line-height: 1.2;
-  text-align: left;
-}
-#data-bar .title::after {
-  content: "Mosquito";
+  margin-bottom: 6px;
   font-size: 11px;
+  font-weight: bold;
+  text-align: center;
 }
-#data-bar .buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-#data-bar .buttons button {
+#data-bar button {
   display: flex;
   align-items: center;
   gap: 6px;
-  box-sizing: border-box;
-  width: 210px;
-  height: auto;
-  min-height: 36px;
-  margin: 4px 0 0 0;
+  width: 100%;
+  margin-top: 4px;
   padding: 5px 7px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -2108,36 +2094,15 @@ body[device=phone] .breadcrumb {
   font-size: 12px;
   cursor: pointer;
 }
-#data-bar .buttons button i {
-  width: 20px;
-  font-size: 16px;
-  text-align: center;
+#data-bar button i {
+  width: 14px;
 }
-#data-bar .buttons button img.icon {
-  width: 24px;
-  height: 24px;
-  max-width: none;
-  max-height: none;
-  margin: 0;
+#data-bar button img.icon {
+  width: 14px;
+  height: 14px;
   object-fit: contain;
 }
-#data-bar .buttons button::after {
-  font-size: 12px;
-  line-height: 1;
-}
-#data-bar .buttons button.inaturalist::after {
-  content: "iNat";
-}
-#data-bar .buttons button.digitomy::after {
-  content: "Digi";
-}
-#data-bar .buttons button.fehd_gravidtrap::after {
-  content: "AGI by area";
-}
-#data-bar .buttons button.fehd_gravidtrap_area::after {
-  content: "AGI by district";
-}
-#data-bar .buttons button.selected {
+#data-bar button.selected {
   border-color: #2f80ed;
   background: #eaf3ff;
   color: #1f5fbf;
