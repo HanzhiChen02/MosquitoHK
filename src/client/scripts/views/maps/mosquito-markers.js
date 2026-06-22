@@ -232,6 +232,12 @@ export default {
 	},
 
 	removeMarkers: function() {
+		if (this.requestIds) {
+			for (const source in this.requestIds) {
+				this.requestIds[source] += 1;
+			}
+		}
+
 		if (this.clusterGroups) {
 			for (const source in this.clusterGroups) {
 				let clusterGroup = this.clusterGroups[source];
@@ -653,7 +659,7 @@ export default {
 		this.removeMarkers();
 		if (this.isEnvironmentPanelActive && this.isEnvironmentPanelActive()) {
 			this.showEnvironmentLayer();
-		} else {
+		} else if (!this.isLandscapePanelActive || !this.isLandscapePanelActive()) {
 			this.addMarkers();
 		}
 	}

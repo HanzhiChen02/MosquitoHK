@@ -21,6 +21,7 @@ import ViewBarView from '../../views/toolbars/view-bar-view.js';
 import ObservationPopups from '../../views/maps/observation-popups.js';
 import MosquitoMarkers from '../../views/maps/mosquito-markers.js';
 import TimelineView from '../../views/maps/timeline-view.js';
+import LandscapeTimelineView from '../../views/maps/landscape-timeline-view.js';
 import QueryString from '../../utilities/web/query-string.js';
 
 export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarkers, {
@@ -45,6 +46,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 				<button class="panel-mode" data-panel="environment">
 					<i class="fa fa-cloud-sun"></i>
 					<span>Environment</span>
+				</button>
+				<button class="panel-mode" data-panel="landscape">
+					<i class="fa fa-mountain-sun"></i>
+					<span>Landscape</span>
 				</button>
 			</div>
 			<div id="data-bar"></div>
@@ -79,16 +84,41 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 				<div><span class="swatch env-level-3"></span> Warm: 26 - &lt; 30°C</div>
 				<div><span class="swatch env-level-4"></span> Hot: ≥ 30°C</div>
 			</div>
+			<div id="landscape-panel">
+				<div class="title">Landscape</div>
+				<div class="landscape-year">
+					<i class="fa fa-calendar"></i>
+					<span>2023</span>
+				</div>
+				<div class="landscape-summary">
+					<div>Built-up: <strong class="built-up-area">—</strong> km²</div>
+					<div>Other land: <strong class="other-area">—</strong> km²</div>
+				</div>
+				<label for="landscape-opacity">Opacity</label>
+				<input id="landscape-opacity" type="range" min="20" max="100" value="78" step="1">
+				<a href="https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/" target="_blank" rel="noopener">
+					Planning Department
+				</a>
+			</div>
+			<div id="landscape-index">
+				<div class="title">Land-use classes / 土地用途分類</div>
+				<div class="landscape-legend-rows"></div>
+				<div class="landscape-warning">
+					Year-to-year comparison is indicative because definitions and methodology may change.
+				</div>
+			</div>
 			<div id="timeline-container"></div>
 			<div id="fehd-point-timeline-container"></div>
 			<div id="fehd-area-timeline-container"></div>
 			<div id="environment-timeline-container"></div>
+			<div id="landscape-timeline-container"></div>
 		</div>
 	`),
 
 	events: {
 		'click #panel-switcher .panel-mode': 'onClickPanelMode',
-		'click #environment-panel .environment-metric': 'onClickEnvironmentMetric'
+		'click #environment-panel .environment-metric': 'onClickEnvironmentMetric',
+		'input #landscape-opacity': 'onChangeLandscapeOpacity'
 	},
 
 	regions: {
@@ -123,6 +153,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		environmentTimeline: {
 			el: '#environment-timeline-container',
 			replaceElement: true
+		},
+		landscapeTimeline: {
+			el: '#landscape-timeline-container',
+			replaceElement: true
 		}
 	},
 
@@ -139,6 +173,7 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		// set attributes
 		//
 		this.sources = defaults.sources;
+		this.landscapeOpacity = parseInt(QueryString.value('landscape_opacity')) || 78;
 	},
 
 	//
@@ -182,6 +217,7 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		//
 		this.enableDraggableLegend();
 		this.updateEnvironmentPanel();
+		this.updateLandscapePanel();
 		this.updatePanelVisibility();
 
 		// add markers
@@ -279,7 +315,9 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	getActivePanel: function() {
 		let panel = QueryString.value('panel') || 'mosquito';
-		return panel === 'environment'? 'environment' : 'mosquito';
+		return ['mosquito', 'environment', 'landscape'].includes(panel)?
+			panel :
+			'mosquito';
 	},
 
 	isEnvironmentPanelActive: function() {
@@ -290,6 +328,10 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		return this.getActivePanel() === 'mosquito';
 	},
 
+	isLandscapePanelActive: function() {
+		return this.getActivePanel() === 'landscape';
+	},
+
 	setActivePanel: function(panel) {
 		QueryString.add('panel', panel);
 		this.updatePanelVisibility();
@@ -298,7 +340,8 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 
 	updatePanelVisibility: function() {
 		let environmentActive = this.isEnvironmentPanelActive();
-		let mosquitoActive = !environmentActive;
+		let landscapeActive = this.isLandscapePanelActive();
+		let mosquitoActive = this.isMosquitoPanelActive();
 		let inatSelected = this.isDataSourceSelected('inaturalist');
 		let fehdSelected = this.isDataSourceSelected('fehd_gravidtrap');
 		let agiSelected = this.isDataSourceSelected('fehd_gravidtrap_area');
@@ -310,10 +353,13 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		this.$el.find('#data-bar').toggle(mosquitoActive);
 		this.$el.find('#environment-panel').toggle(environmentActive);
 		this.$el.find('#environment-index').toggle(environmentActive);
+		this.$el.find('#landscape-panel').toggle(landscapeActive);
+		this.$el.find('#landscape-index').toggle(landscapeActive);
 		this.$el.find('#timeline').toggle(mosquitoActive && inatSelected);
 		this.$el.find('#fehd-point-timeline').toggle(mosquitoActive && fehdSelected && !allMosquitoSelected);
 		this.$el.find('#fehd-area-timeline').toggle(mosquitoActive && agiSelected);
 		this.$el.find('#environment-timeline').toggle(environmentActive);
+		this.$el.find('#landscape-timeline').toggle(landscapeActive);
 		this.updateVisibleTimelinePositions();
 
 		let fehdVisible = mosquitoActive && (
@@ -321,6 +367,12 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			this.isDataSourceSelected('fehd_gravidtrap_area')
 		);
 		this.$el.find('#fehd-index-legend').toggle(fehdVisible);
+
+		if (landscapeActive) {
+			this.showLandscapeLayer(this.getLandscapeYear());
+		} else {
+			this.removeLandscapeLayer();
+		}
 	},
 
 	updateTimelineVisibility: function() {
@@ -332,7 +384,8 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			'#timeline',
 			'#fehd-point-timeline',
 			'#fehd-area-timeline',
-			'#environment-timeline'
+			'#environment-timeline',
+			'#landscape-timeline'
 		];
 		let visible = [];
 		for (let i = 0; i < ids.length; i++) {
@@ -423,6 +476,140 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 		this.$el.find('#environment-index').html(html);
 	},
 
+	getLandscapeManifest: function() {
+		if (!this.landscapeManifestPromise) {
+			this.landscapeManifestPromise = fetch('data/landscape/web/manifest.json')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Could not load landscape manifest.');
+				}
+				return response.json();
+			})
+			.then(manifest => {
+				this.landscapeManifest = manifest;
+				this.renderLandscapeLegend();
+				this.updateLandscapeSummary(this.getLandscapeYear());
+				return manifest;
+			});
+		}
+		return this.landscapeManifestPromise;
+	},
+
+	getLandscapeYear: function() {
+		let year = parseInt(QueryString.value('landscape_year'));
+		return year >= 2018 && year <= 2023? year : 2023;
+	},
+
+	getLandscapeEntry: function(year) {
+		if (!this.landscapeManifest) {
+			return null;
+		}
+		return this.landscapeManifest.years.find(item => item.year === year);
+	},
+
+	previewLandscapeYear: function(year) {
+		this.$el.find('#landscape-panel .landscape-year span').text(year);
+		this.updateLandscapeSummary(year);
+		if (this.isLandscapePanelActive()) {
+			this.showLandscapeLayer(year);
+		}
+	},
+
+	setLandscapeYear: function(year) {
+		QueryString.add('landscape_year', year);
+		this.previewLandscapeYear(year);
+	},
+
+	setLandscapeOpacity: function(opacity) {
+		this.landscapeOpacity = opacity;
+		QueryString.add('landscape_opacity', opacity);
+		if (this.landscapeLayer) {
+			this.landscapeLayer.setOpacity(opacity / 100);
+		}
+	},
+
+	updateLandscapePanel: function() {
+		this.$el.find('#landscape-panel .landscape-year span').text(this.getLandscapeYear());
+		this.$el.find('#landscape-opacity').val(this.landscapeOpacity);
+		this.getLandscapeManifest();
+	},
+
+	renderLandscapeLegend: function() {
+		if (!this.landscapeManifest) {
+			return;
+		}
+		let html = '';
+		for (let i = 0; i < this.landscapeManifest.classes.length; i++) {
+			let item = this.landscapeManifest.classes[i];
+			html += '<div class="landscape-legend-row">' +
+				'<span class="landscape-swatch" style="background:' + item.color + '"></span>' +
+				'<span><strong>' + item.code + '</strong> ' + item.name +
+				'<small>' + item.name_zh + '</small></span>' +
+				'</div>';
+		}
+		this.$el.find('#landscape-index .landscape-legend-rows').html(html);
+	},
+
+	updateLandscapeSummary: function(year) {
+		let entry = this.getLandscapeEntry(year);
+		if (!entry) {
+			return;
+		}
+		let builtUpGroups = [
+			'Residential',
+			'Commercial',
+			'Industrial',
+			'Institutional / Open Space',
+			'Transportation',
+			'Other Urban or Built-up Land'
+		];
+		let builtUp = 0;
+		let other = 0;
+		for (let i = 0; i < entry.statistics.length; i++) {
+			let item = entry.statistics[i];
+			if (builtUpGroups.includes(item.group)) {
+				builtUp += item.area_km2 || 0;
+			} else {
+				other += item.area_km2 || 0;
+			}
+		}
+		this.$el.find('#landscape-panel .built-up-area').text(builtUp);
+		this.$el.find('#landscape-panel .other-area').text(other);
+	},
+
+	showLandscapeLayer: function(year) {
+		this.getLandscapeManifest().then(() => {
+			let entry = this.getLandscapeEntry(year);
+			if (!entry || !this.map || !this.isLandscapePanelActive()) {
+				return;
+			}
+			if (this.landscapeLayer && this.landscapeLayerYear === year) {
+				this.landscapeLayer.setOpacity(this.landscapeOpacity / 100);
+				return;
+			}
+			this.removeLandscapeLayer();
+			this.landscapeLayer = L.imageOverlay(
+				'data/landscape/web/' + entry.image,
+				entry.bounds,
+				{
+					opacity: this.landscapeOpacity / 100,
+					interactive: false,
+					className: 'landscape-image-layer'
+				}
+			).addTo(this.map);
+			this.landscapeLayer.bringToBack();
+			this.landscapeLayerYear = year;
+		});
+	},
+
+	removeLandscapeLayer: function() {
+		if (this.landscapeLayer && this.map) {
+			this.map.removeLayer(this.landscapeLayer);
+		}
+		this.landscapeLayer = null;
+		this.landscapeLayerYear = null;
+	},
+
 	//
 	// toolbar rendering methods
 	//
@@ -487,12 +674,19 @@ export default BaseMapView.extend(_.extend({}, ObservationPopups, MosquitoMarker
 			title: 'Environment daily timeline / 每日環境時間軸',
 			dateParamPrefix: 'env'
 		}));
+		this.showChildView('landscapeTimeline', new LandscapeTimelineView({
+			parent: this
+		}));
 		this.updateTimelineVisibility();
 	},
 
 	onClickEnvironmentMetric: function(event) {
 		let metric = $(event.currentTarget).attr('data-metric');
 		this.setEnvironmentMetric(metric);
+	},
+
+	onChangeLandscapeOpacity: function(event) {
+		this.setLandscapeOpacity(parseInt($(event.currentTarget).val()));
 	},
 
 	onClickPanelMode: function(event) {
