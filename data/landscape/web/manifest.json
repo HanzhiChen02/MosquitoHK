@@ -1,0 +1,1966 @@
+{
+  "title": "Land Utilization in Hong Kong, 2018–2023",
+  "source": "Planning Department, HKSAR Government",
+  "source_page": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/",
+  "crs": "EPSG:4326",
+  "source_crs": "EPSG:2326",
+  "source_resolution_metres": 10,
+  "warning": "Land-use class definitions and methodology may change over time; direct year-to-year comparison may not be applicable.",
+  "classes": [
+    {
+      "code": 1,
+      "name": "Private Residential",
+      "name_zh": "私人住宅",
+      "color": "#A64D4D",
+      "group": "Residential"
+    },
+    {
+      "code": 2,
+      "name": "Public Residential",
+      "name_zh": "公營房屋",
+      "color": "#A60000",
+      "group": "Residential"
+    },
+    {
+      "code": 3,
+      "name": "Rural Settlement",
+      "name_zh": "鄉郊居所",
+      "color": "#CC804D",
+      "group": "Residential"
+    },
+    {
+      "code": 11,
+      "name": "Commercial / Business and Office",
+      "name_zh": "商業／商貿和辦公室",
+      "color": "#FF0000",
+      "group": "Commercial"
+    },
+    {
+      "code": 21,
+      "name": "Industrial Land",
+      "name_zh": "工業用地",
+      "color": "#8000FF",
+      "group": "Industrial"
+    },
+    {
+      "code": 22,
+      "name": "Industrial Estates / Science and Technology Parks",
+      "name_zh": "工業邨／科技園",
+      "color": "#804DFF",
+      "group": "Industrial"
+    },
+    {
+      "code": 23,
+      "name": "Warehouse and Open Storage",
+      "name_zh": "貨倉和露天貯物",
+      "color": "#4D4DFF",
+      "group": "Industrial"
+    },
+    {
+      "code": 31,
+      "name": "Government, Institutional and Community Facilities",
+      "name_zh": "政府、機構和社區設施",
+      "color": "#33FFFF",
+      "group": "Institutional / Open Space"
+    },
+    {
+      "code": 32,
+      "name": "Open Space and Recreation",
+      "name_zh": "休憩和康樂",
+      "color": "#00FF00",
+      "group": "Institutional / Open Space"
+    },
+    {
+      "code": 41,
+      "name": "Roads and Transport Facilities",
+      "name_zh": "道路和運輸設施",
+      "color": "#FFFF66",
+      "group": "Transportation"
+    },
+    {
+      "code": 42,
+      "name": "Railways",
+      "name_zh": "鐵路",
+      "color": "#000000",
+      "group": "Transportation"
+    },
+    {
+      "code": 43,
+      "name": "Airport",
+      "name_zh": "機場",
+      "color": "#FFE6CC",
+      "group": "Transportation"
+    },
+    {
+      "code": 44,
+      "name": "Port Facilities",
+      "name_zh": "港口設施",
+      "color": "#C29CD6",
+      "group": "Transportation"
+    },
+    {
+      "code": 51,
+      "name": "Cemeteries and Crematoria",
+      "name_zh": "墳場／殯殮設施",
+      "color": "#FFFF00",
+      "group": "Other Urban or Built-up Land"
+    },
+    {
+      "code": 52,
+      "name": "Utilities",
+      "name_zh": "公用事業設施",
+      "color": "#FFA600",
+      "group": "Other Urban or Built-up Land"
+    },
+    {
+      "code": 53,
+      "name": "Vacant Land / Construction in Progress",
+      "name_zh": "空置／正在進行建築工程的土地",
+      "color": "#FFFFFF",
+      "group": "Other Urban or Built-up Land"
+    },
+    {
+      "code": 54,
+      "name": "Others",
+      "name_zh": "其他",
+      "color": "#FFCC4D",
+      "group": "Other Urban or Built-up Land"
+    },
+    {
+      "code": 61,
+      "name": "Agricultural Land",
+      "name_zh": "農地",
+      "color": "#80A64D",
+      "group": "Agriculture"
+    },
+    {
+      "code": 62,
+      "name": "Fish Ponds / Gei Wais",
+      "name_zh": "魚塘／基圍",
+      "color": "#00CCFF",
+      "group": "Agriculture"
+    },
+    {
+      "code": 71,
+      "name": "Woodland",
+      "name_zh": "林地",
+      "color": "#80FF4D",
+      "group": "Vegetation"
+    },
+    {
+      "code": 72,
+      "name": "Shrubland",
+      "name_zh": "灌叢",
+      "color": "#A6FF8C",
+      "group": "Vegetation"
+    },
+    {
+      "code": 73,
+      "name": "Grassland",
+      "name_zh": "草地",
+      "color": "#CCFFA6",
+      "group": "Vegetation"
+    },
+    {
+      "code": 74,
+      "name": "Mangrove / Swamp",
+      "name_zh": "紅樹林／沼澤",
+      "color": "#FF4DA6",
+      "group": "Vegetation"
+    },
+    {
+      "code": 81,
+      "name": "Badland",
+      "name_zh": "劣地",
+      "color": "#8080A6",
+      "group": "Barren Land"
+    },
+    {
+      "code": 83,
+      "name": "Rocky Shore",
+      "name_zh": "岩岸",
+      "color": "#804D80",
+      "group": "Barren Land"
+    },
+    {
+      "code": 91,
+      "name": "Reservoirs",
+      "name_zh": "水塘",
+      "color": "#BFFFFF",
+      "group": "Water Bodies"
+    },
+    {
+      "code": 92,
+      "name": "Streams and Nullahs",
+      "name_zh": "河道和明渠",
+      "color": "#99F2FF",
+      "group": "Water Bodies"
+    }
+  ],
+  "years": [
+    {
+      "year": 2018,
+      "image": "land-use-2018.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2018.zip",
+      "source_statistics": "../source/LUHK2018_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2018.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2018_tc.zip",
+      "source_raster_sha256": "85a447cbeb836f1930617d53afa209449a1a978eedf7fc9d36be417c250da14e",
+      "source_statistics_sha256": "f733dfb7e22ada56d52a2ec93622ede64cdf5e33c25463f8f5e10603a05a38ca",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 26,
+          "percentage": 2.3,
+          "note_zh": "包括私人發展商發展的住宅用地 (村屋、資助房屋和臨時房屋區除外)。"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": "包括資助房屋和臨時房屋區。"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.2,
+          "note_zh": "包括村屋和臨時搭建物。"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 7,
+          "percentage": 0.6,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 25,
+          "percentage": 2.3,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 28,
+          "percentage": 2.5,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施。"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 46,
+          "percentage": 4.1,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 13,
+          "percentage": 1.2,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 15,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 50,
+          "percentage": 4.5,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 276,
+          "percentage": 24.8,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 264,
+          "percentage": 23.8,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 187,
+          "percentage": 16.8,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤。"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 2,
+          "percentage": 0.2,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.3,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    },
+    {
+      "year": 2019,
+      "image": "land-use-2019.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2019.zip",
+      "source_statistics": "../source/LUHK2019_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2019.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2019_tc.zip",
+      "source_raster_sha256": "0ed2e7d4f241c28710758836b4e4cdee09c3923b96e6d1dc15b70b99a01fc27c",
+      "source_statistics_sha256": "10bbe6a1e20df5f2f863e537f13a34d325c3f4da076ae12c1645a231019401d1",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 26,
+          "percentage": 2.3,
+          "note_zh": "包括私人發展商發展的住宅用地(村屋、資助房屋和臨時房屋區除外)"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": "包括資助房屋和臨時房屋區"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.2,
+          "note_zh": "包括村屋和臨時搭建物"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 7,
+          "percentage": 0.6,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 25,
+          "percentage": 2.3,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 28,
+          "percentage": 2.5,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 46,
+          "percentage": 4.1,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 13,
+          "percentage": 1.2,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 15,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 50,
+          "percentage": 4.5,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 276,
+          "percentage": 24.8,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 264,
+          "percentage": 23.8,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 187,
+          "percentage": 16.8,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 2,
+          "percentage": 0.2,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.3,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    },
+    {
+      "year": 2020,
+      "image": "land-use-2020.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2020.zip",
+      "source_statistics": "../source/LUHK2020_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2020.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2020_tc.zip",
+      "source_raster_sha256": "fd0ec1d60baae2bbc24993a79fcc9ecbcaea4b29628faac2cd5a9f1a516ff6f3",
+      "source_statistics_sha256": "5d094f9d1c3c0181527f826d98fa1f55b5da7c5a264fc1a2b11c45dd33c4bbed",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 27,
+          "percentage": 2.4,
+          "note_zh": "包括私人發展商發展的住宅用地(村屋、資助房屋和臨時房屋區除外)"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": "包括資助房屋和臨時房屋區"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.1,
+          "note_zh": "包括村屋和臨時搭建物"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 7,
+          "percentage": 0.6,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 28,
+          "percentage": 2.5,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 47,
+          "percentage": 4.2,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 13,
+          "percentage": 1.2,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 18,
+          "percentage": 1.6,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 49,
+          "percentage": 4.4,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 289,
+          "percentage": 25.9,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 254,
+          "percentage": 22.8,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 183,
+          "percentage": 16.4,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 2,
+          "percentage": 0.2,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    },
+    {
+      "year": 2021,
+      "image": "land-use-2021.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2021.zip",
+      "source_statistics": "../source/LUHK2021_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2021.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2021_tc.zip",
+      "source_raster_sha256": "3960f8fc1bc8181af9447b84622a526e74e10a288f26f3b102907e82dd150cad",
+      "source_statistics_sha256": "7101ff4b5bd67b04f0b305bf1b5abdfc6bf71a79976131228ed82c20f815ab55",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 27,
+          "percentage": 2.4,
+          "note_zh": "包括私人發展商發展的住宅用地(村屋、資助房屋和臨時房屋區除外)"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": "包括資助房屋和臨時房屋區"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.1,
+          "note_zh": "包括村屋和臨時搭建物"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 29,
+          "percentage": 2.6,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 47,
+          "percentage": 4.2,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 13,
+          "percentage": 1.2,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 22,
+          "percentage": 2,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 49,
+          "percentage": 4.4,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 290,
+          "percentage": 26,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 255,
+          "percentage": 22.8,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 180,
+          "percentage": 16.1,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 2,
+          "percentage": 0.2,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    },
+    {
+      "year": 2022,
+      "image": "land-use-2022.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2022.zip",
+      "source_statistics": "../source/LUHK2022_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2022.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2022_tc.zip",
+      "source_raster_sha256": "d94570d655a2da52ea4b2b8796391a91af282b392fc5fec1d7fece6cdf01ae2c",
+      "source_statistics_sha256": "01d35ab1ae96360e86c069ed5a11fe752e92c3d16d48b958c24b65eda93afc6c",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 27,
+          "percentage": 2.4,
+          "note_zh": "包括私人發展商發展的住宅用地(村屋、資助房屋和臨時房屋區除外)"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 18,
+          "percentage": 1.6,
+          "note_zh": "包括資助房屋和臨時房屋區"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.1,
+          "note_zh": "包括村屋和臨時搭建物"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 27,
+          "percentage": 2.4,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 29,
+          "percentage": 2.6,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 47,
+          "percentage": 4.2,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 18,
+          "percentage": 1.6,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 48,
+          "percentage": 4.3,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 334,
+          "percentage": 29.9,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 194,
+          "percentage": 17.4,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 199,
+          "percentage": 17.8,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 2,
+          "percentage": 0.2,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    },
+    {
+      "year": 2023,
+      "image": "land-use-2023.png",
+      "source_raster": "../source/LUMHK_RasterGrid_2023.zip",
+      "source_statistics": "../source/LUHK2023_tc.zip",
+      "source_raster_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUMHK_RasterGrid_2023.zip",
+      "source_statistics_url": "https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/downloads/LUHK2023_tc.zip",
+      "source_raster_sha256": "0b6d5161228f1e44607dfb36167e17e2b294f98600148d62df0d78283300df39",
+      "source_statistics_sha256": "6e9964f0cd6821c4971472bc7fcfa00ee29f26468919c69c9c4a8895bd8dc69b",
+      "statistics": [
+        {
+          "code": 1,
+          "group": "Residential",
+          "name": "Private Residential",
+          "name_zh": "私人住宅",
+          "color": "#A64D4D",
+          "area_km2": 27,
+          "percentage": 2.4,
+          "note_zh": "包括私人發展商發展的住宅用地(鄉郊居所、資助房屋和過渡性房屋除外)"
+        },
+        {
+          "code": 2,
+          "group": "Residential",
+          "name": "Public Residential",
+          "name_zh": "公營房屋",
+          "color": "#A60000",
+          "area_km2": 18,
+          "percentage": 1.6,
+          "note_zh": "包括資助房屋和過渡性房屋"
+        },
+        {
+          "code": 3,
+          "group": "Residential",
+          "name": "Rural Settlement",
+          "name_zh": "鄉郊居所",
+          "color": "#CC804D",
+          "area_km2": 35,
+          "percentage": 3.1,
+          "note_zh": "包括村屋和臨時搭建物"
+        },
+        {
+          "code": 11,
+          "group": "Commercial",
+          "name": "Commercial / Business and Office",
+          "name_zh": "商業／商貿和辦公室",
+          "color": "#FF0000",
+          "area_km2": 5,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 21,
+          "group": "Industrial",
+          "name": "Industrial Land",
+          "name_zh": "工業用地",
+          "color": "#8000FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        },
+        {
+          "code": 22,
+          "group": "Industrial",
+          "name": "Industrial Estates / Science and Technology Parks",
+          "name_zh": "工業邨／科技園",
+          "color": "#804DFF",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 23,
+          "group": "Industrial",
+          "name": "Warehouse and Open Storage",
+          "name_zh": "貨倉和露天貯物",
+          "color": "#4D4DFF",
+          "area_km2": 17,
+          "percentage": 1.5,
+          "note_zh": ""
+        },
+        {
+          "code": 31,
+          "group": "Institutional / Open Space",
+          "name": "Government, Institutional and Community Facilities",
+          "name_zh": "政府、機構和社區設施",
+          "color": "#33FFFF",
+          "area_km2": 26,
+          "percentage": 2.3,
+          "note_zh": ""
+        },
+        {
+          "code": 32,
+          "group": "Institutional / Open Space",
+          "name": "Open Space and Recreation",
+          "name_zh": "休憩和康樂",
+          "color": "#00FF00",
+          "area_km2": 28,
+          "percentage": 2.5,
+          "note_zh": "包括公園、運動場、遊樂場和康樂設施"
+        },
+        {
+          "code": 41,
+          "group": "Transportation",
+          "name": "Roads and Transport Facilities",
+          "name_zh": "道路和運輸設施",
+          "color": "#FFFF66",
+          "area_km2": 47,
+          "percentage": 4.2,
+          "note_zh": ""
+        },
+        {
+          "code": 42,
+          "group": "Transportation",
+          "name": "Railways",
+          "name_zh": "鐵路",
+          "color": "#000000",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 43,
+          "group": "Transportation",
+          "name": "Airport",
+          "name_zh": "機場",
+          "color": "#FFE6CC",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 44,
+          "group": "Transportation",
+          "name": "Port Facilities",
+          "name_zh": "港口設施",
+          "color": "#C29CD6",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 51,
+          "group": "Other Urban or Built-up Land",
+          "name": "Cemeteries and Crematoria",
+          "name_zh": "墳場／殯殮設施",
+          "color": "#FFFF00",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 52,
+          "group": "Other Urban or Built-up Land",
+          "name": "Utilities",
+          "name_zh": "公用事業設施",
+          "color": "#FFA600",
+          "area_km2": 9,
+          "percentage": 0.8,
+          "note_zh": ""
+        },
+        {
+          "code": 53,
+          "group": "Other Urban or Built-up Land",
+          "name": "Vacant Land / Construction in Progress",
+          "name_zh": "空置／正在進行建築工程的土地",
+          "color": "#FFFFFF",
+          "area_km2": 21,
+          "percentage": 1.9,
+          "note_zh": ""
+        },
+        {
+          "code": 54,
+          "group": "Other Urban or Built-up Land",
+          "name": "Others",
+          "name_zh": "其他",
+          "color": "#FFCC4D",
+          "area_km2": 12,
+          "percentage": 1.1,
+          "note_zh": ""
+        },
+        {
+          "code": 61,
+          "group": "Agriculture",
+          "name": "Agricultural Land",
+          "name_zh": "農地",
+          "color": "#80A64D",
+          "area_km2": 48,
+          "percentage": 4.3,
+          "note_zh": ""
+        },
+        {
+          "code": 62,
+          "group": "Agriculture",
+          "name": "Fish Ponds / Gei Wais",
+          "name_zh": "魚塘／基圍",
+          "color": "#00CCFF",
+          "area_km2": 16,
+          "percentage": 1.4,
+          "note_zh": ""
+        },
+        {
+          "code": 71,
+          "group": "Vegetation",
+          "name": "Woodland",
+          "name_zh": "林地",
+          "color": "#80FF4D",
+          "area_km2": 334,
+          "percentage": 29.8,
+          "note_zh": ""
+        },
+        {
+          "code": 72,
+          "group": "Vegetation",
+          "name": "Shrubland",
+          "name_zh": "灌叢",
+          "color": "#A6FF8C",
+          "area_km2": 186,
+          "percentage": 16.6,
+          "note_zh": ""
+        },
+        {
+          "code": 73,
+          "group": "Vegetation",
+          "name": "Grassland",
+          "name_zh": "草地",
+          "color": "#CCFFA6",
+          "area_km2": 204,
+          "percentage": 18.2,
+          "note_zh": ""
+        },
+        {
+          "code": 74,
+          "group": "Vegetation",
+          "name": "Mangrove / Swamp",
+          "name_zh": "紅樹林／沼澤",
+          "color": "#FF4DA6",
+          "area_km2": 6,
+          "percentage": 0.6,
+          "note_zh": "包括高水位線下約四平方公里的紅樹林和沼澤"
+        },
+        {
+          "code": 81,
+          "group": "Barren Land",
+          "name": "Badland",
+          "name_zh": "劣地",
+          "color": "#8080A6",
+          "area_km2": 3,
+          "percentage": 0.3,
+          "note_zh": ""
+        },
+        {
+          "code": 83,
+          "group": "Barren Land",
+          "name": "Rocky Shore",
+          "name_zh": "岩岸",
+          "color": "#804D80",
+          "area_km2": 4,
+          "percentage": 0.4,
+          "note_zh": ""
+        },
+        {
+          "code": 91,
+          "group": "Water Bodies",
+          "name": "Reservoirs",
+          "name_zh": "水塘",
+          "color": "#BFFFFF",
+          "area_km2": 25,
+          "percentage": 2.2,
+          "note_zh": ""
+        },
+        {
+          "code": 92,
+          "group": "Water Bodies",
+          "name": "Streams and Nullahs",
+          "name_zh": "河道和明渠",
+          "color": "#99F2FF",
+          "area_km2": 6,
+          "percentage": 0.5,
+          "note_zh": ""
+        }
+      ],
+      "width": 6546,
+      "height": 4582,
+      "bounds": [
+        [
+          22.13798852886858,
+          113.82422325078652
+        ],
+        [
+          22.571855449604854,
+          114.44406019167252
+        ]
+      ]
+    }
+  ]
+}

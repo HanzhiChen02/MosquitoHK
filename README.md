@@ -26,6 +26,7 @@ The dashboard currently integrates:
 - [iNaturalist](https://www.inaturalist.org)
 - [FEHD](https://www.fehd.gov.hk/tc_chi/pestcontrol/dengue_fever/Dengue_Fever_Gravidtrap_Index_Update.html)
 - [Hong Kong Observatory](https://www.hko.gov.hk/tc/abouthko/opendata_intro.htm)
+- [Planning Department — Land Utilization in Hong Kong](https://www.pland.gov.hk/pland_tc/info_serv/open_data/landu/)
 
 ### Viewing
 - View locations of mosquito observations on a map.
@@ -34,6 +35,8 @@ The dashboard currently integrates:
 - Select from a variety of base maps.
 - Choose between light or dark mode.
 - Show monochrome or colored base maps to highlight the markers or the geography.
+- Compare Planning Department land-utilization raster layers from 2018–2023
+  using the Landscape tab and annual timeline.
 
 ### Filtering:
 - Filter observations by:

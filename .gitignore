@@ -6,3 +6,5 @@ mysql
 data/*
 !data/boundaries/
 !data/boundaries/**
+!data/landscape/
+!data/landscape/**

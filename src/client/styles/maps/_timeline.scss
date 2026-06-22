@@ -1,4 +1,4 @@
-#timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline {
+#timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline, #landscape-timeline {
 	position: absolute;
 	left: 50%;
 	bottom: 16px;
@@ -39,6 +39,31 @@
 	}
 }
 
+#landscape-timeline {
+	bottom: 16px;
+
+	.timeline-slider {
+		accent-color: #2f9e44;
+	}
+
+	.landscape-play {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		padding: 4px 8px;
+		border: 1px solid #2f9e44;
+		border-radius: 5px;
+		background: #effaf2;
+		color: #237a35;
+		font-size: 11px;
+
+		&.playing {
+			background: #2f9e44;
+			color: white;
+		}
+	}
+}
+
 #fehd-point-timeline {
 	bottom: 124px;
 }
@@ -52,7 +77,7 @@
 }
 
 @media (max-width: 640px) {
-	#timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline {
+	#timeline, #fehd-point-timeline, #fehd-area-timeline, #environment-timeline, #landscape-timeline {
 		bottom: 8px;
 		width: calc(100% - 24px);
 
@@ -76,6 +101,10 @@
 	}
 
 	#environment-timeline {
+		bottom: 8px;
+	}
+
+	#landscape-timeline {
 		bottom: 8px;
 	}
 }
